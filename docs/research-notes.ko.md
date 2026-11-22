@@ -2,7 +2,7 @@
 
 2026년 11월 22–23일에 진행한 CAD 개선과 MuJoCo 파일럿이다. 이전 [VTLA 프로젝트](https://github.com/jhyeong687/VTLA)에서 쓰던 PaXini 센서 두 개를 SO-ARM101에 다시 붙여, 파지 직후의 판단을 실험할 수 있게 만들었다.
 
-[재현 키트 받기](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-tactile-recovery-kit.zip) · [실행 가이드](quickstart.md) · [Fusion 조립 영상](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-fusion-assembly.mp4)
+[재현 키트 받기](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-tactile-recovery-kit.zip) · [실행 가이드](quickstart.md) · [Fusion 조립 영상](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-fusion-assembly.mp4)
 
 ![실제 Fusion 360 전체 조립체](../media/fusion-r7-system.jpg)
 
@@ -23,9 +23,13 @@
 
 같은 동작으로 물체를 들어 올린 8.90초에 일반 50 g 블록은 11.60 mm, 50 g 원통은 11.47 mm, 미끄러운 50 g 블록은 0.00 mm, 600 g 블록은 0.93 mm 상승했다. 일반 블록과 미끄러운 블록은 평균 눌림이 둘 다 5.29 N이었다. 무거운 조건은 일반 블록과 같은 표면 마찰을 적용했고 평균 접선 Fy의 크기가 더 컸다. 한 자세의 수치만으로 실제 무게나 미끄러짐을 분류할 수 있는지는 검증 전이다.
 
-MuJoCo가 길쭉한 접촉면을 소수의 접촉점으로 표현해 초기 표시에서는 양끝 위주로 각 8점이 보였다. 물체 형상과 패드의 근접도를 이용해 힘을 다시 배분한 지도는 각 35점이 반응했고 합력은 같았다. 화면에서 두 지도를 번갈아 볼 수 있다. 형상을 사용하는 접촉면 추정치는 연구용 에이전트 입력에서 제외했다. [네 조건 병렬 영상](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-four-grasps.mp4) · [시계열 데이터](../data/README.md)
+MuJoCo가 길쭉한 접촉면을 소수의 접촉점으로 표현해 초기 표시에서는 양끝 위주로 각 8점이 보였다. 물체 형상과 패드의 근접도를 이용해 힘을 다시 배분한 지도는 각 35점이 반응했고 합력은 같았다. 화면에서 두 지도를 번갈아 볼 수 있다. 형상을 사용하는 접촉면 추정치는 연구용 에이전트 입력에서 제외했다. [네 조건 병렬 영상](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-four-grasps.mp4) · [시계열 데이터](../data/README.md)
 
-## 추후 실험
+## 파이프라인과 추후 실험
+
+**첫 파지 → 짧게 들어 보기 → 촉각·카메라·관절 상태 확인 → 계속 집기 / 다시 잡기 / 내려놓고 넘기기.**
+
+현재 MuJoCo에서는 첫 파지와 들어 올리는 동작을 재생하고 데이터를 기록한다. 다음 실험에서 재파지 정책을 추가한다. 첫 시도가 애매할 때는 허용된 범위 안에서 위치나 자세를 바꿔 한 번 더 확인하고, 정해둔 하중이나 재시도 한도에 닿으면 내려놓는다. 판단에 쓰는 입력과 실험 결과를 채점하는 기준은 [실험 계획](experimental-plan.md#observation-and-decision-pipeline)에 적었다.
 
 1. **외형을 고정하고 난이도를 바꾼다.** 같은 외피에 무게와 마찰을 독립적으로 바꿔 넣고, 위치가 좋은 파지와 어긋난 파지를 나눈다.
 2. **실제 재파지 결과로 정답을 정한다.** 허용하는 잡는 위치와 접근 자세를 제한한 뒤, 정해진 하중과 동작 한도에서 실제로 올라가고 유지됐는지 확인한다.

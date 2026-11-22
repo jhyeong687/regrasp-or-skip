@@ -4,15 +4,17 @@
 
 A failed lift can come from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds the gripper, camera rig, and measurement pipeline needed to study those cases under the same motion.
 
-**[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-tactile-recovery-kit.zip)** · [Get started](docs/quickstart.md) · [한국어 연구 기록](docs/research-notes.ko.md) · [Videos and print files](https://github.com/jhyeong687/tactile-grasp-recovery/releases/tag/v0.2.0)
+**[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-tactile-recovery-kit.zip)** · [Get started](docs/quickstart.md) · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
 
 ![Fusion 360 assembly of the SO-ARM101 with PaXini parallel jaws, wrist D435i and two RGB mounts](media/fusion-r7-system.jpg)
 
 ## How the rig comes together
 
-[![Fusion 360 exploded assembly animation of the jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-fusion-assembly.mp4)
+[![Fusion 360 assembly of the parallel jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-fusion-assembly.mp4)
 
-The Fusion motion begins with the R4 parallel jaws and tactile pads. It then seats the R7 rails, split masts and camera mounts on the SO-ARM101 base. The 24-second R4 design film covers the gripper from additional angles. [Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-fusion-assembly.mp4) · [R4 design film](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-gripper-r4.mp4)
+[Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-fusion-assembly.mp4) · [R4 design film](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-gripper-r4.mp4)
+
+### Build details
 
 ![Close Fusion views of the R4 jaws and the violet SA26MCM camera mount](media/fusion-hardware-details.jpg)
 
@@ -26,9 +28,36 @@ The Fusion motion begins with the R4 parallel jaws and tactile pads. It then sea
 
 ## Four grasps on one time axis
 
-[![Synchronized MuJoCo simulation of a standard block, cylinder, slippery block and heavy block with dual tactile maps](media/grasp-comparison.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-four-grasps.mp4)
+At **5.29 N per jaw**, the standard block lifted **11.60 mm** and the slippery block rose **0.00 mm** in the MuJoCo pilot.
 
-The same scripted grip and lift runs in four conditions. Colors and arrows indicate the estimated contact patch and in-plane force. The lift command spans 7.50–8.90 s. The table uses the [shared 8.90 s frame](media/grasp-comparison.jpg).
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Standard block</strong><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-normal.mp4"><img src="./media/grasp-normal.gif" alt="Standard block lift and left and right PaXini force maps"></a><br>
+      <sub>50 g · friction 0.80 · rise 11.60 mm at 8.90 s</sub>
+    </td>
+    <td width="50%" align="center">
+      <strong>Cylinder</strong><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-round.mp4"><img src="./media/grasp-round.gif" alt="Cylinder lift and left and right PaXini force maps"></a><br>
+      <sub>50 g · friction 0.80 · rise 11.47 mm at 8.90 s</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Slippery block</strong><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-slippery.mp4"><img src="./media/grasp-slippery.gif" alt="Slippery block lift attempt and left and right PaXini force maps"></a><br>
+      <sub>50 g · friction 0.018 · rise 0.00 mm at 8.90 s</sub>
+    </td>
+    <td width="50%" align="center">
+      <strong>Heavy block</strong><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-heavy_matched.mp4"><img src="./media/grasp-heavy_matched.gif" alt="Heavy block lift attempt and left and right PaXini force maps"></a><br>
+      <sub>600 g · friction 0.80 · rise 0.93 mm at 8.90 s</sub>
+    </td>
+  </tr>
+</table>
+
+Each clip uses the same simulation timestamps. The dot colors show compression and arrows show in-plane force on the estimated contact patch. Use the [synchronized MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-four-grasps.mp4) for frame-locked playback. The lift command runs from 7.50 to 8.90 s.
 
 | Condition | Mass | Pad friction | Object rise | Mean Fz per jaw | Mean abs. Fy per jaw |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -39,9 +68,9 @@ The same scripted grip and lift runs in four conditions. Colors and arrows indic
 
 ![Aligned normal squeeze, tangential force and object-rise curves for the four simulated conditions](media/pilot-force-traces.png)
 
-In this pilot, the standard and slippery blocks have the same rounded squeeze force at the checkpoint, yet only the standard block lifts. The heavy block applies more tangential force at the same nominal friction as the standard block. A future policy comparison will test how much those cues help it choose a recovery action. Each row here comes from one simulated episode.
+The heavy block applies more tangential force at the same nominal friction as the standard block. Each row comes from one scripted simulation episode. The next experiments test how well these cues predict recovery across different grasps and objects.
 
-[Parallel video](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-four-grasps.mp4) · [1,644 time samples in CSV](data/trial-traces.csv) · [40 tactile snapshots in JSON](data/tactile-pilot.json) · [Data schema](data/README.md)
+[8.90 s comparison image](media/grasp-comparison.jpg) · [1,644 time samples in CSV](data/trial-traces.csv) · [40 tactile snapshots in JSON](data/tactile-pilot.json) · [Data schema](data/README.md)
 
 ## What the simulator shows
 
@@ -65,7 +94,7 @@ The live replay averages force over each playback step. The numerical table abov
 
 ## Download and run
 
-Download and extract the [reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.0/so101-tactile-recovery-kit.zip), or clone this repository. From its root, in a Python environment:
+Download and extract the [reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-tactile-recovery-kit.zip), or clone this repository. Run these commands from the repository root in a Python environment.
 
     python -m pip install -r simulation/requirements.txt
     python simulation/sim.py --verify --physics-only
@@ -75,11 +104,26 @@ Open [the local dashboard](http://127.0.0.1:8770/). Use **4개 비교 재생** t
 
 The public simulator uses simplified visuals for six upstream gripper parts and retains the analyzed pad collision meshes and dynamics. The original ggao50 hardware source is linked in the credits, along with the constraints on redistribution. [Source and asset credits](docs/sources.md)
 
-## Next research steps
+## Recovery pipeline and roadmap
 
-1. **Establish recoverability labels.** Present visually identical shells with independent changes in mass, friction and initial grip location. Run a predeclared set of bounded regrasp attempts.
-2. **Measure what touch adds.** Compare RGB and robot state, a normal-force threshold, a fixed probe, and a policy that chooses its next tactile probe. Permute tactile histories as a control.
-3. **Transfer to the bench.** Calibrate the two pads and camera poses, synchronize timestamps, and compare measured contact and slip transients against simulated traces. Evaluate false skips, drops and successful picks per minute on held-out items.
+The simulator currently replays a scripted pinch and short lift and records the resulting camera views, arm state and 154 tactile vectors. The **proposed recovery policy** would use those observations to choose its next action.
+
+```mermaid
+flowchart TD
+    A["First grasp and short test lift"] --> B["PaXini force history, camera motion and arm state"]
+    B --> C{"Choose the next action"}
+    C -->|"Stable lift"| D["Continue the pick"]
+    C -->|"A useful probe remains"| E["Regrasp or test another allowed pose"]
+    E --> A
+    C -->|"Safety or retry limit reached"| F["Set the item down and defer"]
+```
+
+| Stage | Experiment | What to report |
+| --- | --- | --- |
+| **1. Label recovery** | Use identical-looking objects with independent changes in mass, friction and initial grasp position. Replay a predeclared set of bounded regrasp attempts after a weak first lift. | Matched pairs where the first lift fails and the regrasp outcomes differ. |
+| **2. Test the decision** | Compare vision and arm state, a normal-force threshold, a fixed second probe and an adaptive tactile probe under the same time and retry budget. Shuffle tactile histories as a control. | Recoverable items skipped, drops, extra probes and successful picks per minute on held-out items. |
+| **3. Transfer to hardware** | Calibrate both pads and camera poses, synchronize clocks, and record controlled slips and regrasp attempts inside measured load limits. | Agreement between simulated and measured force traces, and policy performance on held-out physical objects. |
+| **4. Measure throughput** | Feed a mixed queue of items once the bench comparisons are stable. | Useful picks per minute and time spent on unrecoverable items. |
 
 [Full experimental plan](docs/experimental-plan.md) · [Decision and design log in Korean](docs/research-notes.ko.md) · [Prior VTLA work](https://github.com/jhyeong687/VTLA)
 

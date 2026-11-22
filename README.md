@@ -1,6 +1,6 @@
-# Tactile Probing for Grasp Recovery
+# Regrasp or Skip? Tactile Probing for Agentic Robot Manipulation
 
-**A PaXini-equipped SO-ARM101 testbed for deciding when to regrasp or skip**
+**A PaXini-equipped SO-ARM101 testbed for studying when a robot should lift, regrasp, or skip after contact**
 
 [![Synchronized MuJoCo dashboard replay with a fixed full-arm view, PaXini force maps, and four camera feeds](media/mujoco-dashboard-timeline.webp)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4)
 

@@ -2,9 +2,9 @@
 
 **A PaXini-equipped SO-ARM101 testbed for deciding when to regrasp or skip**
 
-[![PaXini Grasp Trials dashboard replaying four MuJoCo picks with live tactile maps and camera views](media/mujoco-dashboard-replay.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-replay.mp4)
+[![Full-arm MuJoCo replay of the standard block grasp with PaXini tactile maps and four camera feeds](media/mujoco-dashboard-replay.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-wide-replay.mp4)
 
-[Watch the dashboard replay](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
+[Watch the full-arm replay](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-wide-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
 
 A weak lift can follow from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds a gripper and sensor rig to compare those cases under the same motion.
 

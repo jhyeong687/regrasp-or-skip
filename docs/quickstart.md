@@ -4,10 +4,10 @@ The standalone kit contains the Python simulator and all required model meshes, 
 
 ## 1. Open the dashboard
 
-Download the [reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip) and extract it. You can also use Git.
+Download the [reproduction kit](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-tactile-recovery-kit.zip) and extract it. You can also use Git.
 
-    git clone https://github.com/jhyeong687/tactile-grasp-recovery.git
-    cd tactile-grasp-recovery
+    git clone https://github.com/jhyeong687/regrasp-or-skip.git
+    cd regrasp-or-skip
 
 Create a Python environment from the extracted or cloned folder. The published build was verified with Python 3.12 and MuJoCo 3.17.
 
@@ -45,4 +45,4 @@ The response includes signed force vectors, sum force and torque on each side, a
 
 Import [mount-assembly.step](../cad/rgb-26cm/mount-assembly.step) into Fusion 360 to inspect the colored 26 cm mount. Open the [STL directory](../cad/rgb-26cm/STL) in a slicer with millimetre units. This release includes the two rails, four mast sections, camera interface parts, the [wrist D435i bridge](../cad/wrist-and-fit/D435i_Wrist_Bridge_R5.stl), and the [M3025 clearance coupon](../cad/wrist-and-fit/M3025_Screw_Fit_Test.stl). See [assembly and fasteners](../cad/README.md) and [the Korean guide](../cad/rgb-26cm/assembly.ko.md). The original rack-and-pinion hardware and applicable terms are linked in the [source credits](sources.md).
 
-Download the [Fusion animation](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-fusion-assembly.mp4) for an overview of part placement. Check physical fit, wiring and limiting motor loads before running the arm.
+Download the [Fusion animation](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-fusion-assembly.mp4) for an overview of part placement. Check physical fit, wiring and limiting motor loads before running the arm.

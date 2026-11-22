@@ -1,0 +1,94 @@
+{
+  "parts_mm": {
+    "left_Rail_26cm": [
+      56.9,
+      143.0,
+      13.4
+    ],
+    "left_Mast_Lower_26cm": [
+      130.23,
+      26.0,
+      40.0
+    ],
+    "left_Mast_Upper_26cm": [
+      117.3,
+      64.67,
+      56.49
+    ],
+    "right_Rail_26cm": [
+      56.9,
+      143.0,
+      13.4
+    ],
+    "right_Mast_Lower_26cm": [
+      130.23,
+      26.0,
+      40.0
+    ],
+    "right_Mast_Upper_26cm": [
+      117.3,
+      64.67,
+      56.49
+    ]
+  },
+  "camera": {
+    "left": {
+      "lens_mm": [
+        50.0,
+        260.0,
+        232.37
+      ],
+      "height_above_table_mm": 240.0,
+      "yaw_deg": -73.909,
+      "down_deg": 27.083,
+      "forward": [
+        0.24677027031408963,
+        -0.8554702704459201,
+        -0.4552746973776332
+      ],
+      "right": [
+        -0.960823591182943,
+        -0.2771606512950797,
+        0.0
+      ],
+      "up": [
+        0.12618423164335513,
+        -0.43743866970910517,
+        0.8903510262406084
+      ],
+      "60deg_HFOV_targets_visible": 7,
+      "65deg_HFOV_targets_visible": 8,
+      "70deg_HFOV_targets_visible": 8
+    },
+    "right": {
+      "lens_mm": [
+        50.0,
+        -260.0,
+        232.37
+      ],
+      "height_above_table_mm": 240.0,
+      "yaw_deg": 73.909,
+      "down_deg": 27.083,
+      "forward": [
+        0.24677027031408963,
+        0.8554702704459201,
+        -0.4552746973776332
+      ],
+      "right": [
+        0.960823591182943,
+        -0.2771606512950797,
+        0.0
+      ],
+      "up": [
+        0.12618423164335513,
+        0.43743866970910517,
+        0.8903510262406084
+      ],
+      "60deg_HFOV_targets_visible": 7,
+      "65deg_HFOV_targets_visible": 8,
+      "70deg_HFOV_targets_visible": 8
+    }
+  },
+  "route_sampled_poses": 51,
+  "CAD_interferences": []
+}

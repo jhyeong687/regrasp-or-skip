@@ -1,0 +1,200 @@
+<mujoco model="SO-ARM101 R7 final">
+  <compiler angle="radian" meshdir="meshes" />
+  <option gravity="0 0 -9.80665" timestep=".002" integrator="implicitfast" cone="elliptic" iterations="35" impratio="5" />
+  <worldbody>
+    <body name="base" pos="0 0 0" quat="1 0 0 0">
+      <inertial mass="0.147" pos="0.0137179 -5.19711e-05 0.0334843" fullinertia="0.000114686 0.000136117 0.000130364 -4.59787e-07 4.97151e-06 9.75275e-08" />
+      <body name="shoulder" pos="0.0388353 0 0.0624" quat="0 0 -1 0">
+        <joint name="shoulder_pan" axis="0 0 1" type="hinge" limited="true" range="-1.91986 1.91986" damping=".12" frictionloss=".016" armature=".003" />
+        <inertial mass="0.100006" pos="-0.0307604 -1.7e-05 -0.0252713" fullinertia="8.3759e-05 8.10403e-05 2.39783e-05 7.55525e-08 -1.16342e-06 1.54663e-07" />
+        <body name="upper_arm" pos="-0.0303992 -0.0182778 -0.0542" quat="1 -1 -1 -1">
+          <joint name="shoulder_lift" axis="0 0 1" type="hinge" limited="true" range="-1.7453293 1.7453293" damping=".12" frictionloss=".016" armature=".003" />
+          <inertial mass="0.103" pos="-0.08984700000000001 -0.008382 0.018409" fullinertia="4.08002e-05 0.000147318 0.000142487 -1.97819e-05 -4.03016e-08 8.97326e-09" />
+          <body name="lower_arm" pos="-0.11257 -0.028 0" quat="1 0 0 1">
+            <joint name="elbow_flex" axis="0 0 1" type="hinge" limited="true" range="-1.69 1.69" damping=".12" frictionloss=".016" armature=".003" />
+            <inertial mass="0.104" pos="-0.09807 0.0032438 0.018283" fullinertia="2.87438e-05 0.000159844 0.00014529 7.41152e-06 1.26409e-06 -4.90188e-08" />
+            <body name="wrist" pos="-0.1349 0.0052 0" quat="1 0 0 -1">
+              <joint name="wrist_flex" axis="0 0 1" type="hinge" limited="true" range="-1.658063 1.658063" damping=".12" frictionloss=".016" armature=".003" />
+              <inertial mass="0.079" pos="-0.00010331199999999999 -0.0386143 0.028115599999999998" fullinertia="3.68263e-05 2.5391e-05 2.1e-05 1.7893e-08 -5.28128e-08 3.6412e-06" />
+              <body name="gripper" pos="5.55112e-17 -0.0611 0.0181" quat="0.0172091 -0.0172091 0.706897 0.706897">
+                <joint name="wrist_roll" axis="0 0 1" type="hinge" limited="true" range="-2.7438473 2.8412063" damping=".12" frictionloss=".016" armature=".003" />
+                <inertial mass="0.25937758218646995" pos="-0.0032400062217591286 0.0337769892269563 -0.04256920184893539" fullinertia="0.0004445009127813555 0.00023637545012993486 0.0005294180639788205 -2.6694642376280748e-05 8.091796579862972e-06 -3.685636128858439e-05" />
+                <body name="jaw_left" pos="0 0 -0.05527" quat="0 0 .7071067812 .7071067812">
+                  <joint name="jaw_left" type="slide" axis="1 0 0" limited="true" range="0 .036" damping="3" armature=".00015" />
+                  <inertial mass="0.02377094316729108" pos="-0.0470804972 -0.03803516027 -0.0009329281698" fullinertia="1.982042393e-05 1.164310081e-05 2.114663587e-05 -1.418478562e-08 5.412463328e-10 2.750444952e-07" />
+                  <geom name="left_rack" type="box" material="violet" group="2" contype="0" conaffinity="0" mass="0" pos="-0.05 -0.048 0" size=".006 .024 .010" />
+                  <geom name="left_housing" type="mesh" mesh="left_housing" material="sensor" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="left_skin" type="mesh" mesh="left_skin" material="sensor" group="2" contype="4" conaffinity="3" mass="0" condim="4" solref=".008 1" solimp=".93 .98 .001" friction=".75 .003 .0002" />
+                  <site name="left_sensor_frame" pos="-0.04725614826 -0.07684 0" xyaxes="0 0 -1 0 1 0" size=".0003" group="4" rgba="0 0 0 0" />
+                </body>
+                <body name="jaw_right" pos="0 0 -0.05527" quat="0 0 .7071067812 .7071067812">
+                  <joint name="jaw_right" type="slide" axis="-1 0 0" limited="true" range="0 .036" damping="3" armature=".00015" />
+                  <inertial mass="0.023652971618471134" pos="0.04702247396 -0.03815599166 0.0009313923276" fullinertia="1.96810932e-05 1.155965505e-05 2.099465829e-05 3.312257632e-08 1.268038262e-09 -2.739277077e-07" />
+                  <geom name="right_rack" type="box" material="violet" group="2" contype="0" conaffinity="0" mass="0" pos="0.05 -0.048 0" size=".006 .024 .010" />
+                  <geom name="right_housing" type="mesh" mesh="right_housing" material="sensor" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="right_skin" type="mesh" mesh="right_skin" material="sensor" group="2" contype="4" conaffinity="3" mass="0" condim="4" solref=".008 1" solimp=".93 .98 .001" friction=".75 .003 .0002" />
+                  <site name="right_sensor_frame" pos="0.04726263278 -0.07684 0" xyaxes="0 0 1 0 1 0" size=".0003" group="4" rgba="0 0 0 0" />
+                </body>
+                <body name="r5_mount" pos="0 0 -0.05527" quat="0 0 .7071067812 .7071067812">
+                  <geom name="camera" type="mesh" mesh="camera" material="camera" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="glass" type="mesh" mesh="glass" material="glass" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="hub" type="mesh" mesh="hub" material="graphite" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="hub_cover" type="mesh" mesh="hub_cover" material="graphite" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="lens1" type="mesh" mesh="lens1" material="lens" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="lens2" type="mesh" mesh="lens2" material="lens" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="lens3" type="mesh" mesh="lens3" material="lens" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="lens4" type="mesh" mesh="lens4" material="lens" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="rail" type="box" material="graphite" group="2" contype="0" conaffinity="0" mass="0" pos="0 -0.004205 0" size="0.05409904 0.0063755 0.02935338" />
+                  <geom name="servo" type="mesh" mesh="servo" material="motor" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="servo_plate" type="box" material="violet" group="2" contype="0" conaffinity="0" mass="0" pos="0.01074822 0.04777 0" size="0.0252 0.006149999 0.01296" />
+                  <geom name="support" type="box" material="graphite" group="2" contype="0" conaffinity="0" mass="0" pos="0.01074822 0.02609145 0.04651883" size="0.0252 0.01162641 0.05064025" />
+                  <geom name="tray" type="mesh" mesh="tray" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="bridge" type="mesh" mesh="bridge" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+                  <geom name="rail_guard" type="box" pos="0 -.004 0" size=".063 .007 .035" contype="4" conaffinity="3" group="3" rgba=".5 .3 .55 .37" mass="0" />
+                  <body name="pinion_visual">
+                    <geom name="pinion" type="cylinder" material="violet" group="2" contype="0" conaffinity="0" mass="0" pos="-3.72529e-09 -0.004765 4.656613e-08" size="0.0044226 0.01013444" />
+                  </body>
+                  <camera name="wrist_depth" pos="-0.0348 -0.003259954265 0.05989369247" xyaxes="-1 -0 0 0 -0.6427876097 0.7660444431" resolution="848 480" sensorsize="0.007066666667 0.004" focalpixel="446.8027731 432.9714613" principalpixel="0 0" />
+                  <camera name="wrist_ir_right" pos="0.015 -0.003259954265 0.05989369247" xyaxes="-1 -0 0 0 -0.6427876097 0.7660444431" resolution="848 480" sensorsize="0.007066666667 0.004" focalpixel="446.8027731 432.9714613" principalpixel="0 0" />
+                  <camera name="wrist_rgb" pos="0.03 -0.003259954265 0.05989369247" xyaxes="-1 -0 0 0 -0.6427876097 0.7660444431" resolution="640 360" sensorsize="0.007111111111 0.004" focalpixel="462.1386899 462.8692321" principalpixel="0 0" />
+                </body>
+              </body>
+              <geom name="wrist_servo" type="mesh" mesh="wrist_servo" material="motor" group="2" contype="0" conaffinity="0" mass="0" />
+              <geom name="wrist_wrist_roll_pitch_so101_v2" type="mesh" mesh="wrist_wrist_roll_pitch_so101_v2" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+              <geom type="box" pos="0 -0.0424 0.0256" quat="1 1 1 -1" size="0.029 0.015 0.018" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+              <geom type="box" pos="0 -0.02 0.0191" quat="1 -1 -1 -1" size="0.027 0.01 0.03" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+            </body>
+            <geom name="lower_arm_motor_holder_so101_wrist_v1" type="mesh" mesh="lower_arm_motor_holder_so101_wrist_v1" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+            <geom name="lower_arm_servo" type="mesh" mesh="lower_arm_servo" material="motor" group="2" contype="0" conaffinity="0" mass="0" />
+            <geom name="lower_arm_under_arm_so101_v1" type="mesh" mesh="lower_arm_under_arm_so101_v1" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+            <geom type="box" pos="-0.05 0 0.0182" quat="0 1 0 0" size="0.07 0.01 0.03" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+            <geom type="box" pos="-0.125 0.005 0.018" quat="0 -1 0 0" size="0.023 0.013 0.018" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+          </body>
+          <geom name="upper_arm_servo" type="mesh" mesh="upper_arm_servo" material="motor" group="2" contype="0" conaffinity="0" mass="0" />
+          <geom name="upper_arm_upper_arm_so101_v1" type="mesh" mesh="upper_arm_upper_arm_so101_v1" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+          <geom type="box" pos="-0.06 0 0.02" quat="0 -1 1 0" size="0.01 0.07 0.03" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+          <geom type="box" pos="-0.12 -0.014 0.0182" quat="0 1 0 0" size="0.01 0.02 0.015" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+        </body>
+        <geom name="shoulder_motor_holder_so101_base_v1" type="mesh" mesh="shoulder_motor_holder_so101_base_v1" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+        <geom name="shoulder_rotation_pitch_so101_v1" type="mesh" mesh="shoulder_rotation_pitch_so101_v1" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+        <geom name="shoulder_servo" type="mesh" mesh="shoulder_servo" material="motor" group="2" contype="0" conaffinity="0" mass="0" />
+        <geom type="box" pos="-0.030399 0.000422 -0.0387" quat="1 1 1 -1" size="0.023 0.015 0.01" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+        <geom type="box" pos="-0.025 0 0.0" quat="1 1 -1 1" size="0.038 0.025 0.02" contype="8" conaffinity="3" group="3" rgba=".18 .3 .5 .33" mass="0" />
+      </body>
+      <geom name="base_base_motor_holder_so101_v1" type="mesh" mesh="base_base_motor_holder_so101_v1" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="base_base_so101_v2" type="mesh" mesh="base_base_so101_v2" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="base_servo" type="mesh" mesh="base_servo" material="motor" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="base_waveshare_mounting_plate_so101_v2" type="mesh" mesh="base_waveshare_mounting_plate_so101_v2" material="violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="rgb_left_wing" type="mesh" mesh="rgb_left_wing" material="camera_mount_black" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="rgb_left_mast_lower" type="mesh" mesh="rgb_left_mast_lower" material="camera_mount_black" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="rgb_left_mast_upper" type="mesh" mesh="rgb_left_mast_upper" material="camera_mount_black" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="rgb_right_wing" type="mesh" mesh="rgb_right_wing" material="camera_mount_black" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="rgb_right_mast_lower" type="mesh" mesh="rgb_right_mast_lower" material="camera_mount_black" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="rgb_right_mast_upper" type="mesh" mesh="rgb_right_mast_upper" material="camera_mount_black" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="left_sa26_dock" type="mesh" mesh="left_sa26_dock" material="camera_mount_violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="left_sa26_plate" type="mesh" mesh="left_sa26_plate" material="camera_mount_violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="left_sa26_pcb" type="mesh" mesh="left_sa26_pcb" material="sensor" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="left_sa26_lens" type="mesh" mesh="left_sa26_lens" material="sensor" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="left_sa26_glass" type="mesh" mesh="left_sa26_glass" material="lens" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="right_sa26_dock" type="mesh" mesh="right_sa26_dock" material="camera_mount_violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="right_sa26_plate" type="mesh" mesh="right_sa26_plate" material="camera_mount_violet" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="right_sa26_pcb" type="mesh" mesh="right_sa26_pcb" material="sensor" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="right_sa26_lens" type="mesh" mesh="right_sa26_lens" material="sensor" group="2" contype="0" conaffinity="0" mass="0" />
+      <geom name="right_sa26_glass" type="mesh" mesh="right_sa26_glass" material="lens" group="2" contype="0" conaffinity="0" mass="0" />
+      <camera name="rgb_scene_left" pos="0.05 0.26 0.23237" xyaxes="-0.9608235912 -0.2771606513 0 0.1261842316 -0.4374386697 0.8903510262" resolution="640 360" sensorsize="0.007111111111 0.004" focalpixel="457.0073622 457.0073622" principalpixel="0 0" />
+      <camera name="rgb_scene_right" pos="0.05 -0.26 0.23237" xyaxes="0.9608235912 -0.2771606513 0 0.1261842316 0.4374386697 0.8903510262" resolution="640 360" sensorsize="0.007111111111 0.004" focalpixel="457.0073622 457.0073622" principalpixel="0 0" />
+      <geom name="rgb_left_rail_26" type="mesh" mesh="rgb_left_rail_26" group="2" contype="0" conaffinity="0" mass="0" material="camera_mount_black" />
+      <geom name="rgb_right_rail_26" type="mesh" mesh="rgb_right_rail_26" group="2" contype="0" conaffinity="0" mass="0" material="camera_mount_black" />
+    </body>
+    <geom name="table" type="plane" size=".36 .29 .02" pos="0.09 0 -0.00763" material="bench" friction=".66 .01 .001" contype="1" conaffinity="14" />
+    <light name="key" pos=".24 -.37 .60" dir="-.18 .28 -.9" directional="true" />
+    <light name="fill" pos="-.25 .4 .30" dir=".44 -.54 -.49" directional="true" castshadow="false" diffuse=".38 .40 .50" />
+    <camera name="overview" pos="0.68 -0.58 0.37" xyaxes="0.7194014606 0.6945945137 -0.0000000000 -0.2034654873 0.2107321118 0.9561348088" fovy="29.5" />
+    <camera name="grasp_detail" pos=".427 -.075 .122" xyaxes="0.299411337 0.954124128 -0.000000000 -0.277015108 0.086929427 0.956925235" fovy="26" />
+    <camera name="side" pos=".176 -.46 .128" xyaxes="1 0 0 0 .171 .985" fovy="34" />
+    <include file="object.xml" />
+  </worldbody>
+  <visual>
+    <global offwidth="1000" offheight="600" azimuth="136" elevation="-25" />
+    <map znear=".002" zfar="8" />
+    <headlight ambient=".49 .49 .49" diffuse=".68 .68 .68" specular=".13 .13 .13" />
+    <rgba haze=".1 .13 .20 1" />
+  </visual>
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1=".13 .14 .17" rgb2=".058 .061 .075" width="128" height="128" />
+    <material name="violet" rgba=".252 .149 .469 1" reflectance="0" specular=".22" shininess=".20" />
+    <material name="motor" rgba=".040 .040 .052 1" reflectance="0" specular=".22" shininess=".20" />
+    <material name="graphite" rgba=".070 .074 .092 1" reflectance="0" specular=".22" shininess=".20" />
+    <material name="sensor" rgba=".055 .064 .076 1" reflectance="0" specular=".22" shininess=".20" />
+    <material name="camera" rgba=".26 .31 .35 1" reflectance="0" specular=".22" shininess=".20" />
+    <material name="glass" rgba=".038 .071 .081 1" reflectance="0" specular=".22" shininess=".20" />
+    <material name="lens" rgba=".071 .21 .25 1" reflectance="0" specular=".22" shininess=".20" />
+    <texture name="table_pattern" type="2d" builtin="checker" width="256" height="256" rgb1=".27 .30 .35" rgb2=".295 .33 .38" mark="edge" markrgb=".27 .30 .35" />
+    <material name="bench" texture="table_pattern" texrepeat="7 7" texuniform="true" reflectance="0" specular=".05" />
+    <mesh name="base_base_motor_holder_so101_v1" file="base_base_motor_holder_so101_v1.stl" />
+    <mesh name="base_base_so101_v2" file="base_base_so101_v2.stl" />
+    <mesh name="base_servo" file="base_servo.stl" />
+    <mesh name="base_waveshare_mounting_plate_so101_v2" file="base_waveshare_mounting_plate_so101_v2.stl" />
+    <mesh name="shoulder_motor_holder_so101_base_v1" file="shoulder_motor_holder_so101_base_v1.stl" />
+    <mesh name="shoulder_rotation_pitch_so101_v1" file="shoulder_rotation_pitch_so101_v1.stl" />
+    <mesh name="shoulder_servo" file="shoulder_servo.stl" />
+    <mesh name="upper_arm_servo" file="upper_arm_servo.stl" />
+    <mesh name="upper_arm_upper_arm_so101_v1" file="upper_arm_upper_arm_so101_v1.stl" />
+    <mesh name="lower_arm_motor_holder_so101_wrist_v1" file="lower_arm_motor_holder_so101_wrist_v1.stl" />
+    <mesh name="lower_arm_servo" file="lower_arm_servo.stl" />
+    <mesh name="lower_arm_under_arm_so101_v1" file="lower_arm_under_arm_so101_v1.stl" />
+    <mesh name="wrist_servo" file="wrist_servo.stl" />
+    <mesh name="wrist_wrist_roll_pitch_so101_v2" file="wrist_wrist_roll_pitch_so101_v2.stl" />
+    <mesh name="rgb_left_wing" file="rgb_left_wing.stl" />
+    <mesh name="rgb_left_mast_lower" file="rgb_left_mast_lower.stl" />
+    <mesh name="rgb_left_mast_upper" file="rgb_left_mast_upper.stl" />
+    <mesh name="rgb_right_wing" file="rgb_right_wing.stl" />
+    <mesh name="rgb_right_mast_lower" file="rgb_right_mast_lower.stl" />
+    <mesh name="rgb_right_mast_upper" file="rgb_right_mast_upper.stl" />
+    <mesh name="camera" file="camera.stl" />
+    <mesh name="glass" file="glass.stl" />
+    <mesh name="hub" file="hub.stl" />
+    <mesh name="hub_cover" file="hub_cover.stl" />
+    <mesh name="lens1" file="lens1.stl" />
+    <mesh name="lens2" file="lens2.stl" />
+    <mesh name="lens3" file="lens3.stl" />
+    <mesh name="lens4" file="lens4.stl" />
+    <mesh name="servo" file="servo.stl" />
+    <mesh name="tray" file="tray.stl" />
+    <mesh name="bridge" file="bridge.stl" />
+    <mesh name="left_housing" file="left_housing.stl" />
+    <mesh name="left_skin" file="left_skin.stl" />
+    <mesh name="right_housing" file="right_housing.stl" />
+    <mesh name="right_skin" file="right_skin.stl" />
+    <mesh name="left_sa26_dock" file="left_sa26_dock.stl" />
+    <mesh name="left_sa26_plate" file="left_sa26_plate.stl" />
+    <mesh name="left_sa26_pcb" file="left_sa26_pcb.stl" />
+    <mesh name="left_sa26_lens" file="left_sa26_lens.stl" />
+    <mesh name="left_sa26_glass" file="left_sa26_glass.stl" />
+    <mesh name="right_sa26_dock" file="right_sa26_dock.stl" />
+    <mesh name="right_sa26_plate" file="right_sa26_plate.stl" />
+    <mesh name="right_sa26_pcb" file="right_sa26_pcb.stl" />
+    <mesh name="right_sa26_lens" file="right_sa26_lens.stl" />
+    <mesh name="right_sa26_glass" file="right_sa26_glass.stl" />
+    <material name="camera_mount_violet" rgba="0.31 0.17 0.57 1" reflectance="0" specular=".20" shininess=".18" />
+    <material name="camera_mount_black" rgba="0.065 0.06 0.075 1" reflectance="0" specular=".15" shininess=".12" />
+    <mesh name="rgb_left_rail_26" file="rgb_left_rail_26.stl" />
+    <mesh name="rgb_right_rail_26" file="rgb_right_rail_26.stl" />
+  </asset>
+  <contact>
+    <pair name="left_tactile_pair" geom1="left_skin" geom2="object_surface" condim="4" friction=".8 .8 .004 .0002 .0002" solref=".008 1" solimp=".93 .98 .001 .5 2" />
+    <pair name="right_tactile_pair" geom1="right_skin" geom2="object_surface" condim="4" friction=".8 .8 .004 .0002 .0002" solref=".008 1" solimp=".93 .98 .001 .5 2" />
+  </contact>
+  <actuator>
+    <position name="shoulder_pan" joint="shoulder_pan" kp="170" kv="5.5" forcelimited="true" forcerange="-1.35 1.35" ctrllimited="true" ctrlrange="-1.91986 1.91986" />
+    <position name="shoulder_lift" joint="shoulder_lift" kp="170" kv="5.5" forcelimited="true" forcerange="-1.35 1.35" ctrllimited="true" ctrlrange="-1.7453293 1.7453293" />
+    <position name="elbow_flex" joint="elbow_flex" kp="170" kv="5.5" forcelimited="true" forcerange="-1.35 1.35" ctrllimited="true" ctrlrange="-1.69 1.69" />
+    <position name="wrist_flex" joint="wrist_flex" kp="170" kv="5.5" forcelimited="true" forcerange="-1.35 1.35" ctrllimited="true" ctrlrange="-1.658063 1.658063" />
+    <position name="wrist_roll" joint="wrist_roll" kp="170" kv="5.5" forcelimited="true" forcerange="-1.35 1.35" ctrllimited="true" ctrlrange="-2.7438473 2.8412063" />
+    <position name="jaw_left" joint="jaw_left" kp="950" kv="5.5" forcelimited="true" forcerange="-8 8" ctrllimited="true" ctrlrange="0 .036" />
+    <position name="jaw_right" joint="jaw_right" kp="950" kv="5.5" forcelimited="true" forcerange="-8 8" ctrllimited="true" ctrlrange="0 .036" />
+  </actuator>
+  <keyframe>
+    <key name="home" qpos="-0.1221730476 -0.9948376736 0.06981317008 1.535889742 -1.521927108 0 0 0.196115 -0.000178 0.0326 1 0 0 0" ctrl="-0.1221730476 -0.9948376736 0.06981317008 1.535889742 -1.521927108 0 0" />
+  </keyframe>
+</mujoco>

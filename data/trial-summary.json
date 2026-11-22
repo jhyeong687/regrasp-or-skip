@@ -1,0 +1,26 @@
+{
+  "normal": {
+    "time_s": 8.9,
+    "lift_mm": 11.6,
+    "mean_Fz_N": 5.291,
+    "mean_abs_Fy_N": 0.245
+  },
+  "round": {
+    "time_s": 8.9,
+    "lift_mm": 11.47,
+    "mean_Fz_N": 5.148,
+    "mean_abs_Fy_N": 0.245
+  },
+  "slippery": {
+    "time_s": 8.9,
+    "lift_mm": 0.0,
+    "mean_Fz_N": 5.291,
+    "mean_abs_Fy_N": 0.095
+  },
+  "heavy_matched": {
+    "time_s": 8.9,
+    "lift_mm": 0.93,
+    "mean_Fz_N": 5.389,
+    "mean_abs_Fy_N": 2.699
+  }
+}

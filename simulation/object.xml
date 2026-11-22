@@ -1,0 +1,7 @@
+<mujocoinclude>
+    <body name="test_object" pos="0.196115 -0.000178 0.0326">
+      <freejoint name="object_free" />
+      <geom name="object_surface" type="box" size="0.016 0.017 0.04023" mass=".05" rgba=".95 .51 .14 1" contype="2" conaffinity="13" condim="4" friction=".72 .006 .0002" />
+      <geom name="object_marker" type="box" pos="0.008 0 0.04038" size=".002 .013 .0002" rgba=".97 .95 .83 1" contype="0" conaffinity="0" mass="0" />
+    </body>
+</mujocoinclude>

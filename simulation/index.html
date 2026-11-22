@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SO-ARM101 · PaXini 집기 실험</title>
+<style>
+:root{color-scheme:dark;--ink:#f3f1f8;--muted:#b3aec2;--bg:#101016;--panel:#1b1a24;--edge:#353142;--accent:#c1a9ff;--shear:#76f3e9;--normal:#ffbd71}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif}
+main{max-width:1300px;margin:auto;padding:clamp(12px,2.2vw,28px)}
+h1,h2,h3,p,figure{margin:0}h1{font-size:clamp(21px,3vw,31px);letter-spacing:-.045em}h2{font-size:15px}h3{font-size:12px}
+header,.section-head,.pad-head,.toolbar,.timeline,.legend,.camera-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+header,.section-head,.pad-head,.camera-tools{justify-content:space-between}
+header{margin-bottom:12px}.status,.meta,.fine{color:var(--muted);font-size:11px}
+.status{padding:4px 8px;border:1px solid var(--edge);border-radius:5px}
+button,select{border:1px solid var(--edge);border-radius:6px;background:#252332;color:var(--ink);padding:6px 9px;font:inherit;font-size:12px;font-weight:600}
+button:hover,select:hover{border-color:var(--accent)}button{cursor:pointer}button:disabled,select:disabled{opacity:.65;cursor:wait}
+button:focus-visible,select:focus-visible,summary:focus-visible,.taxel:focus-visible{outline:2px solid var(--shear);outline-offset:2px}
+.primary{background:var(--accent);color:#171125;border-color:transparent}
+.toolbar{margin-bottom:7px}.timeline{margin-bottom:12px;min-width:0}.timeline button{font-size:11px;padding:4px 7px}
+progress{appearance:none;flex:1;min-width:50px;height:5px;border:0;border-radius:7px;background:var(--edge)}
+progress::-webkit-progress-bar{border-radius:7px;background:var(--edge)}progress::-webkit-progress-value{border-radius:7px;background:var(--accent)}
+#clock{font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:10px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:9px;overflow:hidden}
+.section-head{padding:8px 10px;border-bottom:1px solid var(--edge)}
+.section-head button{font-size:11px;padding:4px 6px}
+#heroImg{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#111115}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--edge)}
+.metric{padding:8px 9px}.metric+.metric{border-left:1px solid var(--edge)}
+.metric b{display:block;font-size:clamp(13px,2vw,19px);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.pad-area{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:8px;gap:7px}
+.pad{min-width:0;border:1px solid var(--edge);background:#15151f;border-radius:6px}
+.pad-head{gap:2px 5px;padding:6px 7px 0}
+.pad-head output{font-size:14px;font-weight:750;color:var(--normal);white-space:nowrap}
+.pad svg{display:block;width:100%;height:clamp(120px,18vw,170px);touch-action:manipulation}
+.pad-frame{fill:#1c1b29;stroke:#39364a;stroke-width:.2}
+.dot{fill:#545064}.taxel{cursor:pointer}.taxel.selected .dot{stroke:#f9f6ff;stroke-width:.4}
+.axis{fill:#b2adc3;font:1.47px system-ui,sans-serif}
+.vector{stroke:var(--shear);stroke-width:.47;stroke-linecap:round;pointer-events:none}
+.vector-tip{fill:var(--shear);pointer-events:none}.hit{fill:transparent}
+.values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));text-align:center;border-top:1px solid var(--edge)}
+.values div{padding:3px 0 5px}.values span{display:block;color:var(--muted);font-size:9px}.values b{font-size:11px;font-variant-numeric:tabular-nums}
+.legend{margin:0 9px 7px;column-gap:11px;line-height:1.25}.legend .normal{color:var(--normal)}.legend .shear{color:var(--shear)}
+.pad-tools{display:flex;gap:4px;flex-wrap:wrap}.pad-tools select{font-size:11px;padding:4px 5px}
+.pad-stats{border-top:1px solid var(--edge);padding:4px 5px;color:var(--muted);font-size:10px;text-align:center}
+.pad-details{padding:7px 9px}
+.cop{fill:none;stroke:#fff;stroke-width:.28;pointer-events:none}
+#taxelDetail:not([hidden]){display:block;padding:5px 9px;background:#221f30;color:var(--ink);font-size:11px;font-variant-numeric:tabular-nums}
+.cameras{margin-top:10px}.camera-tools{padding-bottom:6px}
+.feeds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:7px}
+.feed{display:block;width:100%;padding:0;overflow:hidden;text-align:left;background:var(--panel)}
+.feed[aria-pressed=true]{border-color:var(--accent)}.feed img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#111115}.feed span{display:block;padding:4px 6px}
+details{margin-top:9px}summary{cursor:pointer;font-size:12px;font-weight:650;color:var(--accent)}
+table{width:100%;font-size:11px;border-collapse:collapse;margin-top:5px;font-variant-numeric:tabular-nums}th,td{text-align:right;padding:5px;border-bottom:1px solid var(--edge)}th:first-child,td:first-child{text-align:left}
+tr[data-case]{cursor:pointer}tr[data-case]:hover{background:var(--panel)}
+.fine{margin-top:7px}.error{color:#ff9c9c}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.pad svg{height:135px}.legend{margin-bottom:6px}}
+@media(max-width:410px){.feeds{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:6px}}
+</style>
+</head>
+<body><main>
+<header>
+  <h1>SO-ARM101 <span style="color:var(--accent)">PaXini 집기 실험</span></h1>
+  <span class="status">MuJoCo · 가상 센서</span>
+</header>
+<div class="toolbar">
+  <select id="scenario" aria-label="물체 조건">
+    <option value="normal">사각 블록 · 50 g</option>
+    <option value="round">원통 · 50 g</option>
+    <option value="slippery">미끄러운 블록 · 50 g</option>
+    <option value="heavy_matched">무거운 블록 · 600 g</option>
+  </select>
+  <button id="play" class="primary">동작 재생</button>
+  <button id="compare">4개 비교 재생</button>
+  <span id="phase" class="meta" role="status">불러오는 중</span>
+</div>
+<div class="timeline" aria-label="장면 이동">
+  <button data-time="2.7">깊이 관측</button>
+  <button data-time="7.5">센서 접촉</button>
+  <button data-time="8.9">들기</button>
+  <button data-time="12.9">놓기</button>
+  <progress id="progress" max="16.4" value="0" aria-label="시뮬레이션 진행"></progress>
+  <span id="clock">0.00 / 16.40 s</span>
+</div>
+<div class="grid">
+  <figure class="card">
+    <figcaption class="section-head">
+      <h2 id="heroTitle">팔 전체</h2><button id="focus">집기 확대</button>
+    </figcaption>
+    <img id="heroImg" alt="SO-ARM101 팔 전체">
+    <div class="metrics">
+      <div class="metric"><b id="lift">—</b><span class="meta">물체 상승</span></div>
+      <div class="metric"><b id="gap">—</b><span class="meta">양 턱 간격</span></div>
+      <div class="metric"><b id="load">—</b><span class="meta">팔꿈치 토크</span></div>
+    </div>
+  </figure>
+  <section class="card" aria-labelledby="tactileTitle">
+    <div class="section-head">
+      <h2 id="tactileTitle">양쪽 PaXini <span class="meta">· 각 77점</span></h2>
+      <div class="pad-tools">
+        <select id="mapMode" aria-label="촉각 분포 표시">
+          <option value="patch">접촉면 추정</option>
+          <option value="raw">접촉점 기반</option>
+        </select>
+        <button id="exportVector" disabled>센서 JSON</button>
+      </div>
+    </div>
+    <div class="pad-area" id="pads"></div>
+    <p class="legend"><span class="normal">● 눌림 Fz</span><span class="shear">↗ 표면 힘 Fx·Fy</span><span class="meta">⊕ 압력 중심 · 화살표 확대</span></p>
+    <output id="taxelDetail" hidden></output>
+  </section>
+</div>
+<section class="cameras" aria-labelledby="cameraTitle">
+  <div class="camera-tools">
+    <h2 id="cameraTitle">카메라 피드</h2>
+    <span class="meta">좌우 RGB · 26 cm</span>
+  </div>
+  <div id="feeds" class="feeds"></div>
+</section>
+<details id="results" open>
+  <summary>들기 장면 비교 · 8.90 s</summary>
+  <table>
+    <thead><tr><th>물체</th><th>상승 mm</th><th>왼 Fz N</th><th>오른 Fz N</th><th>평균 |Fy| N</th></tr></thead>
+    <tbody id="comparison"></tbody>
+  </table>
+</details>
+<details class="card pad-details"><summary>촉각 신호 상세</summary>
+  <table>
+    <thead><tr><th>항목</th><th>왼쪽</th><th>오른쪽</th></tr></thead>
+    <tbody id="features"></tbody>
+  </table>
+</details>
+<p class="fine">패드 정면 기준 · +X → · +Y ↑ · Fz 양수 = 눌림 · 손목 깊이 195 mm 미만은 마스킹</p>
+<p id="error" class="fine error" hidden></p>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const conditions = {normal:"사각 블록 · 50 g", round:"원통 · 50 g",
+  slippery:"미끄러운 블록 · 50 g", heavy_matched:"무거운 블록 · 600 g"};
+const views = {overview:"팔 전체", grasp:"집기 확대", scene_left:"왼쪽 RGB",
+  scene_right:"오른쪽 RGB", rgb:"손목 RGB", depth:"손목 깊이"};
+const stages = {Inspect:"대기", "Look right":"좌우 탐색", "Depth capture":"깊이 관측",
+  Approach:"접근", "Close and contact":"센서 접촉", "Lift 12 mm":"들기", "Short transfer":"옮기기",
+  "Set down":"내려놓기", Open:"놓기", Retract:"복귀"};
+const ns = "http://www.w3.org/2000/svg";
+const videos = {};
+const pads = [];
+const measured = new Map();
+let last, requested, selection, activeView = "overview", compareNext = -1, runId = 0;
+let running = false;
+function makeSvg(name, attrs, parent) {
+  const element = document.createElementNS(ns, name);
+  for (const [key, value] of Object.entries(attrs)) element.setAttribute(key, value);
+  parent.appendChild(element);
+  return element;
+}
+function makePad(points, index, side) {
+  const panel = document.createElement("div");
+  panel.className = "pad";
+  panel.innerHTML = '<div class="pad-head"><h3></h3><output></output></div><div class="values"></div><p class="pad-stats"></p>';
+  panel.querySelector("h3").textContent = side + " 패드";
+  $("pads").appendChild(panel);
+  const values = panel.querySelector(".values");
+  const axes = ["Fx", "Fy", "Fz"].map(axis => {
+    const cell = document.createElement("div");
+    cell.innerHTML = '<span>'+axis+'</span><b>—</b>';
+    values.appendChild(cell);
+    return cell.querySelector("b");
+  });
+  const map = makeSvg("svg", {viewBox:"-19 -34 38 41", "aria-label":side+" PaXini 77점 힘 분포"}, panel);
+  panel.insertBefore(map, values);
+  makeSvg("rect", {x:-15.5,y:-31.25,width:31,height:34.6,rx:3,class:"pad-frame"}, map);
+  const makeAxis = (x,y,caption) => { makeSvg("text",{x,y,class:"axis"},map).textContent = caption; };
+  makeAxis(-14.5,-28.8,"↑ +Y");
+  makeAxis(9.3,5.6,"→ +X");
+  const vectors = makeSvg("g",{"aria-hidden":"true"},map);
+  const taxels = points.map((point, slot) => {
+    const x = point.x_mm, y = -point.y_mm;
+    const group = makeSvg("g", {class:"taxel",role:"button",tabindex:slot===0?0:-1,
+      "aria-label":side+" 패드 "+point.index+"번"}, map);
+    makeSvg("circle",{cx:x,cy:y,r:1.8,class:"hit"},group);
+    const dot = makeSvg("circle",{cx:x,cy:y,r:.54,class:"dot"},group);
+    const line = makeSvg("line",{x1:x,y1:y,x2:x,y2:y,class:"vector",visibility:"hidden"},vectors);
+    const tip = makeSvg("polygon",{class:"vector-tip",visibility:"hidden"},vectors);
+    group.addEventListener("click", () => {
+      if (selection) pads[selection.index].taxels[selection.slot].group.classList.remove("selected");
+      selection = {index,slot};
+      group.classList.add("selected");
+      showPoint();
+    });
+    group.addEventListener("keydown", event => {
+      if (event.key==="Enter" || event.key===" ") {
+        event.preventDefault();
+        group.dispatchEvent(new Event("click"));
+      } else if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)) {
+        event.preventDefault();
+        const step = ["ArrowRight","ArrowDown"].includes(event.key)?1:-1;
+        const next = pads[index].taxels[(slot+step+points.length)%points.length].group;
+        group.setAttribute("tabindex",-1);
+        next.setAttribute("tabindex",0);
+        next.focus();
+      }
+    });
+    return {group,dot,line,tip,x,y,id:point.index};
+  });
+  map.appendChild(vectors);
+  const cop = makeSvg("g",{class:"cop",visibility:"hidden","aria-hidden":"true"},map);
+  makeSvg("circle",{r:1},cop);
+  makeSvg("path",{d:"M -1.5 0 H 1.5 M 0 -1.5 V 1.5"},cop);
+  return {side,axes,taxels,cop,total:panel.querySelector("output"),stats:panel.querySelector(".pad-stats")};
+}
+function visibleForces(data) {
+  return $("mapMode").value==="patch"?data.estimated_contact_patch_N:data.paxini_force_N;
+}
+function showPoint() {
+  if (!selection || !last) return;
+  const {index,slot}=selection;
+  const f=visibleForces(last)[index][slot];
+  const pad=pads[index];
+  $("taxelDetail").hidden=false;
+  $("taxelDetail").textContent = pad.side+" #"+pad.taxels[slot].id+" · "+
+    ["Fx","Fy","Fz"].map((axis,i)=>axis+" "+f[i].toFixed(3)).join(" · ")+" N";
+}
+function updatePads(data) {
+  const plotted=visibleForces(data);
+  pads.forEach((pad,i) => {
+    const total = data.paxini_resultant_N[i];
+    const force = plotted[i];
+    const strengths = force.map(f=>Math.max(f[2],0));
+    const weight = strengths.reduce((a,b)=>a+b,0);
+    if (weight>=.15) {
+      const x=pad.taxels.reduce((sum,point,j)=>sum+point.x*strengths[j],0)/weight;
+      const y=pad.taxels.reduce((sum,point,j)=>sum+point.y*strengths[j],0)/weight;
+      pad.cop.setAttribute("transform",`translate(${x} ${y})`);
+    }
+    pad.cop.setAttribute("visibility",weight>=.15?"visible":"hidden");
+    pad.stats.textContent = "반응 "+strengths.filter(f=>f>=.02).length+"/77점";
+    pad.total.textContent = Math.max(0,total[2]).toFixed(2)+" N";
+    pad.axes.forEach((node,k)=>node.textContent = total[k].toFixed(2));
+    pad.taxels.forEach(({x,y,dot,line,tip},j) => {
+      const [fx,fy,fz]=force[j];
+      const normal=Math.max(0,fz);
+      const intensity=Math.sqrt(Math.min(1,normal/1.8));
+      dot.setAttribute("r",.54+1.14*intensity);
+      if (normal > .004) dot.setAttribute("fill",`hsl(${276-240*intensity} 95% ${49+29*intensity}%)`);
+      else dot.removeAttribute("fill");
+      dot.style.fill = normal > .004 ? dot.getAttribute("fill") : "";
+      const shear=Math.hypot(fx,fy);
+      const visible=shear>.007;
+      line.setAttribute("visibility",visible?"visible":"hidden");
+      tip.setAttribute("visibility",visible?"visible":"hidden");
+      if (!visible) return;
+      const dx=fx/shear, dy=-fy/shear, length=Math.min(7,1.4+23*shear);
+      const endX=x+dx*length, endY=y+dy*length;
+      const backX=endX-.92*dx, backY=endY-.92*dy;
+      line.setAttribute("x2",backX); line.setAttribute("y2",backY);
+      tip.setAttribute("points",`${endX},${endY} ${backX-.43*dy},${backY+.43*dx} ${backX+.43*dy},${backY-.43*dx}`);
+    });
+  });
+  showPoint();
+  updateFeatures(data);
+}
+function updateFeatures(data) {
+  const pads=data.tactile_features.pads;
+  const number=(n,digits)=>n==null?"—":n.toFixed(digits);
+  const values=(arr,digits)=>arr==null?"—":arr.map(n=>n.toFixed(digits)).join(", ");
+  const fields=[
+    ["접촉 감지", pads.map(p=>p.contact?"닿음":"—")],
+    ["접선 힘 (N)", pads.map(p=>number(p.shear_N,2))],
+    ["접선/법선 비율", pads.map(p=>number(p.shear_normal_ratio,3))],
+    ["압력 중심 X·Y (mm)", pads.map(p=>values(p.cop_xy_mm,1))],
+    ["100 ms 압력 중심 이동 (mm)", pads.map(p=>number(p.cop_change_mm,2))],
+    ["100 ms Fx·Fy·Fz 변화 (N)", pads.map(p=>values(p.force_change_N,2))],
+    ["합토크 Tx·Ty·Tz (mN·m)", data.paxini_torque_Nm.map(t=>values(t.map(n=>n*1000),1))]
+  ];
+  const table=$("features");
+  if (!table.rows.length) {
+    for (const [label] of fields) {
+      const row=table.insertRow();
+      for (const value of [label,"",""]) row.insertCell().textContent=value;
+    }
+  }
+  fields.forEach(([,pair],i)=>pair.forEach((value,side)=>table.rows[i].cells[side+1].textContent=value));
+}
+function showView(name) {
+  activeView = name;
+  $("heroTitle").textContent=views[name];
+  $("focus").textContent=name==="overview"?"집기 확대":"팔 전체";
+  $("heroImg").alt=views[name]+" 시뮬레이션";
+  if (videos[name]) $("heroImg").src=videos[name];
+  document.querySelectorAll(".feed").forEach(button=>button.setAttribute("aria-pressed",button.dataset.view===name));
+}
+function showFrame(data) {
+  last=data;
+  $("exportVector").disabled=false;
+  Object.assign(videos,data.images);
+  if (data.images[activeView]) $("heroImg").src=data.images[activeView];
+  for (const [name,img] of Object.entries(data.images)) {
+    if ($(name)) $(name).src=img;
+  }
+  $("progress").value=data.time_s;
+  $("phase").textContent=stages[data.phase]||data.phase;
+  $("clock").textContent=data.time_s.toFixed(2)+" / 16.40 s";
+  $("lift").textContent=data.lift_mm.toFixed(1)+" mm";
+  $("gap").textContent=data.gap_mm.toFixed(1)+" mm";
+  $("load").textContent=Math.abs(data.motor_Nm[2]).toFixed(2)+" N·m";
+  updatePads(data);
+  if (Math.abs(data.time_s-8.9)<.001) {
+    measured.set(data.scenario,data);
+    renderComparison();
+  }
+}
+function renderComparison() {
+  const tbody=$("comparison");
+  tbody.replaceChildren();
+  for (const [name,label] of Object.entries(conditions)) {
+    const row=tbody.insertRow();
+    const data=measured.get(name);
+    const force=data?.paxini_resultant_N;
+    const fields=data?[data.lift_mm.toFixed(2),force[0][2].toFixed(2),force[1][2].toFixed(2),
+      ((Math.abs(force[0][1])+Math.abs(force[1][1]))/2).toFixed(2)]:["—","—","—","—"];
+    row.insertCell().textContent=label;
+    fields.forEach(value=>row.insertCell().textContent=value);
+    if (data) {
+      row.dataset.case=name;
+      row.onclick=()=>{ $("scenario").value=name; jump(8.9,name); };
+    }
+  }
+}
+function error(message) {
+  $("error").textContent=message;
+  $("error").hidden=!message;
+}
+async function frame(parameters) {
+  while (requested) await requested.catch(()=>{});
+  const query=new URLSearchParams(parameters);
+  const task=(async()=>{
+    const response=await fetch("/frame?"+query);
+    if (!response.ok) throw Error("시뮬레이터 응답을 읽지 못했어요.");
+    const data=await response.json();
+    showFrame(data);
+    return data;
+  })();
+  requested=task;
+  try { return await task; }
+  finally { if (requested===task) requested=null; }
+}
+function stop() {
+  runId+=1;
+  running=false;
+  compareNext=-1;
+  $("play").textContent="동작 재생";
+  $("compare").textContent="4개 비교 재생";
+}
+async function report(action) {
+  error("");
+  try { await action(); }
+  catch (failure) { stop(); error(failure.message); }
+}
+async function jump(time, reset) {
+  stop();
+  await report(()=>frame({at:time,...(reset?{reset}:{})}));
+}
+const sleep = ms => new Promise(resolve=>setTimeout(resolve,ms));
+async function playTo(end,id) {
+  let count=0;
+  while (id===runId && last.time_s<end-.001) {
+    const start=performance.now();
+    const dt=Math.min(.18,end-last.time_s);
+    await frame({dt,cameras:(++count%3===0 || dt<.18)?1:0});
+    if (id!==runId) return;
+    await sleep(Math.max(0,180-(performance.now()-start)));
+  }
+}
+$("play").onclick=()=>report(async()=>{
+  if (running && compareNext<0) { stop(); return; }
+  stop();
+  const id=runId;
+  running=true;
+  $("play").textContent="일시정지";
+  await frame({at:6.2,reset:$("scenario").value});
+  await playTo(16.4,id);
+  if (id===runId) stop();
+});
+$("compare").onclick=()=>report(async()=>{
+  const alreadyComparing=compareNext>=0;
+  stop();
+  if (alreadyComparing) return;
+  const id=runId;
+  running=true;
+  showView("grasp");
+  $("compare").textContent="비교 정지";
+  const names=Object.keys(conditions);
+  for (const [i,name] of names.entries()) {
+    if (id!==runId) return;
+    compareNext=i;
+    $("scenario").value=name;
+    await frame({at:6.7,reset:name});
+    await playTo(8.9,id);
+    if (id!==runId) return;
+    $("phase").textContent="비교 "+(i+1)+"/"+names.length+" · 들기";
+    await sleep(1900);
+  }
+  if (id===runId) {
+    $("scenario").value="normal";
+    await frame({at:8.9,reset:"normal"});
+    showView("overview");
+    stop();
+    $("phase").textContent="4개 비교 완료 · 들기";
+  }
+});
+$("focus").onclick=()=>showView(activeView==="overview"?"grasp":"overview");
+$("mapMode").onchange=()=>{ if (last) updatePads(last); };
+$("exportVector").onclick=()=>{
+  const {scenario,time_s,phase,paxini_force_N,paxini_resultant_N,paxini_torque_Nm,
+    tactile_average_window_s,estimated_contact_patch_N,tactile_features,pad_axes_world}=last;
+  const snapshot={source:"MuJoCo simulated contact",model:"PX6AX-GEN3-CP-M3025-Core",
+    sides:["left","right"],axis_order:["Fx","Fy","Fz"],normal_positive:"compression",
+    taxel_indices:pads[0].taxels.map(point=>point.id),
+    scenario,time_s,phase,paxini_force_N,paxini_resultant_N,paxini_torque_Nm,
+    tactile_average_window_s,estimated_contact_patch_N,tactile_features,pad_axes_world};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(snapshot,null,2)], {type:"application/json"}));
+  const anchor=document.createElement("a");
+  anchor.href=url;
+  anchor.download=`paxini_${scenario}_${time_s.toFixed(2)}s.json`;
+  anchor.click();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+};
+$("scenario").onchange=()=>jump(8.9,$("scenario").value);
+document.querySelectorAll("[data-time]").forEach(button=>button.onclick=()=>jump(button.dataset.time));
+for (const name of ["scene_left","scene_right","rgb","depth"]) {
+  const button=document.createElement("button");
+  button.className="feed";
+  button.dataset.view=name;
+  button.setAttribute("aria-pressed","false");
+  button.innerHTML='<img alt=""><span></span>';
+  button.querySelector("img").id=name;
+  button.querySelector("span").textContent=views[name];
+  button.onclick=()=>showView(activeView===name?"overview":name);
+  $("feeds").appendChild(button);
+}
+renderComparison();
+report(async()=>{
+  const response=await fetch("/taxels");
+  if (!response.ok) throw Error("M3025 위치 배열을 불러오지 못했어요.");
+  const points=await response.json();
+  pads.push(makePad(points,0,"왼쪽"),makePad(points,1,"오른쪽"));
+  await frame({at:8.9,reset:"normal"});
+});
+</script>
+</body>
+</html>

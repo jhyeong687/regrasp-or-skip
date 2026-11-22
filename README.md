@@ -2,29 +2,11 @@
 
 **A PaXini-equipped SO-ARM101 testbed for deciding when to regrasp or skip**
 
-A failed lift can come from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds the gripper, camera rig, and measurement pipeline needed to study those cases under the same motion.
+[![PaXini Grasp Trials dashboard replaying four MuJoCo picks with live tactile maps and camera views](media/mujoco-dashboard-replay.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-replay.mp4)
 
-**[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-tactile-recovery-kit.zip)** · [Get started](docs/quickstart.md) · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
+[Watch the dashboard replay](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
 
-![Fusion 360 assembly of the SO-ARM101 with PaXini parallel jaws, wrist D435i and two RGB mounts](media/fusion-r7-system.jpg)
-
-## How the rig comes together
-
-[![Fusion 360 assembly of the parallel jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-fusion-assembly.mp4)
-
-[Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-fusion-assembly.mp4) · [R4 design film](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-gripper-r4.mp4)
-
-### Build details
-
-![Close Fusion views of the R4 jaws and the violet SA26MCM camera mount](media/fusion-hardware-details.jpg)
-
-| Design iteration | Work completed | Verification |
-| --- | --- | --- |
-| **R4 tactile jaws** | Fit two M3025 pads to a rod-free rack-and-pinion gripper. Join the two forward screw supports to form a rectangular cable window. | In CAD, the bridge tip is 0.8 mm behind the sensor face. The checked sensor-face gap is 10.4–82.4 mm. |
-| **R5 wrist and cable routing** | Keep the D435i on the wrist, lighten its bridge and compare wrist-side and forearm PaXini box routes. | Bridge volume 14.73 → 8.62 cm³. CAD mass estimates for the two tool configurations were about 307 g and 281 g. Actual masses and motor limits require a bench check. |
-| **R7 fixed RGB mounts** | Add black rails and split masts with violet mounts for the left and right SA26MCM cameras. | Each lens is 260 mm off center, 240 mm above the table and pitched down 27.1°. The longest new print is 143 mm. No robot–mount intersections appeared in 51 sampled CAD poses. |
-
-[26 cm STLs](cad/rgb-26cm/STL) · [Color STEP assembly](cad/rgb-26cm/mount-assembly.step) · [Wrist and fit-check parts](cad/wrist-and-fit) · [Assembly order and fasteners](cad/README.md) · [CAD checks](data/cad-clearance.json)
+A weak lift can follow from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds a gripper and sensor rig to compare those cases under the same motion.
 
 ## Four grasps on one time axis
 
@@ -34,30 +16,30 @@ At **5.29 N per jaw**, the standard block lifted **11.60 mm** and the slippery b
   <tr>
     <td width="50%" align="center">
       <strong>Standard block</strong><br>
-      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-normal.mp4"><img src="./media/grasp-normal.gif" alt="Standard block lift and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/grasp-normal.mp4"><img src="./media/grasp-normal.gif" alt="Standard block lift and left and right PaXini force maps"></a><br>
       <sub>50 g · friction 0.80 · rise 11.60 mm at 8.90 s</sub>
     </td>
     <td width="50%" align="center">
       <strong>Cylinder</strong><br>
-      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-round.mp4"><img src="./media/grasp-round.gif" alt="Cylinder lift and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/grasp-round.mp4"><img src="./media/grasp-round.gif" alt="Cylinder lift and left and right PaXini force maps"></a><br>
       <sub>50 g · friction 0.80 · rise 11.47 mm at 8.90 s</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
       <strong>Slippery block</strong><br>
-      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-slippery.mp4"><img src="./media/grasp-slippery.gif" alt="Slippery block lift attempt and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/grasp-slippery.mp4"><img src="./media/grasp-slippery.gif" alt="Slippery block lift attempt and left and right PaXini force maps"></a><br>
       <sub>50 g · friction 0.018 · rise 0.00 mm at 8.90 s</sub>
     </td>
     <td width="50%" align="center">
       <strong>Heavy block</strong><br>
-      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/grasp-heavy_matched.mp4"><img src="./media/grasp-heavy_matched.gif" alt="Heavy block lift attempt and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/grasp-heavy_matched.mp4"><img src="./media/grasp-heavy_matched.gif" alt="Heavy block lift attempt and left and right PaXini force maps"></a><br>
       <sub>600 g · friction 0.80 · rise 0.93 mm at 8.90 s</sub>
     </td>
   </tr>
 </table>
 
-Each clip uses the same simulation timestamps. The dot colors show compression and arrows show in-plane force on the estimated contact patch. Use the [synchronized MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-four-grasps.mp4) for frame-locked playback. The lift command runs from 7.50 to 8.90 s.
+Each clip uses the same simulation timestamps. The dot colors show compression and arrows show in-plane force on the estimated contact patch. Use the [synchronized MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-four-grasps.mp4) for frame-locked playback. The lift command runs from 7.50 to 8.90 s.
 
 | Condition | Mass | Pad friction | Object rise | Mean Fz per jaw | Mean abs. Fy per jaw |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -72,16 +54,29 @@ The heavy block applies more tangential force at the same nominal friction as th
 
 [8.90 s comparison image](media/grasp-comparison.jpg) · [1,644 time samples in CSV](data/trial-traces.csv) · [40 tactile snapshots in JSON](data/tactile-pilot.json) · [Data schema](data/README.md)
 
+## How the rig comes together
+
+[![Fusion 360 assembly of the parallel jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-fusion-assembly.mp4)
+
+[Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-fusion-assembly.mp4) · [R4 design film](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-gripper-r4.mp4)
+
+### Build details
+
+![Fusion 360 assembly of the SO-ARM101 with PaXini parallel jaws, wrist D435i and two RGB mounts](media/fusion-r7-system.jpg)
+
+![Close Fusion views of the R4 jaws and the violet SA26MCM camera mount](media/fusion-hardware-details.jpg)
+
+| Design iteration | Work completed | Verification |
+| --- | --- | --- |
+| **R4 tactile jaws** | Fit two M3025 pads to a rod-free rack-and-pinion gripper. Join the two forward screw supports to form a rectangular cable window. | In CAD, the bridge tip is 0.8 mm behind the sensor face. The checked sensor-face gap is 10.4–82.4 mm. |
+| **R5 wrist and cable routing** | Keep the D435i on the wrist, lighten its bridge and compare wrist-side and forearm PaXini box routes. | Bridge volume 14.73 → 8.62 cm³. CAD mass estimates for the two tool configurations were about 307 g and 281 g. Actual masses and motor limits require a bench check. |
+| **R7 fixed RGB mounts** | Add black rails and split masts with violet mounts for the left and right SA26MCM cameras. | Each lens is 260 mm off center, 240 mm above the table and pitched down 27.1°. The longest new print is 143 mm. No robot–mount intersections appeared in 51 sampled CAD poses. |
+
+[26 cm STLs](cad/rgb-26cm/STL) · [Color STEP assembly](cad/rgb-26cm/mount-assembly.step) · [Wrist and fit-check parts](cad/wrist-and-fit) · [Assembly order and fasteners](cad/README.md) · [CAD checks](data/cad-clearance.json)
+
 ## What the simulator shows
 
-<details open>
-<summary><strong>Live dashboard · robot, dual tactile maps, four cameras, and comparison table</strong></summary>
-
-![Korean MuJoCo dashboard at the 8.90 s lift checkpoint](media/mujoco-dashboard.jpg)
-
-The live replay averages force over each playback step. The numerical table above uses the same deterministic checkpoint procedure as the downloadable data.
-
-</details>
+The dashboard records arm motion, dual tactile maps and four camera feeds in a single view. The animated preview above is condensed. [Full-size dashboard still](media/mujoco-dashboard.jpg)
 
 | Signal | How to read it |
 | --- | --- |
@@ -94,7 +89,7 @@ The live replay averages force over each playback step. The numerical table abov
 
 ## Download and run
 
-Download and extract the [reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.1/so101-tactile-recovery-kit.zip), or clone this repository. Run these commands from the repository root in a Python environment.
+Download and extract the [reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip), or clone this repository. Run these commands from the repository root in a Python environment.
 
     python -m pip install -r simulation/requirements.txt
     python simulation/sim.py --verify --physics-only

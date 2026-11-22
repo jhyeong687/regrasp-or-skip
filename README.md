@@ -2,9 +2,9 @@
 
 **A PaXini-equipped SO-ARM101 testbed for deciding when to regrasp or skip**
 
-[![Full-arm MuJoCo replay of the standard block grasp with PaXini tactile maps and four camera feeds](media/mujoco-dashboard-replay.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-wide-replay.mp4)
+[![Synchronized MuJoCo dashboard replay with a fixed full-arm view, PaXini force maps, and four camera feeds](media/mujoco-dashboard-timeline.webp)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4)
 
-[Watch the full-arm replay](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-wide-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
+[Watch the full-arm replay](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
 
 A weak lift can follow from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds a gripper and sensor rig to compare those cases under the same motion.
 
@@ -58,7 +58,13 @@ The heavy block applies more tangential force at the same nominal friction as th
 
 [![Fusion 360 assembly of the parallel jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-fusion-assembly.mp4)
 
-[Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-fusion-assembly.mp4) · [R4 design film](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-gripper-r4.mp4)
+[Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-fusion-assembly.mp4)
+
+### R4 gripper design film
+
+[![R4 tactile gripper design film showing the PaXini mounts, parallel jaw travel, and wrist hardware](media/r4-gripper-design-film.webp)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-gripper-r4.mp4)
+
+[R4 design film MP4](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.2.2/so101-gripper-r4.mp4)
 
 ### Build details
 
@@ -76,7 +82,7 @@ The heavy block applies more tangential force at the same nominal friction as th
 
 ## What the simulator shows
 
-The dashboard records arm motion, dual tactile maps and four camera feeds in a single view. The animated preview above is condensed. [Full-size dashboard still](media/mujoco-dashboard.jpg)
+The dashboard records arm motion, dual tactile maps and four camera feeds. In the replay above, all views and force readings share the same simulation time. [Interactive dashboard screenshot](media/mujoco-dashboard.jpg)
 
 | Signal | How to read it |
 | --- | --- |

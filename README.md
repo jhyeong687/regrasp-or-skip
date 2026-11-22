@@ -1,14 +1,14 @@
-# SO-ARM101 Tactile Picking
+# Tactile Probing for Grasp Recovery
 
-**Can a robot tell when to regrasp and when to move on?**
+**A PaXini-equipped SO-ARM101 pilot for regrasp-or-skip decisions**
 
 A MuJoCo pilot and a printable SO-ARM101 sensor rig for studying that decision after a short lift. The rig combines parallel jaws, two PaXini PX-6AX GEN3 M3025 pads, a wrist-mounted D435i, and two fixed RGB views.
 
-[한국어 연구 기록](docs/research-notes.ko.md) · [Experimental plan](docs/experimental-plan.md) · [CAD and assembly](cad/README.md) · [Videos and print pack](https://github.com/jhyeong687/so101-tactile-picking/releases/tag/v0.1.0)
+[한국어 연구 기록](docs/research-notes.ko.md) · [Experimental plan](docs/experimental-plan.md) · [CAD and assembly](cad/README.md) · [Videos and print pack](https://github.com/jhyeong687/tactile-grasp-recovery/releases/tag/v0.1.0)
 
 ## Synchronized pilot
 
-[![Four synchronized MuJoCo grasps with dual tactile maps](media/grasp-comparison.gif)](https://github.com/jhyeong687/so101-tactile-picking/releases/download/v0.1.0/so101-four-grasps.mp4)
+[![Four synchronized MuJoCo grasps with dual tactile maps](media/grasp-comparison.gif)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.1.0/so101-four-grasps.mp4)
 
 All four conditions replay the same motion. Dot color encodes normal force and arrows show in-plane force. The map estimates the contact patch from the simulation geometry. The table uses the [shared 8.90 s checkpoint](media/grasp-comparison.jpg).
 
@@ -21,17 +21,17 @@ All four conditions replay the same motion. Dot color encodes normal force and a
 
 The standard and slippery blocks had nearly identical squeeze force and different lift outcomes. The 600 g block changes the load at the same nominal friction as the standard block. These are four simulated cases, with one scripted trajectory per case. Agent decision quality and hardware performance are still open measurements.
 
-[Side-by-side video](https://github.com/jhyeong687/so101-tactile-picking/releases/download/v0.1.0/so101-four-grasps.mp4) · [Full trial traces in CSV](data/trial-traces.csv) · [77-point vectors at 40 checkpoints](data/tactile-pilot.json) · [Data dictionary](data/README.md)
+[Side-by-side video](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.1.0/so101-four-grasps.mp4) · [Full trial traces in CSV](data/trial-traces.csv) · [77-point vectors at 40 checkpoints](data/tactile-pilot.json) · [Data dictionary](data/README.md)
 
 ## Hardware and camera views
 
-[![CAD render of the R4 gripper](media/gripper-r4.jpg)](https://github.com/jhyeong687/so101-tactile-picking/releases/download/v0.1.0/so101-gripper-r4.mp4)
+[![CAD render of the R4 gripper](media/gripper-r4.jpg)](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.1.0/so101-gripper-r4.mp4)
 
-**[Watch the 24-second R4 gripper design film](https://github.com/jhyeong687/so101-tactile-picking/releases/download/v0.1.0/so101-gripper-r4.mp4).** The film shows the parallel-jaw design and PaXini holder in CAD. The R7 simulator incorporates the wrist and 26 cm RGB mount updates that followed the film.
+**[Watch the 24-second R4 gripper design film](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.1.0/so101-gripper-r4.mp4).** The film shows the parallel-jaw design and PaXini holder in CAD. The R7 simulator incorporates the wrist and 26 cm RGB mount updates that followed the film.
 
 | What to inspect | Files |
 | --- | --- |
-| RGB mounts, each 260 mm off center and 240 mm above the table | [STLs](cad/rgb-26cm/STL) · [Color STEP](cad/rgb-26cm/mount-assembly.step) · [Print pack](https://github.com/jhyeong687/so101-tactile-picking/releases/download/v0.1.0/so101-rgb-26cm-print-pack.zip) |
+| RGB mounts, each 260 mm off center and 240 mm above the table | [STLs](cad/rgb-26cm/STL) · [Color STEP](cad/rgb-26cm/mount-assembly.step) · [Print pack](https://github.com/jhyeong687/tactile-grasp-recovery/releases/download/v0.1.0/so101-rgb-26cm-print-pack.zip) |
 | Wrist D435i bridge, forearm PaXini board saddle, and M1.6 fit coupon | [STLs and editable STEP files](cad/wrist-and-fit) |
 | Matched frames from both side RGBs and the wrist RGB/depth | [Synchronized camera panel](media/camera-views.jpg) |
 | Fit, optical pose and 51 CAD path samples | [Clearance data](data/cad-clearance.json) · [Assembly notes](cad/README.md) |

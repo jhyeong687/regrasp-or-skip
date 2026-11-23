@@ -1,0 +1,1029 @@
+[
+  {
+    "case": "b01-01",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 33.933,
+    "started_utc": "2026-11-23T04:07:08.930+00:00",
+    "finished_utc": "2026-11-23T04:07:42.864+00:00",
+    "thread_id": "01a20696-165d-7d20-805a-6912c8b91ae7",
+    "turn_id": "01a20696-169a-7331-8983-13a6cd66defc",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-01-handoff.jpg",
+    "image_sha256": "b207c53c79a443a3174694c19b18570bca8b948701e8211b9697f45f3958e894",
+    "usage": {
+      "totalTokens": 22221,
+      "inputTokens": 20699,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1522,
+      "reasoningOutputTokens": 1303
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-02",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 38.164,
+    "started_utc": "2026-11-23T04:07:48.305+00:00",
+    "finished_utc": "2026-11-23T04:08:26.468+00:00",
+    "thread_id": "01a20696-b053-7292-be92-bdf233660df5",
+    "turn_id": "01a20696-b39d-7390-849c-52fba19e9b77",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-02-handoff.jpg",
+    "image_sha256": "a70c9ef4f208cf4e0dbf95e712b3e385dbe630aa2312327ab9252ee90c97a397",
+    "usage": {
+      "totalTokens": 26781,
+      "inputTokens": 25118,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1663,
+      "reasoningOutputTokens": 1443
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-03",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 39.372,
+    "started_utc": "2026-11-23T04:08:32.102+00:00",
+    "finished_utc": "2026-11-23T04:09:11.474+00:00",
+    "thread_id": "01a20697-5b72-7761-975f-59397db745fd",
+    "turn_id": "01a20697-5bb4-7f53-8b68-c6e92d1349c3",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-03-handoff.jpg",
+    "image_sha256": "6d35d66c6c59b575840d7ff30c259bd56386bb4393a8d34930c0d69175de76da",
+    "usage": {
+      "totalTokens": 22151,
+      "inputTokens": 20705,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1446,
+      "reasoningOutputTokens": 1202
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-04",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 36.913,
+    "started_utc": "2026-11-23T04:09:16.995+00:00",
+    "finished_utc": "2026-11-23T04:09:53.908+00:00",
+    "thread_id": "01a20698-0ac9-7970-a4a9-dfe68e523ed8",
+    "turn_id": "01a20698-0f49-7a62-ba50-c372c27f7def",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-04-handoff.jpg",
+    "image_sha256": "c910a954a6afdf7025cfdaae102b35a513b7c084a2344a1720e81b41311395a3",
+    "usage": {
+      "totalTokens": 26447,
+      "inputTokens": 25126,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1321,
+      "reasoningOutputTokens": 1071
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-05",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 22.838,
+    "started_utc": "2026-11-23T04:09:59.048+00:00",
+    "finished_utc": "2026-11-23T04:10:21.886+00:00",
+    "thread_id": "01a20698-af03-7782-b842-13816cfc9953",
+    "turn_id": "01a20698-b306-77e0-a92b-df9d5903b716",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-05-handoff.jpg",
+    "image_sha256": "ecfe973ae310281c6c27eb655617f17c1bf46ecc591c2a24463ce5690e17618a",
+    "usage": {
+      "totalTokens": 26085,
+      "inputTokens": 25135,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 950,
+      "reasoningOutputTokens": 679
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-06",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 21.693,
+    "started_utc": "2026-11-23T04:10:27.267+00:00",
+    "finished_utc": "2026-11-23T04:10:48.960+00:00",
+    "thread_id": "01a20699-1d43-7a83-99d6-b81e1a0b345c",
+    "turn_id": "01a20699-1d7e-7203-99f3-025d7b776e98",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-06-handoff.jpg",
+    "image_sha256": "b81d10a7bf379fb08f79b3cfb7b16beff5f3c820212cb194df7885b5a486bcf7",
+    "usage": {
+      "totalTokens": 21646,
+      "inputTokens": 20706,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 940,
+      "reasoningOutputTokens": 707
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-07",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 38.982,
+    "started_utc": "2026-11-23T04:10:54.560+00:00",
+    "finished_utc": "2026-11-23T04:11:33.542+00:00",
+    "thread_id": "01a20699-87dd-7d32-b66f-e2155c06690e",
+    "turn_id": "01a20699-8818-7880-aa32-6d4157c0fec5",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-07-handoff.jpg",
+    "image_sha256": "e96dd2c374a7749e521c6b68c6a1a00439711e467e7c91897488d7b38a9f0b1f",
+    "usage": {
+      "totalTokens": 22409,
+      "inputTokens": 20703,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1706,
+      "reasoningOutputTokens": 1475
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-08",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 34.075,
+    "started_utc": "2026-11-23T04:11:38.994+00:00",
+    "finished_utc": "2026-11-23T04:12:13.070+00:00",
+    "thread_id": "01a2069a-3573-7fe3-9e90-fb194b696293",
+    "turn_id": "01a2069a-35b5-71c2-a2e3-bdb41ff2d46f",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-08-handoff.jpg",
+    "image_sha256": "82d607551f4687d0ce3048fa4018444d325dfb3786194affa905147b4033c193",
+    "usage": {
+      "totalTokens": 22080,
+      "inputTokens": 20704,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1376,
+      "reasoningOutputTokens": 1144
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-09",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 35.644,
+    "started_utc": "2026-11-23T04:12:18.177+00:00",
+    "finished_utc": "2026-11-23T04:12:53.822+00:00",
+    "thread_id": "01a2069a-ce8c-7873-b9ac-ec4788081a30",
+    "turn_id": "01a2069a-d136-7dc1-892c-acb3c516d547",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-09-handoff.jpg",
+    "image_sha256": "69205a92e2e2a88cf0555b3d880df4f0e571cf77e536eca3e19a9d0435aed61b",
+    "usage": {
+      "totalTokens": 26776,
+      "inputTokens": 25114,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1662,
+      "reasoningOutputTokens": 1439
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-10",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 63.257,
+    "started_utc": "2026-11-23T04:12:59.023+00:00",
+    "finished_utc": "2026-11-23T04:14:02.280+00:00",
+    "thread_id": "01a2069b-6e0e-7d80-a35f-fcd29d59e67d",
+    "turn_id": "01a2069b-6e4b-7171-9df2-71e09e7fb6f7",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-10-handoff.jpg",
+    "image_sha256": "094dfe3947f653c5d2c062ecbd76723297054388a1e07aac9071eeddaf74da9d",
+    "usage": {
+      "totalTokens": 23557,
+      "inputTokens": 20698,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 2859,
+      "reasoningOutputTokens": 2614
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-11",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 38.908,
+    "started_utc": "2026-11-23T04:14:07.620+00:00",
+    "finished_utc": "2026-11-23T04:14:46.529+00:00",
+    "thread_id": "01a2069c-7a1c-7601-9427-c95fea7bb928",
+    "turn_id": "01a2069c-7e12-78e2-b946-19a5a65bc4b0",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-11-handoff.jpg",
+    "image_sha256": "0130adebb8b126267d7264135df60eaa5a19d227a9ceda38679b1612b40a86f3",
+    "usage": {
+      "totalTokens": 22234,
+      "inputTokens": 20698,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1536,
+      "reasoningOutputTokens": 1310
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-12",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 29.991,
+    "started_utc": "2026-11-23T04:14:53.035+00:00",
+    "finished_utc": "2026-11-23T04:15:23.026+00:00",
+    "thread_id": "01a2069d-2bfb-7bd3-bdae-3ba25a11f2be",
+    "turn_id": "01a2069d-3019-7442-a6b0-015605c8b3a4",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-12-handoff.jpg",
+    "image_sha256": "492cf0f7e3ccc62a837b6e1a6226f6c3c0c9c6eca732a6cd94e886440424bd66",
+    "usage": {
+      "totalTokens": 26373,
+      "inputTokens": 25129,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1244,
+      "reasoningOutputTokens": 1005
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-13",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 17.185,
+    "started_utc": "2026-11-23T04:15:29.294+00:00",
+    "finished_utc": "2026-11-23T04:15:46.478+00:00",
+    "thread_id": "01a2069d-b9ea-7190-af95-da362c8759c1",
+    "turn_id": "01a2069d-bd21-7fc3-a00b-d24cb9578611",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "rejection": "Out-of-envelope waypoint {'xyz_mm': [195.4, -104.1, 82], 'pitch_deg': -27, 'yaw_deg': 0, 'gap_mm': 22, 'time_s': 0.25}",
+    "image": "b01-13-handoff.jpg",
+    "image_sha256": "dfc707c8ea8754385bf9e79d993220e36f0a9eba6e8946c5eb47484f313e76d5",
+    "usage": {
+      "totalTokens": 21349,
+      "inputTokens": 20703,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 646,
+      "reasoningOutputTokens": 364
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-13",
+    "stage": "handoff",
+    "attempt": 2,
+    "wall_s": 18.942,
+    "started_utc": "2026-11-23T04:15:46.502+00:00",
+    "finished_utc": "2026-11-23T04:16:05.444+00:00",
+    "thread_id": "01a2069d-fc64-7362-ac2e-db0bea217a0b",
+    "turn_id": "01a2069d-fca4-72b3-a5c2-06b1ba57ceb3",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-13-handoff.jpg",
+    "image_sha256": "dfc707c8ea8754385bf9e79d993220e36f0a9eba6e8946c5eb47484f313e76d5",
+    "usage": {
+      "totalTokens": 21678,
+      "inputTokens": 20765,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 913,
+      "reasoningOutputTokens": 669
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-14",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 19.763,
+    "started_utc": "2026-11-23T04:16:11.921+00:00",
+    "finished_utc": "2026-11-23T04:16:31.681+00:00",
+    "thread_id": "01a2069e-6025-7601-8467-aa10ea5455d8",
+    "turn_id": "01a2069e-60b9-7ce1-a108-4ab9dc662a2f",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-14-handoff.jpg",
+    "image_sha256": "bca3f3a36a2b8a96a272c6dd65a1a2b6a8545a56a833e48188a12e64cfa15f62",
+    "usage": {
+      "totalTokens": 21603,
+      "inputTokens": 20699,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 904,
+      "reasoningOutputTokens": 675
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-15",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 26.672,
+    "started_utc": "2026-11-23T04:16:37.117+00:00",
+    "finished_utc": "2026-11-23T04:17:03.788+00:00",
+    "thread_id": "01a2069e-c201-7e33-8582-86bfd508b950",
+    "turn_id": "01a2069e-c717-7ed3-8c7e-5e4f7bac64bb",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-15-handoff.jpg",
+    "image_sha256": "c4dac291d549b4e12a2c0165ee2dac7c91c8cecd4a17096f84bead97b7b624b2",
+    "usage": {
+      "totalTokens": 26368,
+      "inputTokens": 25128,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1240,
+      "reasoningOutputTokens": 1009
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-16",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 16.007,
+    "started_utc": "2026-11-23T04:17:09.717+00:00",
+    "finished_utc": "2026-11-23T04:17:25.723+00:00",
+    "thread_id": "01a2069f-415d-70d3-96cc-bf415bdaa2f7",
+    "turn_id": "01a2069f-419a-7701-8327-da4463f74d6a",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-16-handoff.jpg",
+    "image_sha256": "038ca2b26180caf79d44deb07ee058f9995eb05a2230cbb2dd6b6c453730b173",
+    "usage": {
+      "totalTokens": 21313,
+      "inputTokens": 20708,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 605,
+      "reasoningOutputTokens": 361
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-17",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 16.917,
+    "started_utc": "2026-11-23T04:17:31.977+00:00",
+    "finished_utc": "2026-11-23T04:17:48.894+00:00",
+    "thread_id": "01a2069f-98a0-7162-a221-a652e98d1771",
+    "turn_id": "01a2069f-9b0f-7800-b60b-9749524f6607",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-17-handoff.jpg",
+    "image_sha256": "7e759c5ceccf135bcd05e906908001d19104784ee623c798882e35e26c2f29a1",
+    "usage": {
+      "totalTokens": 25762,
+      "inputTokens": 25128,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 634,
+      "reasoningOutputTokens": 391
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-18",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 39.736,
+    "started_utc": "2026-11-23T04:17:54.580+00:00",
+    "finished_utc": "2026-11-23T04:18:34.316+00:00",
+    "thread_id": "01a2069f-f0e9-7a21-a183-188869a6a8c7",
+    "turn_id": "01a2069f-f12e-7103-b564-5899dd54c393",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-18-handoff.jpg",
+    "image_sha256": "f6327d6157af5740306da070c2bcb49432bb919c2c059a63291c7768dd2c49b3",
+    "usage": {
+      "totalTokens": 22511,
+      "inputTokens": 20693,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1818,
+      "reasoningOutputTokens": 1582
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-19",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 19.079,
+    "started_utc": "2026-11-23T04:18:41.057+00:00",
+    "finished_utc": "2026-11-23T04:19:00.136+00:00",
+    "thread_id": "01a206a0-a640-71a2-a9bd-da9f31319613",
+    "turn_id": "01a206a0-a9a6-7282-aa53-56e73f225e60",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-19-handoff.jpg",
+    "image_sha256": "00a122013aac77299f434be07043fd62935a3be20be9adb940e691654332c985",
+    "usage": {
+      "totalTokens": 25814,
+      "inputTokens": 25131,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 683,
+      "reasoningOutputTokens": 454
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-20",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 32.144,
+    "started_utc": "2026-11-23T04:19:06.774+00:00",
+    "finished_utc": "2026-11-23T04:19:38.918+00:00",
+    "thread_id": "01a206a1-0aa4-7910-8ca3-04b1d4d1d388",
+    "turn_id": "01a206a1-0d35-7990-930c-1425a39a2f7e",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-20-handoff.jpg",
+    "image_sha256": "a511928a10af9e83e1e9dd3dab0b21115d9b9924f9bba746640f0b0ff6d16e26",
+    "usage": {
+      "totalTokens": 26580,
+      "inputTokens": 25134,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1446,
+      "reasoningOutputTokens": 1210
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-21",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 32.668,
+    "started_utc": "2026-11-23T04:19:45.130+00:00",
+    "finished_utc": "2026-11-23T04:20:17.798+00:00",
+    "thread_id": "01a206a1-a0a5-76d3-a018-697f0b5b8729",
+    "turn_id": "01a206a1-a110-7953-bea5-5cadf095d854",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-21-handoff.jpg",
+    "image_sha256": "1f30442beb13bf1d550ca6ee4f41151d1d8b2d9eb8b728a3ed447e97ecd50b19",
+    "usage": {
+      "totalTokens": 22096,
+      "inputTokens": 20704,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1392,
+      "reasoningOutputTokens": 1172
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-22",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 24.859,
+    "started_utc": "2026-11-23T04:20:23.536+00:00",
+    "finished_utc": "2026-11-23T04:20:48.396+00:00",
+    "thread_id": "01a206a2-368c-7b22-84f9-341ab3f64d1a",
+    "turn_id": "01a206a2-36ed-7183-a9e3-b54c2cdf6a69",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-22-handoff.jpg",
+    "image_sha256": "6cf0d63c836e36353f36e6b7342ff42c23b69017703bb675152c688c985e6af9",
+    "usage": {
+      "totalTokens": 21938,
+      "inputTokens": 20784,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1154,
+      "reasoningOutputTokens": 909
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-23",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 23.002,
+    "started_utc": "2026-11-23T04:20:54.457+00:00",
+    "finished_utc": "2026-11-23T04:21:17.459+00:00",
+    "thread_id": "01a206a2-af67-70b1-b43e-a92cc4c17b3b",
+    "turn_id": "01a206a2-afa5-7b70-8cbe-f293ac4ab901",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-23-handoff.jpg",
+    "image_sha256": "8a211aca14af8436a3cf4bce39eb1f7ae3ec63a11f3e81b54eb65008c2cae8e0",
+    "usage": {
+      "totalTokens": 21585,
+      "inputTokens": 20690,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 895,
+      "reasoningOutputTokens": 811
+    },
+    "decision": "remeasure"
+  },
+  {
+    "case": "b01-23",
+    "stage": "after-reread",
+    "attempt": 1,
+    "wall_s": 32.603,
+    "started_utc": "2026-11-23T04:21:18.266+00:00",
+    "finished_utc": "2026-11-23T04:21:50.868+00:00",
+    "thread_id": "01a206a3-0c76-7082-9e2b-ba2c384a96ce",
+    "turn_id": "01a206a3-0f61-7892-a2d9-6df6a55c150a",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-23-after-reread.jpg",
+    "image_sha256": "3ea080b5ca75526c9b5e129034c7f970454520656e23293828febdf19d40671f",
+    "usage": {
+      "totalTokens": 23287,
+      "inputTokens": 21707,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1580,
+      "reasoningOutputTokens": 1299
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b01-24",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 24.37,
+    "started_utc": "2026-11-23T04:21:57.499+00:00",
+    "finished_utc": "2026-11-23T04:22:21.869+00:00",
+    "thread_id": "01a206a3-a59b-7a13-a612-0672da631db6",
+    "turn_id": "01a206a3-a862-7df3-ac83-342a41ccefb7",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b01-24-handoff.jpg",
+    "image_sha256": "5b3278f366d44f04a6727176a276c0fd57b58b08ac0aab7fcd397ffb7ae2914b",
+    "usage": {
+      "totalTokens": 26054,
+      "inputTokens": 25116,
+      "cachedInputTokens": 0,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 938,
+      "reasoningOutputTokens": 704
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-01",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 37.344,
+    "started_utc": "2026-11-23T04:22:27.900+00:00",
+    "finished_utc": "2026-11-23T04:23:05.244+00:00",
+    "thread_id": "01a206a4-1c50-7c51-b53c-5845ec887d8c",
+    "turn_id": "01a206a4-1c91-76d2-946d-b56e3c5a42eb",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-01-handoff.jpg",
+    "image_sha256": "e929b258f05ec99ac22b24d31d47424fafb66b071207580c304343b718c185b1",
+    "usage": {
+      "totalTokens": 22201,
+      "inputTokens": 20689,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1512,
+      "reasoningOutputTokens": 1274
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-02",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 32.522,
+    "started_utc": "2026-11-23T04:23:11.596+00:00",
+    "finished_utc": "2026-11-23T04:23:44.118+00:00",
+    "thread_id": "01a206a4-c6f8-7b21-9620-0e35974eee02",
+    "turn_id": "01a206a4-ca07-7672-93d2-25cff7c97068",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-02-handoff.jpg",
+    "image_sha256": "ab6339ab32930746cbc4525b483808723354539d46add652143588869c807be0",
+    "usage": {
+      "totalTokens": 26519,
+      "inputTokens": 25129,
+      "cachedInputTokens": 20992,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1390,
+      "reasoningOutputTokens": 1157
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-03",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 23.198,
+    "started_utc": "2026-11-23T04:23:49.815+00:00",
+    "finished_utc": "2026-11-23T04:24:13.013+00:00",
+    "thread_id": "01a206a5-5ba7-7c90-98e0-dd0fbbae6ee3",
+    "turn_id": "01a206a5-5e51-7760-b83e-6b9681403b82",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-03-handoff.jpg",
+    "image_sha256": "62e31f1ea47d6328f34ea2b48bcbdf07f09152cce2875d981e543a7df43e748b",
+    "usage": {
+      "totalTokens": 21586,
+      "inputTokens": 20703,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 883,
+      "reasoningOutputTokens": 648
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-04",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 35.59,
+    "started_utc": "2026-11-23T04:24:18.819+00:00",
+    "finished_utc": "2026-11-23T04:24:54.409+00:00",
+    "thread_id": "01a206a5-ccea-7192-94ae-76f04be93820",
+    "turn_id": "01a206a5-cd20-72f2-bfcb-7f9163ecea3b",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-04-handoff.jpg",
+    "image_sha256": "df1ddef9af0db0fd44314f3a1c2e18f859d5ec1dab29e2f5f1ce015e4bf9fb47",
+    "usage": {
+      "totalTokens": 22290,
+      "inputTokens": 20698,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1592,
+      "reasoningOutputTokens": 1363
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-05",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 21.99,
+    "started_utc": "2026-11-23T04:24:59.744+00:00",
+    "finished_utc": "2026-11-23T04:25:21.734+00:00",
+    "thread_id": "01a206a6-6cc9-7f40-a604-20d2d3347b83",
+    "turn_id": "01a206a6-6d00-7901-bf89-b39dc0f1d69c",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-05-handoff.jpg",
+    "image_sha256": "e1f18a42274010c43be4dac455bb7fb105e19c04b7845461137445184737cf5d",
+    "usage": {
+      "totalTokens": 21702,
+      "inputTokens": 20690,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1012,
+      "reasoningOutputTokens": 780
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-06",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 24.431,
+    "started_utc": "2026-11-23T04:25:26.780+00:00",
+    "finished_utc": "2026-11-23T04:25:51.212+00:00",
+    "thread_id": "01a206a6-d660-7413-806d-18648d4717f0",
+    "turn_id": "01a206a6-d698-76d2-bd1d-ff42ed84f41a",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-06-handoff.jpg",
+    "image_sha256": "60ec7ca135bc9f1ce3e14809d4acca8545551654931bf0d756588566efe2e064",
+    "usage": {
+      "totalTokens": 21690,
+      "inputTokens": 20704,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 986,
+      "reasoningOutputTokens": 743
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-07",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 35.099,
+    "started_utc": "2026-11-23T04:25:56.751+00:00",
+    "finished_utc": "2026-11-23T04:26:31.850+00:00",
+    "thread_id": "01a206a7-4b70-70c2-89ef-11b7ed15adb6",
+    "turn_id": "01a206a7-4ee5-7163-8263-548690a0e87e",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-07-handoff.jpg",
+    "image_sha256": "d3e5f4a4bb1263a7bd8dbbcc0fdc1b5729bb55d1fb758b46bd673510a9d6812d",
+    "usage": {
+      "totalTokens": 26803,
+      "inputTokens": 25124,
+      "cachedInputTokens": 20992,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1679,
+      "reasoningOutputTokens": 1454
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-08",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 23.524,
+    "started_utc": "2026-11-23T04:26:36.914+00:00",
+    "finished_utc": "2026-11-23T04:27:00.438+00:00",
+    "thread_id": "01a206a7-e853-7f60-8235-001a83ceb294",
+    "turn_id": "01a206a7-e88a-7a52-95a1-cee4fecbbfdc",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-08-handoff.jpg",
+    "image_sha256": "93278ea6f7eb447f44ddf1eccba88d4d082aee61f268f86948dbd823cecc8f19",
+    "usage": {
+      "totalTokens": 21689,
+      "inputTokens": 20700,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 989,
+      "reasoningOutputTokens": 737
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-09",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 28.384,
+    "started_utc": "2026-11-23T04:27:05.639+00:00",
+    "finished_utc": "2026-11-23T04:27:34.023+00:00",
+    "thread_id": "01a206a8-5889-7f83-9f24-e7db6ff43533",
+    "turn_id": "01a206a8-58c2-78f2-8e49-aed4fbd2742a",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-09-handoff.jpg",
+    "image_sha256": "f75fa60e75d1b493cb3493ab36bd86d584ba3d93d58234f0401d2a698e89830a",
+    "usage": {
+      "totalTokens": 22014,
+      "inputTokens": 20694,
+      "cachedInputTokens": 9984,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 1320,
+      "reasoningOutputTokens": 1074
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-10",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 43.342,
+    "started_utc": "2026-11-23T04:27:39.352+00:00",
+    "finished_utc": "2026-11-23T04:28:22.695+00:00",
+    "thread_id": "01a206a8-dc3f-75b0-8c62-31b7904d7533",
+    "turn_id": "01a206a8-dfb5-7642-b35d-468173d88f54",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-10-handoff.jpg",
+    "image_sha256": "5fff43be0d86d9d23dc4fbfd8b6a95219658217d7eef29bd9c6b716dcacf51de",
+    "usage": {
+      "totalTokens": 27141,
+      "inputTokens": 25129,
+      "cachedInputTokens": 20992,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 2012,
+      "reasoningOutputTokens": 1775
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-11",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 17.524,
+    "started_utc": "2026-11-23T04:28:28.117+00:00",
+    "finished_utc": "2026-11-23T04:28:45.641+00:00",
+    "thread_id": "01a206a9-9ad1-7b72-a282-cc977ead9f78",
+    "turn_id": "01a206a9-9e0c-7781-9a4c-b4a1020487e1",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-11-handoff.jpg",
+    "image_sha256": "a1b87327c60560bf407573b614723b1f28e36c586946d5b73b3f371349045e38",
+    "usage": {
+      "totalTokens": 21448,
+      "inputTokens": 20703,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 745,
+      "reasoningOutputTokens": 516
+    },
+    "decision": "place"
+  },
+  {
+    "case": "b02-12",
+    "stage": "handoff",
+    "attempt": 1,
+    "wall_s": 52.462,
+    "started_utc": "2026-11-23T04:28:51.377+00:00",
+    "finished_utc": "2026-11-23T04:29:43.839+00:00",
+    "thread_id": "01a206a9-f595-7430-9097-a374ada743aa",
+    "turn_id": "01a206a9-f5cd-7432-873c-45a4a3d6c4af",
+    "runtime": {
+      "model": "gpt-6.2-astra",
+      "reasoningEffort": "xhigh",
+      "modelProvider": "openai"
+    },
+    "turn_status": "completed",
+    "image": "b02-12-handoff.jpg",
+    "image_sha256": "111893a12e63e81cf710c589bdf9c7edaf8273aade36b2da5e85f97fc2114dd6",
+    "usage": {
+      "totalTokens": 23125,
+      "inputTokens": 20701,
+      "cachedInputTokens": 16512,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 2424,
+      "reasoningOutputTokens": 2185
+    },
+    "decision": "place"
+  }
+]

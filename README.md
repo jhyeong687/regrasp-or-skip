@@ -14,6 +14,8 @@ A weak lift can follow from poor contact, a slippery surface, or a load the arm 
 
 **Waypoint stacking pilot.** GPT-6.2 Astra generated lift and placement waypoints for the same 85 g shell with mirrored internal ballast. Adding PaXini force and moment data changed its release targets and stabilized both variants in MuJoCo. On a new split-rail fixture, selective remeasurement matched the always-remeasure policy at 8/8 successes with two stops instead of eight. Model latency outweighed the motion-time savings. [Videos, commands and sensor traces](docs/stacking-waypoint-pilot.ko.md) · [Tactile swap and release sensitivity](docs/stacking-feedback-ablation.ko.md) · [Selective remeasurement on a new fixture](docs/stacking-selective-recheck.ko.md)
 
+**Threshold-free Astra placement.** Across 36 matched trials on three new shell geometries, Astra xhigh directly chose whether to reread PaXini and generated the placement waypoints. It succeeded on 33/36 versus 34/36 for the previous rule. Including measured inference, mean time was 39.66 s versus 7.97 s. [Comparison videos, traces, and 38 model call records](docs/stacking-astra-free-placement.ko.md)
+
 **Next study · Tactile Evidence for Agentic Manipulation.** Keep appearance fixed and change the hidden physics. Measure whether tactile feedback changes an agent's waypoints across stacking, latch inspection, and insertion. [Evaluation suite](docs/tactile-agent-suite.ko.md) · [Stacking protocol and stability check](docs/tactile-stacking-protocol.ko.md)
 
 ## Four grasps on one time axis

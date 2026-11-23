@@ -1,0 +1,635 @@
+{
+  "source_results_sha256": "d6b0572e51da4a0506cc5399da0442260064dd6c7b8ebf203e7f097e5af7bd0d",
+  "scope": "Archived MuJoCo pilot, not a new policy or physical run. Torque sorting scores the recorded ranking decision only.",
+  "matched_layouts": 3,
+  "unique_threads": 24,
+  "unique_turns": 24,
+  "sensor_input_image_hashes_checked": 24,
+  "executed_path_records_matching_compiled_paths": 36,
+  "elapsed_wall_s": 643.794,
+  "median_request_wall_s": 16.6665,
+  "token_totals": {
+    "totalTokens": 517937,
+    "inputTokens": 495996,
+    "cachedInputTokens": 116480,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 21941,
+    "reasoningOutputTokens": 5377
+  },
+  "trials": [
+    {
+      "trial": "desk-1-on",
+      "mode": "on",
+      "success": true,
+      "stable": true,
+      "model_order": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "target_order": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "retrospective_elbow_sort": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "retrospective_shoulder_sort": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "motion_sim_s": 63.44,
+      "inference_wall_s": 68.91,
+      "motion_plus_inference_s": 132.35,
+      "observed_elbow_Nm": {
+        "amber": -0.87016,
+        "teal": -1.05669,
+        "plum": -0.95335
+      }
+    },
+    {
+      "trial": "desk-1-off",
+      "mode": "off",
+      "success": true,
+      "stable": true,
+      "model_order": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "target_order": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "retrospective_elbow_sort": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "retrospective_shoulder_sort": [
+        "teal",
+        "plum",
+        "amber"
+      ],
+      "motion_sim_s": 63.34,
+      "inference_wall_s": 74.834,
+      "motion_plus_inference_s": 138.174,
+      "observed_elbow_Nm": {
+        "amber": -0.87016,
+        "teal": -1.05669,
+        "plum": -0.95399
+      }
+    },
+    {
+      "trial": "desk-2-off",
+      "mode": "off",
+      "success": true,
+      "stable": true,
+      "model_order": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "target_order": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "retrospective_elbow_sort": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "retrospective_shoulder_sort": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "motion_sim_s": 62.04,
+      "inference_wall_s": 76.757,
+      "motion_plus_inference_s": 138.797,
+      "observed_elbow_Nm": {
+        "amber": -1.05598,
+        "teal": -0.95508,
+        "plum": -0.86994
+      }
+    },
+    {
+      "trial": "desk-2-on",
+      "mode": "on",
+      "success": true,
+      "stable": true,
+      "model_order": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "target_order": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "retrospective_elbow_sort": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "retrospective_shoulder_sort": [
+        "amber",
+        "teal",
+        "plum"
+      ],
+      "motion_sim_s": 65.84,
+      "inference_wall_s": 72.107,
+      "motion_plus_inference_s": 137.947,
+      "observed_elbow_Nm": {
+        "amber": -1.05597,
+        "teal": -0.95492,
+        "plum": -0.86994
+      }
+    },
+    {
+      "trial": "desk-3-on",
+      "mode": "on",
+      "success": true,
+      "stable": true,
+      "model_order": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "target_order": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "retrospective_elbow_sort": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "retrospective_shoulder_sort": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "motion_sim_s": 64.24,
+      "inference_wall_s": 71.055,
+      "motion_plus_inference_s": 135.295,
+      "observed_elbow_Nm": {
+        "amber": -0.95552,
+        "teal": -0.86882,
+        "plum": -1.05771
+      }
+    },
+    {
+      "trial": "desk-3-off",
+      "mode": "off",
+      "success": true,
+      "stable": true,
+      "model_order": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "target_order": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "retrospective_elbow_sort": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "retrospective_shoulder_sort": [
+        "plum",
+        "amber",
+        "teal"
+      ],
+      "motion_sim_s": 60.74,
+      "inference_wall_s": 70.432,
+      "motion_plus_inference_s": 131.172,
+      "observed_elbow_Nm": {
+        "amber": -0.95477,
+        "teal": -0.86858,
+        "plum": -1.05725
+      }
+    }
+  ],
+  "receipts": [
+    {
+      "trial": "desk-1-on",
+      "stage": "시각 탐색·들기",
+      "turn_fingerprint": "df6316911aebca2c44b7d633cf3b9cc22435eeac411f3501119189fa7efcaab2",
+      "input_image_sha256": "3425a4a08ca5d4411c2c70606800faac35050df0a333d263f8e2bd382f64fe46",
+      "wall_s": 26.288,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 25157,
+        "inputTokens": 23670,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1487,
+        "reasoningOutputTokens": 249
+      }
+    },
+    {
+      "trial": "desk-1-on",
+      "stage": "무게 순서·1층",
+      "turn_fingerprint": "0f65cea5e0af1ee1b49bee6e1418a2f329ba684f900c7a617906734c80742609",
+      "input_image_sha256": "30fd847c7b6f17b77e2316d01d5f59bcc4aaf80b00c61784e2959ae06c609a19",
+      "wall_s": 12.739,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20384,
+        "inputTokens": 19784,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 600,
+        "reasoningOutputTokens": 127
+      }
+    },
+    {
+      "trial": "desk-1-on",
+      "stage": "2층 경로",
+      "turn_fingerprint": "2e28b6ed93545a1db383b69b5b37331101ce87a51e1c53c69db8f70ac6482e6f",
+      "input_image_sha256": "20e9426f3bbb826b52717802e25d5d48eaad1cad0e2e61bb4e07e51ccfce3192",
+      "wall_s": 15.927,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20608,
+        "inputTokens": 19784,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 824,
+        "reasoningOutputTokens": 308
+      }
+    },
+    {
+      "trial": "desk-1-on",
+      "stage": "3층 경로",
+      "turn_fingerprint": "8b62300d1ed93447da7b1bb440744a8a19d3d4e13566a9c5b859387989ab4884",
+      "input_image_sha256": "ede75aa1342e561406ebe9d8780346e18352e2545a746565d9f755b9367d1ca5",
+      "wall_s": 13.956,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20442,
+        "inputTokens": 19788,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 654,
+        "reasoningOutputTokens": 138
+      }
+    },
+    {
+      "trial": "desk-1-off",
+      "stage": "시각 탐색·들기",
+      "turn_fingerprint": "255429ea5f9005d287dc22a25c4249243b24edf5778d74cbd1710bfe449e7f46",
+      "input_image_sha256": "3425a4a08ca5d4411c2c70606800faac35050df0a333d263f8e2bd382f64fe46",
+      "wall_s": 27.075,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 25195,
+        "inputTokens": 23668,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1527,
+        "reasoningOutputTokens": 294
+      }
+    },
+    {
+      "trial": "desk-1-off",
+      "stage": "무게 순서·1층",
+      "turn_fingerprint": "5edea402ed7415dded45b75c4d403665722362e69ca9981982c4e3c6b95982f7",
+      "input_image_sha256": "a5c5df346fe26901a6c1bcbe8fa21f12adfc22b3e1538fc34fe22929d34e09ff",
+      "wall_s": 15.386,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20230,
+        "inputTokens": 19539,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 691,
+        "reasoningOutputTokens": 187
+      }
+    },
+    {
+      "trial": "desk-1-off",
+      "stage": "2층 경로",
+      "turn_fingerprint": "fe024e5d21fce759d47a4ad29852c2a219f22f0cf2a1dae60026064576195b1a",
+      "input_image_sha256": "ae16501d62b66dfd8b3bc78d5a86983aa0c53ef9b56e4566cd34777f7ae9c5dc",
+      "wall_s": 17.664,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20495,
+        "inputTokens": 19551,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 944,
+        "reasoningOutputTokens": 450
+      }
+    },
+    {
+      "trial": "desk-1-off",
+      "stage": "3층 경로",
+      "turn_fingerprint": "a9dc997ebdd8db2300e381ad49d46c161e4d85e912a8de50bc56ebfb9ae20f2f",
+      "input_image_sha256": "aef646d8e5984019e1e2d4cc84d29824c04d87fc9373f5cb4c0505877c76f17e",
+      "wall_s": 14.709,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20315,
+        "inputTokens": 19551,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 764,
+        "reasoningOutputTokens": 227
+      }
+    },
+    {
+      "trial": "desk-2-off",
+      "stage": "시각 탐색·들기",
+      "turn_fingerprint": "b17bb264c70d98c9a16b29ef9fb80dc2373f7391a02bea9f21d4ab76ef8a17e8",
+      "input_image_sha256": "42f0f07a898caf0cdafbf0aa9307e488b65d7c931325a5f04f9724527344d381",
+      "wall_s": 24.066,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20577,
+        "inputTokens": 19243,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1334,
+        "reasoningOutputTokens": 109
+      }
+    },
+    {
+      "trial": "desk-2-off",
+      "stage": "무게 순서·1층",
+      "turn_fingerprint": "9911c39f85418717e1be76f8eb5f8091f79bd309eb6e76919dcd1d2566fe36fb",
+      "input_image_sha256": "86e939aac5de402d761f30a21d62644174f7f2c92512e012390fb7292d5872c0",
+      "wall_s": 15.203,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 24652,
+        "inputTokens": 23970,
+        "cachedInputTokens": 9984,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 682,
+        "reasoningOutputTokens": 183
+      }
+    },
+    {
+      "trial": "desk-2-off",
+      "stage": "2층 경로",
+      "turn_fingerprint": "1e942203b31ac00f375270b3129d735974bc4ea768d0a03ce71d816480622942",
+      "input_image_sha256": "20b13f257498ddf79d0801b3919a189281fc869afa05ac2322a04747ceeb3296",
+      "wall_s": 20.63,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20589,
+        "inputTokens": 19547,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1042,
+        "reasoningOutputTokens": 505
+      }
+    },
+    {
+      "trial": "desk-2-off",
+      "stage": "3층 경로",
+      "turn_fingerprint": "7e1e812f99c5bd6bb62d05dfc9cfb736560442a0c796489af13fd8d803e8f897",
+      "input_image_sha256": "8b5016f86faf1a80390c2014c5475d5ed2e2e08c7fc9d1cd9d42c43baf4e4c63",
+      "wall_s": 16.858,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20437,
+        "inputTokens": 19551,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 886,
+        "reasoningOutputTokens": 349
+      }
+    },
+    {
+      "trial": "desk-2-on",
+      "stage": "시각 탐색·들기",
+      "turn_fingerprint": "3e677e613fa584c8df7feb92c91d12e402b72b34c3d9f787cfa926894eacf413",
+      "input_image_sha256": "42f0f07a898caf0cdafbf0aa9307e488b65d7c931325a5f04f9724527344d381",
+      "wall_s": 26.065,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20570,
+        "inputTokens": 19243,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1327,
+        "reasoningOutputTokens": 96
+      }
+    },
+    {
+      "trial": "desk-2-on",
+      "stage": "무게 순서·1층",
+      "turn_fingerprint": "dbb8298eceed9c9b791b9214beda31a3090a62c2ca17ab5407b82a447555f740",
+      "input_image_sha256": "cec24bca4fae76b9a00bdb35cd960100d49abcea838af9f2e948ae84d03f5a5b",
+      "wall_s": 13.363,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 24755,
+        "inputTokens": 24204,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 551,
+        "reasoningOutputTokens": 74
+      }
+    },
+    {
+      "trial": "desk-2-on",
+      "stage": "2층 경로",
+      "turn_fingerprint": "ad30d00e6bf3d090054965afe81c9fc259b85edac02ed52a1b2dd5d9eefaf00b",
+      "input_image_sha256": "944393e490e932a461a9e68080144c548d0d824b0138518d221d94bafa91634c",
+      "wall_s": 15.898,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20596,
+        "inputTokens": 19785,
+        "cachedInputTokens": 9984,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 811,
+        "reasoningOutputTokens": 297
+      }
+    },
+    {
+      "trial": "desk-2-on",
+      "stage": "3층 경로",
+      "turn_fingerprint": "d41e961a225d384c4a149f77cd86f9124457d2b6b2fcaea0c7d7dba2245b4cbc",
+      "input_image_sha256": "efa4716d54f687e024af4810bcb35c797d6a95575c6293b81014e6b7f3f093af",
+      "wall_s": 16.781,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20565,
+        "inputTokens": 19787,
+        "cachedInputTokens": 16640,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 778,
+        "reasoningOutputTokens": 263
+      }
+    },
+    {
+      "trial": "desk-3-on",
+      "stage": "시각 탐색·들기",
+      "turn_fingerprint": "c611538ddc050f623da8388dd6960b588639951bff673bb2ab27f7a5dbb11c5d",
+      "input_image_sha256": "0001962348b47c194d90ebfa5e9e3a215b45146ede301d99e90248262573c83a",
+      "wall_s": 25.217,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20632,
+        "inputTokens": 19239,
+        "cachedInputTokens": 16640,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1393,
+        "reasoningOutputTokens": 169
+      }
+    },
+    {
+      "trial": "desk-3-on",
+      "stage": "무게 순서·1층",
+      "turn_fingerprint": "a77ccd269e4065f63de4c61da8d381bc04d9e7c8b578ccb43a600053f4ff9ac0",
+      "input_image_sha256": "58e6be06d59ce446bd41c9531a37b55b6855bc8a1cb65845973ad8e0f81d20f8",
+      "wall_s": 13.818,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 24782,
+        "inputTokens": 24204,
+        "cachedInputTokens": 9984,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 578,
+        "reasoningOutputTokens": 111
+      }
+    },
+    {
+      "trial": "desk-3-on",
+      "stage": "2층 경로",
+      "turn_fingerprint": "38be132194d8f3b49b3c16763a7d9542b6f4d1569ae491ce5ff9d92eefa13a5f",
+      "input_image_sha256": "86e68f1fe99f9d6b7de0a2e1b02fbb7f269c228ca33e3e98bbd969b24809fc41",
+      "wall_s": 17.053,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 25051,
+        "inputTokens": 24211,
+        "cachedInputTokens": 9984,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 840,
+        "reasoningOutputTokens": 322
+      }
+    },
+    {
+      "trial": "desk-3-on",
+      "stage": "3층 경로",
+      "turn_fingerprint": "7b5f0d95c86cb41214e91f78abd658170523eb961c89897372eac526499555fb",
+      "input_image_sha256": "088980af9ac4b7449056793333545a909217b2affa5889b72da6fe21155f0221",
+      "wall_s": 14.967,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20554,
+        "inputTokens": 19788,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 766,
+        "reasoningOutputTokens": 245
+      }
+    },
+    {
+      "trial": "desk-3-off",
+      "stage": "시각 탐색·들기",
+      "turn_fingerprint": "aa0c8e1e83fc4f04661341cfe3031f0a8782d58712392172aaffbf5d9c10eb63",
+      "input_image_sha256": "0001962348b47c194d90ebfa5e9e3a215b45146ede301d99e90248262573c83a",
+      "wall_s": 23.302,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20524,
+        "inputTokens": 19241,
+        "cachedInputTokens": 9984,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1283,
+        "reasoningOutputTokens": 48
+      }
+    },
+    {
+      "trial": "desk-3-off",
+      "stage": "무게 순서·1층",
+      "turn_fingerprint": "132f0ca7162ed09dd23db64e7cf2b498d4bb5dba39601b0b0abedf10b0de21d9",
+      "input_image_sha256": "1113e62ec0c1989d9e6989bf82e725d1a1165909df71c1bc40eb2f398b4c9e3e",
+      "wall_s": 13.027,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20109,
+        "inputTokens": 19544,
+        "cachedInputTokens": 16640,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 565,
+        "reasoningOutputTokens": 77
+      }
+    },
+    {
+      "trial": "desk-3-off",
+      "stage": "2층 경로",
+      "turn_fingerprint": "8e0a81351d45595b946fd92787b2de05c6423a2bb06a583f374d3454b1720bc3",
+      "input_image_sha256": "588e5b56e990ffe5bf4f0fada366d65383c82079b40f96f38e04444218542ddd",
+      "wall_s": 16.552,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20301,
+        "inputTokens": 19553,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 748,
+        "reasoningOutputTokens": 216
+      }
+    },
+    {
+      "trial": "desk-3-off",
+      "stage": "3층 경로",
+      "turn_fingerprint": "3bae21c61ea4c91158a4ca632560a3547c91e4b8b6ffbfc3c57ba210febe6bd5",
+      "input_image_sha256": "c108500835d734ea41b38c8fde34e6a6c6c4fa16cfdcd754eba0bc3226232918",
+      "wall_s": 17.551,
+      "model": "gpt-6.2-astra",
+      "effort": "xhigh",
+      "usage": {
+        "totalTokens": 20417,
+        "inputTokens": 19551,
+        "cachedInputTokens": 16640,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 866,
+        "reasoningOutputTokens": 333
+      }
+    }
+  ]
+}

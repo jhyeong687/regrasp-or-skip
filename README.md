@@ -16,7 +16,9 @@ A weak lift can follow from poor contact, a slippery surface, or a load the arm 
 
 **Threshold-free Astra placement.** Across 36 matched trials on three new shell geometries, Astra xhigh directly chose whether to reread PaXini and generated the placement waypoints. It succeeded on 33/36 versus 34/36 for the previous rule. Including measured inference, mean time was 39.66 s versus 7.97 s. [Comparison videos, traces, and 38 model call records](docs/stacking-astra-free-placement.ko.md)
 
-**Next study · Tactile Evidence for Agentic Manipulation.** Keep appearance fixed and change the hidden physics. Measure whether tactile feedback changes an agent's waypoints across stacking, latch inspection, and insertion. [Evaluation suite](docs/tactile-agent-suite.ko.md) · [Stacking protocol and stability check](docs/tactile-stacking-protocol.ko.md)
+**Planned study · Diagnose Before Repair.** Pressing a loose latch can erase the defect a robot was asked to inspect. Can fingertip sensing help the robot identify the incoming state and preserve it through release? The protocol pairs inspection and repair on the same fixtures, records every latch transition independently, and compares an agent with calibrated fixed probes and a model-based planner. [Research proposal and physical evaluation plan (한국어)](docs/diagnose-before-repair.ko.md) · [Three-object stacking inference audit](data/stacking-pilot/tower-inference-audit.json)
+
+[Earlier evaluation suite](docs/tactile-agent-suite.ko.md) · [Stacking protocol and stability check](docs/tactile-stacking-protocol.ko.md)
 
 ## Four grasps on one time axis
 

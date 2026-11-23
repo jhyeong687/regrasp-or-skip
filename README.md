@@ -8,6 +8,8 @@
 
 A weak lift can follow from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds a gripper and sensor rig to compare those cases under the same motion.
 
+**Planned study · Did It Come That Way?** A robot receives a cover with a hidden latch. Pressing it can erase the very defect it was asked to find. On the same hardware, we will ask a GPT-6.2 Astra agent to inspect one copy and repair its twin, then score what changed during contact. [Experimental protocol in Korean](docs/tactile-inspection-protocol.ko.md)
+
 ## Four grasps on one time axis
 
 At **5.29 N per jaw**, the standard block lifted **11.60 mm** and the slippery block rose **0.00 mm** in the MuJoCo pilot.

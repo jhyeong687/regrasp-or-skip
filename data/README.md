@@ -17,3 +17,5 @@
 - Repeated samples within a trial are correlated. This release contains one deterministic episode per condition.
 
 Rebuild the files with `python scripts/record_trials.py` from the repository root.
+
+The [bounded recovery pilot](../docs/recovery-pilot.md) adds scored retry branches and paired model conditions. Its [compact summaries](recovery-pilot) are in this repository, and the [run bundle](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.3.0/tactile-agent-pilot-data.zip) contains the original RGB inputs, tactile streams, branch outcomes, and model responses.

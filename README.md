@@ -107,7 +107,13 @@ The public simulator uses simplified visuals for six upstream gripper parts and 
 
 ## Recovery pipeline and roadmap
 
-The simulator currently replays a scripted pinch and short lift and records the resulting camera views, arm state and 154 tactile vectors. The **proposed recovery policy** would use those observations to choose its next action.
+The [bounded recovery pilot](docs/recovery-pilot.md) replays a pinch, a short lift, and three possible retries. A local vision-language model selects from five action names, and the harness scores each choice against the corresponding MuJoCo rollout.
+
+On **26 evaluation trials**, the sensor-based rule selected **13 useful picks** and the unguarded Qwen2.5-VL 7B with aligned tactile observations selected **5**. The same model selected those five picks with shuffled tactile data. In two groups of trials with identical first-probe inputs, the same directional retry succeeded on some shells and failed on others.
+
+[Pilot protocol and results](docs/recovery-pilot.md) · [Download the recorded observations and model outputs](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.3.0/tactile-agent-pilot-data.zip)
+
+The next closed-loop experiment allows the controller to obtain more evidence by choosing and executing a bounded probe.
 
 ```mermaid
 flowchart TD

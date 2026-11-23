@@ -1,0 +1,91 @@
+{
+  "evaluation_episodes": 26,
+  "exact_conflicts": [
+    {
+      "image_sha256": "401e8765ce70968b0c2c8682139b83980dd0a1c2e62d6d8957027c11ab8e08ca",
+      "feature_sha256": "7b7b1a6cb1cbb148403fe73afb3b5d12ac033a5413e0eab7ede117dcdeb14a03",
+      "episodes": [
+        {
+          "id": "eva-03-00",
+          "label": "regrasp",
+          "successful_retries": [
+            "regrasp_in"
+          ]
+        },
+        {
+          "id": "eva-03-01",
+          "label": "regrasp",
+          "successful_retries": [
+            "regrasp_in"
+          ]
+        },
+        {
+          "id": "eva-03-02",
+          "label": "skip",
+          "successful_retries": []
+        },
+        {
+          "id": "eva-03-03",
+          "label": "skip",
+          "successful_retries": []
+        }
+      ]
+    },
+    {
+      "image_sha256": "748fbaa04560dd28de23abcb0c7e6617178be61666b48e0110bb9ad57a262d44",
+      "feature_sha256": "34a57f0513101b9cd874f14b94d86aff9434e3fb259df4d18fee66728f900427",
+      "episodes": [
+        {
+          "id": "eva-08-00",
+          "label": "regrasp",
+          "successful_retries": [
+            "regrasp_out"
+          ]
+        },
+        {
+          "id": "eva-08-01",
+          "label": "regrasp",
+          "successful_retries": [
+            "regrasp_out"
+          ]
+        },
+        {
+          "id": "eva-08-02",
+          "label": "skip",
+          "successful_retries": []
+        },
+        {
+          "id": "eva-08-03",
+          "label": "skip",
+          "successful_retries": []
+        }
+      ]
+    }
+  ],
+  "deterministic_3_way_ceiling_count": 22,
+  "retry_success_counts_among_first_failures": {
+    "regrasp_in": 3,
+    "regrasp_out": 4,
+    "regrasp_firmer": 4
+  },
+  "paired_useful_picks": {
+    "tactile_vs_vision_arm": {
+      "experimental_only": 0,
+      "control_only": 0,
+      "both": 5,
+      "neither": 21
+    },
+    "tactile_vs_shuffled": {
+      "experimental_only": 0,
+      "control_only": 0,
+      "both": 5,
+      "neither": 21
+    },
+    "adaptive_vs_fixed_firmer": {
+      "experimental_only": 5,
+      "control_only": 0,
+      "both": 8,
+      "neither": 13
+    }
+  }
+}

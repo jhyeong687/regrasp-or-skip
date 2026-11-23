@@ -232,12 +232,12 @@ class Sim:
             while len(self.tactile_history) > 1 and self.tactile_history[1][0] <= self.data.time - HISTORY_S:
                 self.tactile_history.popleft()
 
-    def advance(self, seconds):
+    def advance(self, seconds, *, scripted=True):
         count = max(0, round(min(seconds, DURATION-self.data.time) / self.model.opt.timestep))
         self.taxels.fill(0)
         self.patch_taxels.fill(0)
         self.pad_torque.fill(0)
-        self.step(count, scripted=True)
+        self.step(count, scripted=scripted)
         self.sample_window_s = count * self.model.opt.timestep
         if count:
             self.taxels /= count

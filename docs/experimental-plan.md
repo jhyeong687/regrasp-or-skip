@@ -16,7 +16,7 @@ The four-case pilot fixes the scripted motion. It gives a reproducible compariso
 | **Decide** | Choose whether to continue, run an allowed second probe, or set the item down and defer. Check motion, load and retry limits before issuing an action. | A decision, the physical test used and the outcome after that test. |
 | **Evaluate** | Compare decisions with recoverability labels from independently replayed alternate grasps. Use simulator truth or independent physical measurements for scoring. | False skips, recovery successes, drops, elapsed time and number of extra probes. |
 
-The published pilot implements scripted sensing and logging. Adaptive action selection and physical calibration are planned work. The geometry-based contact patch is useful for visualizing the pilot. Policy inputs use contact-point sensor data and measured robot or camera observations.
+The [bounded-recovery pilot](recovery-pilot.md) records three physical MuJoCo retries from a shared checkpoint and evaluates closed-vocabulary action selection against those recorded branches. Live model-controlled rollout and physical calibration remain planned. The geometry-based contact patch is useful for visualizing the pilot. Policy inputs use contact-point sensor data and measured robot or camera observations.
 
 ## Protocol and labels
 

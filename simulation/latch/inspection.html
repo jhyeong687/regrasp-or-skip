@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SO-ARM101 · PaXini Grasp Trials</title>
+<style>
+:root{color-scheme:dark;--bg:#11111a;--panel:#1b1a27;--pad:#242135;--edge:#39354a;--ink:#f4f1fa;--muted:#b6afc4;--accent:#c7b1ff;--force:#ffc380;--shear:#74f5df;--missing:#151924}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,sans-serif}
+main{max-width:1440px;margin:auto;padding:clamp(10px,2vw,24px)}
+h1,h2,h3,p,figure{margin:0}h1{font-size:clamp(19px,3.9vw,43px);line-height:1.14;letter-spacing:-.035em}h2{font-size:clamp(12px,1.65vw,20px)}h3{font-size:clamp(10px,1.45vw,16px)}
+header{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:12px}.sub,.muted,th{color:var(--muted)}.sub{margin-top:4px}.clock{text-align:right;flex-shrink:0}.clock b{display:block;color:var(--accent);font-size:clamp(15px,3vw,32px);font-variant-numeric:tabular-nums}.clock span{color:var(--muted);font-size:12px}
+.hero{display:grid;grid-template-columns:minmax(0,1.78fr) minmax(0,1fr);gap:10px}.panel{background:var(--panel);border-radius:4px;overflow:hidden}.hero-title{padding:6px 10px;display:flex;justify-content:space-between;align-items:center;gap:5px}#wide{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;background:#15151d}
+.tactile{padding:8px 9px}.tactile .muted{font-size:clamp(9px,1.3vw,13px)}.pads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:7px 0}.pad{min-width:0;background:var(--pad);border:1px solid var(--edge);border-radius:7px;padding:5px 5px 6px}.pad-head{display:flex;justify-content:space-between;align-items:baseline;gap:3px;flex-wrap:wrap}.pad-head b{font-size:clamp(10px,1.35vw,15px);color:var(--force);white-space:nowrap}.pad svg{display:block;width:100%;max-height:192px;margin:3px auto}.axis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));text-align:center;gap:1px;font-variant-numeric:tabular-nums}.axis span,.metric span{display:block;color:var(--muted);font-size:clamp(8px,1.18vw,11px)}.axis b{font-size:clamp(9px,1.28vw,13px)}
+.legend{display:flex;flex-wrap:wrap;gap:3px 10px;margin:5px 0 8px;font-size:clamp(9px,1.32vw,12px)}.normal{color:var(--force)}.shear{color:var(--shear)}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--edge);padding-top:6px;gap:4px}.metric b{font-size:clamp(10px,1.6vw,17px);font-variant-numeric:tabular-nums}
+.feeds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:8px 0 0}.feeds figcaption{font-size:clamp(10px,1.45vw,16px);font-weight:650;padding:3px 0}.feed-frame{aspect-ratio:16/9;background-color:var(--missing);background-image:var(--camera-frame);background-size:400% 100%;background-position:var(--position) center;background-repeat:no-repeat}
+[hidden]{display:none!important}.depth-note{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px 9px;color:var(--muted);font-size:11px;margin-top:5px}.depth-scale{display:inline-block;vertical-align:middle;width:49px;height:5px;border-radius:3px;background:linear-gradient(to right,#fabf65,#e15b7a,#7653b3,#26669e,#2e9aa8)}.depth-missing{display:inline-block;vertical-align:middle;width:8px;height:8px;background:var(--missing);border:1px solid #5a5768;border-radius:2px}
+.action{margin:10px 0 7px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}button,select{font:inherit;color:var(--ink);background:var(--pad);border:1px solid var(--edge);border-radius:5px;padding:4px 8px;cursor:pointer}button:hover,button:focus-visible,select:focus-visible{border-color:var(--accent)}.action p{font-size:12px}select,.hero-title button{font-size:11px;padding:2px 5px}.tactile-head{display:flex;justify-content:space-between;align-items:start;gap:4px;flex-wrap:wrap}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;font-variant-numeric:tabular-nums}th,td{padding:5px 8px;border-bottom:1px solid var(--edge);white-space:nowrap}
+@media(max-width:590px){.hero{grid-template-columns:1fr}.pad svg{max-height:150px}.depth-note{justify-content:flex-start}}
+@media(max-width:350px){.feeds{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body><main>
+<header>
+  <div><h1 lang="en">SO-ARM101 PaXini Grasp Trials</h1><p class="sub" id="case">MuJoCo · 걸쇠 검사</p></div>
+  <div class="clock"><b id="clock">—</b><span id="phase">준비 중</span></div>
+</header>
+<div class="hero">
+  <figure class="panel"><figcaption class="hero-title"><h2 id="hero-title">팔 전체</h2><button id="gripper" type="button" aria-pressed="false">집게 확대</button></figcaption><img id="wide" alt="MuJoCo SO-ARM101 전체 팔과 걸쇠 치구"></figure>
+  <section class="panel tactile" aria-labelledby="tactile-title">
+    <div class="tactile-head"><h2 id="tactile-title">PaXini 힘 분포</h2><select id="map-mode" aria-label="PaXini 힘 분포 방식"><option value="patch">접촉면 추정</option><option value="points">접촉점 기반</option></select></div><p class="muted" id="tactile-meta">패드당 77점 · MuJoCo</p>
+    <div class="pads" id="pads"></div>
+    <p class="legend"><span class="normal">● 눌림 Fz</span><span class="shear">↗ 전단 Fx / Fy</span></p>
+    <div class="metrics"><div class="metric"><span>턱 간격</span><b id="gap">—</b></div><div class="metric"><span>팔꿈치 토크</span><b id="torque">—</b></div></div>
+  </section>
+</div>
+<section class="feeds" id="feeds" aria-label="로봇 카메라">
+  <figure><figcaption class="feed-label">왼쪽 RGB</figcaption><div class="feed-frame" role="img" aria-label="왼쪽 RGB 영상" style="--position:0%"></div></figure>
+  <figure><figcaption class="feed-label">오른쪽 RGB</figcaption><div class="feed-frame" role="img" aria-label="오른쪽 RGB 영상" style="--position:33.333333%"></div></figure>
+  <figure><figcaption class="feed-label">손목 RGB</figcaption><div class="feed-frame" role="img" aria-label="손목 RGB 영상" style="--position:66.666667%"></div></figure>
+  <figure><figcaption class="feed-label">손목 깊이</figcaption><div class="feed-frame" role="img" aria-label="손목 깊이 위색상 영상" style="--position:100%"></div></figure>
+</section>
+<p class="depth-note" id="depth-note" hidden><span>가까움 <i class="depth-scale"></i> 멂</span><span><i class="depth-missing"></i> 측정 범위 밖</span><span id="coverage"></span></p>
+<section class="panel action" aria-label="현재 시행"><p id="action" role="status">준비 중</p><button id="play" type="button" hidden>저장된 검사 재생</button></section>
+<section class="table-wrap" aria-label="검사 결과"><table><thead><tr><th>시행</th><th>정책</th><th>판정</th><th>상태 보존</th><th>성공</th></tr></thead><tbody id="results"></tbody></table></section>
+</main>
+<script>
+const el = id => document.getElementById(id);
+const words = {loose:'불량', engaged:'정상', defer:'보류', on:'Astra · 촉각 켬', off:'Astra · 촉각 끔', rule:'규칙 · 촉각', current_rule:'규칙 · 전류'};
+const phases = {reset:'초기 자세', approach:'접근', pinch:'집기', probe:'탐침 이동', hold:'유지 · 측정', return:'복귀', open:'턱 열기', withdraw:'후퇴'};
+const svgElement = name => document.createElementNS('http://www.w3.org/2000/svg', name);
+const padViews = ['왼쪽', '오른쪽'].map(side => {
+  const panel = document.createElement('div');
+  panel.className = 'pad';
+  panel.innerHTML = `<div class="pad-head"><h3>${side} 패드</h3><b>— N</b></div><div class="axis">${['Fx','Fy','Fz'].map(axis => `<div><span>${axis}</span><b>—</b></div>`).join('')}</div>`;
+  const svg = svgElement('svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', `${side} PaXini 77점 힘 분포`);
+  panel.insertBefore(svg, panel.querySelector('.axis'));
+  el('pads').append(panel);
+  return {svg, normal:panel.querySelector('.pad-head b'), axes:panel.querySelectorAll('.axis b'), points:[]};
+});
+let pointsKey = '', resultKey = '', lastImages = '', latest, displayed, replay, playback, pollingError = false;
+
+function setPoints(points) {
+  const key = JSON.stringify(points);
+  if (pointsKey === key || !points.length) return;
+  pointsKey = key;
+  const xs = points.map(([x]) => x), ys = points.map(([,y]) => y);
+  const left = Math.min(...xs) - 3.5, top = -Math.max(...ys) - 3.5;
+  const width = Math.max(...xs) - left + 3.5, height = -Math.min(...ys) - top + 3.5;
+  for (const pad of padViews) {
+    // Both axes use the same mm scale, matching the M3025 coordinate file.
+    pad.svg.setAttribute('viewBox', `${left} ${top} ${width} ${height}`);
+    pad.svg.style.aspectRatio = `${width} / ${height}`;
+    pad.svg.replaceChildren();
+    pad.points = points.map(([x,y]) => {
+      const dot = svgElement('circle'), shear = svgElement('path');
+      dot.setAttribute('cx', x); dot.setAttribute('cy', -y);
+      shear.setAttribute('fill', 'none'); shear.setAttribute('stroke', '#74f5df');
+      shear.setAttribute('stroke-width', '.37'); shear.setAttribute('stroke-linecap', 'round');
+      pad.svg.append(dot, shear);
+      return {x, y:-y, dot, shear};
+    });
+  }
+}
+
+function drawPads(vectors) {
+  padViews.forEach((pad, side) => {
+    const sum = [0,0,0];
+    pad.points.forEach(({x,y,dot,shear}, i) => {
+      const [fx,fy,fz] = vectors?.[side]?.[i] ?? [0,0,0];
+      sum[0] += fx; sum[1] += fy; sum[2] += fz;
+      const load = Math.sqrt(Math.max(0, fz));
+      dot.setAttribute('r', .48 + Math.min(.8, 1.27 * load));
+      dot.setAttribute('fill', fz < .004 ? '#56516a' : `hsl(${265 - 230 * Math.min(1, load * 2)} 67% 74%)`);
+      const force = Math.hypot(fx,fy);
+      if (force <= .008) { shear.removeAttribute('d'); return; }
+      const dx = fx / force, dy = -fy / force, length = Math.min(3.1, .78 + 7.8 * force);
+      const endX = x + length * dx, endY = y + length * dy;
+      shear.setAttribute('d', `M${x} ${y}L${endX} ${endY}l${-.72*dx+.45*dy} ${-.72*dy-.45*dx}m${.72*dx-.45*dy} ${.72*dy+.45*dx}l${-.72*dx-.45*dy} ${-.72*dy+.45*dx}`);
+    });
+    pad.normal.textContent = `${Math.max(0, sum[2]).toFixed(2)} N`;
+    pad.axes.forEach((axis,i) => {
+      const n = Math.abs(sum[i]) < .005 ? 0 : sum[i];
+      axis.textContent = (n >= 0 ? '+' : '') + n.toFixed(2);
+    });
+  });
+}
+
+function render(data) {
+  displayed = data;
+  el('case').textContent = ['MuJoCo · 걸쇠 검사', data.id, words[data.policy]].filter(Boolean).join(' · ');
+  el('clock').textContent = data.wait ? `${Math.max(0, Date.now()/1000-data.wait).toFixed(0)} s 대기` : Number.isFinite(data.sim_s) ? `${data.sim_s.toFixed(2)} s` : '—';
+  el('phase').textContent = phases[data.phase] ?? data.stage ?? '';
+  el('action').textContent = data.action || '준비 중';
+  el('tactile-meta').textContent = `패드당 77점 · MuJoCo${data.policy === 'off' ? ' · 관람 전용' : ''}`;
+  if (data.image) {
+    const zoomed = el('gripper').getAttribute('aria-pressed') === 'true';
+    const wide = zoomed ? (data.gripper ?? `gripper.jpg?t=${data.image}`) : (data.wide ?? `wide.jpg?t=${data.image}`);
+    const cams = data.cams ?? `cams.jpg?t=${data.image}`;
+    const key = `${wide}|${cams}`;
+    if (key !== lastImages) {
+      lastImages = key;
+      el('wide').src = wide;
+      el('feeds').style.setProperty('--camera-frame', `url("${cams}")`);
+    }
+  }
+  setPoints(data.points ?? []);
+  drawPads(el('map-mode').value === 'patch' ? (data.patch_pads ?? data.pads) : data.pads);
+  el('gap').textContent = Number.isFinite(data.gap_mm) ? `${data.gap_mm.toFixed(1)} mm` : '—';
+  el('torque').textContent = Number.isFinite(data.elbow_Nm) ? `${data.elbow_Nm.toFixed(2)} N·m` : '—';
+  el('depth-note').hidden = !data.depth;
+  const depth = data.depth;
+  if (!depth) return;
+  const handle = depth.target_median_mm != null ? `손잡이 ${depth.target_median_mm.toFixed(0)} mm` :
+    depth.target_raw_median_mm != null && depth.target_raw_median_mm < depth.min_m * 1000
+      ? `손잡이 ${Math.round(depth.min_m*1000)} mm 안쪽 · 깊이 미표시` : '손잡이 깊이 없음';
+  el('coverage').textContent = `유효 ${depth.valid_pct.toFixed(1)}% · ${Math.round(depth.min_m*1000)}–${Math.round(depth.max_m*1000)} mm · ${handle}`;
+}
+
+function renderResults(results) {
+  const key = JSON.stringify(results);
+  if (key === resultKey) return;
+  resultKey = key;
+  const table = el('results');
+  table.replaceChildren();
+  for (const row of results.slice().reverse()) {
+    const tr = table.insertRow();
+    for (const value of [row.id, words[row.policy], words[row.answer] ?? '오류', row.preserved ? '✓' : '전환', row.success ? '✓' : '—']) tr.insertCell().textContent = value;
+  }
+}
+
+async function readJson(path) {
+  const response = await fetch(path, {cache:'no-store'});
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+async function tick() {
+  try {
+    latest = await readJson('status.json');
+    pollingError = false;
+    if (!playback) render(latest);
+    renderResults(latest.results ?? []);
+  } catch {
+    if (!pollingError && !playback) el('action').textContent = '실험 상태를 불러오는 중';
+    pollingError = true;
+  } finally {
+    setTimeout(tick, 500);
+  }
+}
+
+function stopReplay() {
+  clearTimeout(playback.timer);
+  playback = undefined;
+  el('play').textContent = '저장된 검사 재생';
+  if (latest) render(latest);
+}
+
+el('play').addEventListener('click', () => {
+  if (playback) { stopReplay(); return; }
+  playback = {index:0};
+  el('play').textContent = '재생 닫기';
+  function next() {
+    const frame = replay.frames[playback.index++];
+    if (!frame) { el('play').textContent = '결과 화면으로'; return; }
+    render({...latest, ...frame, id:replay.id, policy:replay.policy, action:'저장된 동작 재생 · ' + replay.description, wait:0});
+    playback.timer = setTimeout(next, 200);
+  }
+  next();
+});
+el('map-mode').addEventListener('change', () => { if (displayed) render(displayed); });
+el('gripper').addEventListener('click', () => {
+  const button = el('gripper');
+  const zoomed = button.getAttribute('aria-pressed') !== 'true';
+  button.setAttribute('aria-pressed', String(zoomed));
+  button.textContent = zoomed ? '팔 전체' : '집게 확대';
+  el('hero-title').textContent = zoomed ? '집게 확대' : '팔 전체';
+  el('wide').alt = zoomed ? 'MuJoCo PaXini 집게와 걸쇠 손잡이' : 'MuJoCo SO-ARM101 전체 팔과 걸쇠 치구';
+  if (displayed) render(displayed);
+});
+readJson('replay.json').then(data => { if (data.frames?.length) { replay = data; el('play').hidden = false; } }).catch(() => {});
+tick();
+</script>
+</body>
+</html>

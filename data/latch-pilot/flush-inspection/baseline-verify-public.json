@@ -1,0 +1,69 @@
+{
+  "verified_episodes": [
+    "B01-rule",
+    "B01-current_rule",
+    "B02-current_rule",
+    "B02-rule",
+    "B03-current_rule",
+    "B03-rule",
+    "B04-current_rule",
+    "B04-rule",
+    "B05-current_rule",
+    "B05-rule",
+    "B06-current_rule",
+    "B06-rule"
+  ],
+  "unique_turns": 0,
+  "precontact_by_variant": {
+    "1": {
+      "center_mm": [
+        202.0,
+        0.0,
+        64.0
+      ],
+      "display_sha256": [
+        "7a4156e74e7bb3e3a83a53e3e242f9769fa253165f8c724ccad7d53bac3705dc",
+        "18dfdc3dd2ab9600994060a5f64d950c8bd077d8520dbafe2fb42c966220064c",
+        "d8da82ae698f8cadf17771207ee7d8594e3198d320c7837ebbe720094af056dd",
+        "36735f3c32231b676ce47461c117efef6fc367333e6334597d1f6b8e46f8d426"
+      ],
+      "raw_depth_sha256": "83e6a8ac5c8cc68674fb0416d6a4426c1f8bb170e4eb28b2c1f3e00776109179"
+    },
+    "2": {
+      "center_mm": [
+        202.0,
+        0.0,
+        64.0
+      ],
+      "display_sha256": [
+        "7a4156e74e7bb3e3a83a53e3e242f9769fa253165f8c724ccad7d53bac3705dc",
+        "18dfdc3dd2ab9600994060a5f64d950c8bd077d8520dbafe2fb42c966220064c",
+        "d8da82ae698f8cadf17771207ee7d8594e3198d320c7837ebbe720094af056dd",
+        "36735f3c32231b676ce47461c117efef6fc367333e6334597d1f6b8e46f8d426"
+      ],
+      "raw_depth_sha256": "83e6a8ac5c8cc68674fb0416d6a4426c1f8bb170e4eb28b2c1f3e00776109179"
+    },
+    "3": {
+      "center_mm": [
+        202.0,
+        0.0,
+        64.0
+      ],
+      "display_sha256": [
+        "7a4156e74e7bb3e3a83a53e3e242f9769fa253165f8c724ccad7d53bac3705dc",
+        "18dfdc3dd2ab9600994060a5f64d950c8bd077d8520dbafe2fb42c966220064c",
+        "d8da82ae698f8cadf17771207ee7d8594e3198d320c7837ebbe720094af056dd",
+        "36735f3c32231b676ce47461c117efef6fc367333e6334597d1f6b8e46f8d426"
+      ],
+      "raw_depth_sha256": "83e6a8ac5c8cc68674fb0416d6a4426c1f8bb170e4eb28b2c1f3e00776109179"
+    }
+  },
+  "camera_order": [
+    "rgb_scene_left",
+    "rgb_scene_right",
+    "wrist_rgb",
+    "wrist_depth"
+  ],
+  "untouched_control_s": 4,
+  "trace_replay": "identical at storage precision"
+}

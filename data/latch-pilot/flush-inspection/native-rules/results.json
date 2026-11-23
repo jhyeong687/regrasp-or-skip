@@ -1,0 +1,372 @@
+{
+  "model": "gpt-6.2-astra",
+  "effort": "xhigh",
+  "started_utc": "2026-11-23T08:33:09.194+00:00",
+  "probe_budget": 2,
+  "policies": [
+    "rule",
+    "current_rule"
+  ],
+  "camera_names": [
+    "rgb_scene_left",
+    "rgb_scene_right",
+    "wrist_rgb",
+    "wrist_depth"
+  ],
+  "trials": [
+    {
+      "id": "B01-rule",
+      "variant": 3,
+      "policy": "rule",
+      "initial": "engaged",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 4.0318,
+      "answer": "engaged",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "engaged",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.281,
+      "inference_s": 0
+    },
+    {
+      "id": "B01-current_rule",
+      "variant": 3,
+      "policy": "current_rule",
+      "initial": "engaged",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 1089.8458096854292,
+      "answer": "engaged",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "engaged",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.276,
+      "inference_s": 0
+    },
+    {
+      "id": "B02-current_rule",
+      "variant": 2,
+      "policy": "current_rule",
+      "initial": "loose",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 55.37749241945383,
+      "answer": "loose",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.282,
+      "inference_s": 0
+    },
+    {
+      "id": "B02-rule",
+      "variant": 2,
+      "policy": "rule",
+      "initial": "loose",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 0.1056,
+      "answer": "loose",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.315,
+      "inference_s": 0
+    },
+    {
+      "id": "B03-current_rule",
+      "variant": 1,
+      "policy": "current_rule",
+      "initial": "loose",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 57.154760664940824,
+      "answer": "loose",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.33,
+      "inference_s": 0
+    },
+    {
+      "id": "B03-rule",
+      "variant": 1,
+      "policy": "rule",
+      "initial": "loose",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 0.0844,
+      "answer": "loose",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.289,
+      "inference_s": 0
+    },
+    {
+      "id": "B04-current_rule",
+      "variant": 1,
+      "policy": "current_rule",
+      "initial": "engaged",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 1100.7459591870718,
+      "answer": "engaged",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "engaged",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.298,
+      "inference_s": 0
+    },
+    {
+      "id": "B04-rule",
+      "variant": 1,
+      "policy": "rule",
+      "initial": "engaged",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 4.0332,
+      "answer": "engaged",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "engaged",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.219,
+      "inference_s": 0
+    },
+    {
+      "id": "B05-current_rule",
+      "variant": 2,
+      "policy": "current_rule",
+      "initial": "engaged",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 1080.8599971010738,
+      "answer": "engaged",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "engaged",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.282,
+      "inference_s": 0
+    },
+    {
+      "id": "B05-rule",
+      "variant": 2,
+      "policy": "rule",
+      "initial": "engaged",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 4.0293,
+      "answer": "engaged",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "engaged",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.293,
+      "inference_s": 0
+    },
+    {
+      "id": "B06-current_rule",
+      "variant": 3,
+      "policy": "current_rule",
+      "initial": "loose",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 53.515314526674395,
+      "answer": "loose",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.283,
+      "inference_s": 0
+    },
+    {
+      "id": "B06-rule",
+      "variant": 3,
+      "policy": "rule",
+      "initial": "loose",
+      "actions": [
+        {
+          "x_mm": 0,
+          "z_mm": -1,
+          "dx_mm": 2,
+          "dz_mm": 0,
+          "gap_mm": 24
+        }
+      ],
+      "calls": [],
+      "metric": 0.0979,
+      "answer": "loose",
+      "error": null,
+      "preserved": true,
+      "correct": true,
+      "success": true,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 4.28,
+      "wall_s": 3.266,
+      "inference_s": 0
+    }
+  ],
+  "setup_revision": "r7-bounded-grasp",
+  "mujoco": "3.17.0",
+  "design": [
+    {
+      "variant": 3,
+      "state": "engaged"
+    },
+    {
+      "variant": 2,
+      "state": "loose"
+    },
+    {
+      "variant": 1,
+      "state": "loose"
+    },
+    {
+      "variant": 1,
+      "state": "engaged"
+    },
+    {
+      "variant": 2,
+      "state": "engaged"
+    },
+    {
+      "variant": 3,
+      "state": "loose"
+    }
+  ],
+  "finished_utc": "2026-11-23T08:33:52.335+00:00",
+  "elapsed_wall_s": 43.142
+}

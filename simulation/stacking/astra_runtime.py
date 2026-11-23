@@ -2,6 +2,7 @@
 
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import selectors
 import subprocess
@@ -22,7 +23,7 @@ def infer(prompt, image, schema, *, timeout=150):
     receipt = {"started_utc": started, "events": [], "requested_model": MODEL,
                "requested_effort": EFFORT}
     with tempfile.TemporaryDirectory(prefix="r7-placement-") as directory:
-        command = ["codex", "app-server", "-c", f'model="{MODEL}"',
+        command = [os.environ.get("R7_CODEX_BIN", "codex"), "app-server", "-c", f'model="{MODEL}"',
                    "-c", f'model_reasoning_effort="{EFFORT}"']
         with subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                               stderr=subprocess.DEVNULL, cwd=directory) as process:
@@ -85,6 +86,8 @@ def infer(prompt, image, schema, *, timeout=150):
                             raise RuntimeError(str(event["error"]))
                         if method == "turn/started":
                             receipt["turn_id"] = params["turn"]["id"]
+                        elif method == "error":
+                            receipt["turn_error"] = params.get("error")
                         elif method == "thread/tokenUsage/updated":
                             receipt["usage"] = params["tokenUsage"]
                             receipt["events"].append(event)
@@ -102,6 +105,8 @@ def infer(prompt, image, schema, *, timeout=150):
                             receipt["turn_id"] = params["turn"]["id"]
                             receipt["turn_status"] = params["turn"]["status"]
                             if receipt["turn_status"] != "completed" or "response" not in receipt:
+                                if params["turn"].get("error") is not None:
+                                    receipt["turn_error"] = params["turn"]["error"]
                                 raise RuntimeError(f"Codex turn status: {receipt['turn_status']}")
                             break
             except (OSError, ValueError, KeyError, RuntimeError) as error:

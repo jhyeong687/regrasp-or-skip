@@ -1,0 +1,47 @@
+{
+  "scene_sha256": "b923f7e4aa937dfe8e00f4cee6e19dbd5bd80e96e84284a7db9de5ded7e8ab89",
+  "visual_meshes": {
+    "rail": {
+      "file": "rail.stl",
+      "sha256": "c91c0f349e60b41f01a9688e5a22242d74799d5390a8cc235d72191351fb744f",
+      "triangles": 6164,
+      "contype": 0,
+      "conaffinity": 0
+    },
+    "support": {
+      "file": "support.stl",
+      "sha256": "02e45f91cac987991636e31011b2f509f0a8bc4f1c97e57e7fb899847a7621fb",
+      "triangles": 10312,
+      "contype": 0,
+      "conaffinity": 0
+    },
+    "servo_plate": {
+      "file": "servo_plate.stl",
+      "sha256": "9e8135cb83a75a2464f0a7173417d0df38c3c20a7722dadbcebb2208fd241911",
+      "triangles": 9392,
+      "contype": 0,
+      "conaffinity": 0
+    },
+    "pinion": {
+      "file": "pinion.stl",
+      "sha256": "72e12d8f0241640998b1f749e4f340d3a33f6b098d019fb5d97ebe98f2a3edaa",
+      "triangles": 11634,
+      "contype": 0,
+      "conaffinity": 0
+    },
+    "left_rack": {
+      "file": "left_rack.stl",
+      "sha256": "fce59f701b7b39627a9ce73519e01117aecb7476edd267952277b4d980904403",
+      "triangles": 11924,
+      "contype": 0,
+      "conaffinity": 0
+    },
+    "right_rack": {
+      "file": "right_rack.stl",
+      "sha256": "22a19451d78667aec6a57118f849dcd286a99897d91d58eeb66c3b2b4585b0de",
+      "triangles": 11866,
+      "contype": 0,
+      "conaffinity": 0
+    }
+  }
+}

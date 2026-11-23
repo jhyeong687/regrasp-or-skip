@@ -1,0 +1,330 @@
+{
+  "stepped-light-slow": {
+    "choice": {
+      "action": "retry",
+      "region": "right",
+      "grip": "gentle",
+      "evidence": "The raised right step offers broad opposing faces, the balanced 6.875 N pad forces and low shear support a gentle grasp, and the 2.64 s retry fits the 6.6 s window."
+    },
+    "wall_s": 41.378,
+    "usage": {
+      "input_tokens": 22535,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 859,
+      "reasoning_output_tokens": 785
+    },
+    "observation": {
+      "belt_rate_mm_s": 25.0,
+      "remaining_s": 6.6,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 5.84,
+        "skip": 5.4
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          6.875,
+          6.875
+        ],
+        "pad_shear_N": [
+          0.251,
+          0.248
+        ],
+        "elbow_Nm": 0.7835,
+        "jaw_gap_mm": 36.458,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "stepped-light-fast": {
+    "choice": {
+      "action": "retry",
+      "region": "right",
+      "grip": "gentle",
+      "evidence": "The right section offers broad opposing faces, the probe measured 6.875 N normal force and about 0.25 N shear per pad, and a gentle retry fits the 3.0 s window at 2.64 s."
+    },
+    "wall_s": 29.223,
+    "usage": {
+      "input_tokens": 22533,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 685,
+      "reasoning_output_tokens": 606
+    },
+    "observation": {
+      "belt_rate_mm_s": 55.0,
+      "remaining_s": 3.0,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 4.095,
+        "skip": 2.455
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          6.875,
+          6.875
+        ],
+        "pad_shear_N": [
+          0.251,
+          0.248
+        ],
+        "elbow_Nm": 0.7835,
+        "jaw_gap_mm": 36.458,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "stepped-loaded-slow": {
+    "choice": {
+      "action": "wait",
+      "region": "right",
+      "grip": "firm",
+      "evidence": "The 1.04 Nm elbow torque and 1.31\u20131.50 N pad shear favor indexing closer, where a firm grasp on the broad right step fits the handoff window with 0.76 s to spare."
+    },
+    "wall_s": 17.541,
+    "usage": {
+      "input_tokens": 22533,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 346,
+      "reasoning_output_tokens": 269
+    },
+    "observation": {
+      "belt_rate_mm_s": 25.0,
+      "remaining_s": 6.6,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 5.84,
+        "skip": 5.4
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          7.009,
+          7.014
+        ],
+        "pad_shear_N": [
+          1.312,
+          1.503
+        ],
+        "elbow_Nm": 1.0415,
+        "jaw_gap_mm": 36.748,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "stepped-loaded-fast": {
+    "choice": {
+      "action": "skip",
+      "region": "center",
+      "grip": "gentle",
+      "evidence": "The 1.0415 Nm elbow torque and 2.815 N combined pad shear make a far handoff risky, and the closer pickup needs 4.095 s with only 3.0 s remaining."
+    },
+    "wall_s": 17.185,
+    "usage": {
+      "input_tokens": 22531,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 365,
+      "reasoning_output_tokens": 278
+    },
+    "observation": {
+      "belt_rate_mm_s": 55.0,
+      "remaining_s": 3.0,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 4.095,
+        "skip": 2.455
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          7.009,
+          7.014
+        ],
+        "pad_shear_N": [
+          1.312,
+          1.503
+        ],
+        "elbow_Nm": 1.0415,
+        "jaw_gap_mm": 36.748,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "elbow-slow": {
+    "choice": {
+      "action": "wait",
+      "region": "left",
+      "grip": "firm",
+      "evidence": "The 0.8271 N\u00b7m elbow torque and uneven pad shear favor indexing closer, where a firm grasp on the broad left section leaves 0.76 s to spare after handoff."
+    },
+    "wall_s": 38.175,
+    "usage": {
+      "input_tokens": 17456,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 861,
+      "reasoning_output_tokens": 791
+    },
+    "observation": {
+      "belt_rate_mm_s": 25.0,
+      "remaining_s": 6.6,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 5.84,
+        "skip": 5.4
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          6.416,
+          6.416
+        ],
+        "pad_shear_N": [
+          0.234,
+          0.65
+        ],
+        "elbow_Nm": 0.8271,
+        "jaw_gap_mm": 35.507,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "elbow-fast": {
+    "choice": {
+      "action": "skip",
+      "region": "center",
+      "grip": "gentle",
+      "evidence": "The 0.8271 Nm elbow torque and 0.65 N shear on one pad make the far handoff risky, and the closer pickup requires 4.095 s with only 3.0 s remaining."
+    },
+    "wall_s": 45.314,
+    "usage": {
+      "input_tokens": 17460,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1099,
+      "reasoning_output_tokens": 1011
+    },
+    "observation": {
+      "belt_rate_mm_s": 55.0,
+      "remaining_s": 3.0,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 4.095,
+        "skip": 2.455
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          6.416,
+          6.416
+        ],
+        "pad_shear_N": [
+          0.234,
+          0.65
+        ],
+        "elbow_Nm": 0.8271,
+        "jaw_gap_mm": 35.507,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "wedge-slow": {
+    "choice": {
+      "action": "wait",
+      "region": "right",
+      "grip": "firm",
+      "evidence": "The broad right section offers opposing faces for a firm grasp, and the 0.816 N\u00b7m elbow torque with about 0.36 N of shear per pad favors the closer pickup, which leaves 0.76 s to spare."
+    },
+    "wall_s": 22.809,
+    "usage": {
+      "input_tokens": 22529,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 673,
+      "reasoning_output_tokens": 582
+    },
+    "observation": {
+      "belt_rate_mm_s": 25.0,
+      "remaining_s": 6.6,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 5.84,
+        "skip": 5.4
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          6.439,
+          6.439
+        ],
+        "pad_shear_N": [
+          0.352,
+          0.367
+        ],
+        "elbow_Nm": 0.8162,
+        "jaw_gap_mm": 35.557,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  },
+  "wedge-fast": {
+    "choice": {
+      "action": "retry",
+      "region": "right",
+      "grip": "firm",
+      "evidence": "The 2.64 s retry fits the 3.0 s window, the broad right section gives both pads room for firm contact, and probe shear stayed below 0.37 N at each pad against 6.44 N of normal force."
+    },
+    "wall_s": 25.041,
+    "usage": {
+      "input_tokens": 22533,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 527,
+      "reasoning_output_tokens": 446
+    },
+    "observation": {
+      "belt_rate_mm_s": 55.0,
+      "remaining_s": 3.0,
+      "maneuver_time_s": {
+        "retry": 2.64,
+        "wait": 4.095,
+        "skip": 2.455
+      },
+      "first_probe": {
+        "pad_normal_N": [
+          6.439,
+          6.439
+        ],
+        "pad_shear_N": [
+          0.352,
+          0.367
+        ],
+        "elbow_Nm": 0.8162,
+        "jaw_gap_mm": 35.557,
+        "initial_command": {
+          "offset_mm": 0,
+          "gap_mm": 22
+        }
+      }
+    }
+  }
+}

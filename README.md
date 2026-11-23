@@ -10,7 +10,9 @@ A weak lift can follow from poor contact, a slippery surface, or a load the arm 
 
 **MuJoCo latch pilot · Did It Come That Way?** A light wiggle distinguished the two initial latch states in 10/10 perturbed simulation trials. Pressing the loose lid seated it in 5/5 trials, and the bolt retained it after the gripper withdrew. [Workbench replay, results and data](docs/latch-pilot.ko.md) · [Astra experimental protocol](docs/tactile-inspection-protocol.ko.md)
 
-**Conveyor study proposal.** Can a short tactile probe tell the robot whether to regrasp, wait for a better position, or let the item pass before its deadline? [Conveyor experiment design](docs/conveyor-tactile-triage.ko.md)
+**Conveyor pilot · Regrasp or Let It Pass?** The same loaded part was picked after indexing closer at 25 mm/s and passed at 55 mm/s. Across eight paired conditions, the force rule delivered 7/8 and Astra `xhigh` delivered 6/8 with the simulator clock paused for inference. [Workbench replays and measurements](docs/conveyor-pilot.ko.md)
+
+**Next study · Tactile Evidence for Agentic Manipulation.** Keep appearance fixed and change the hidden physics. Measure whether tactile feedback changes an agent's waypoints across stacking, latch inspection, and insertion. [Evaluation suite](docs/tactile-agent-suite.ko.md) · [Stacking protocol and stability check](docs/tactile-stacking-protocol.ko.md)
 
 ## Four grasps on one time axis
 

@@ -1,0 +1,18 @@
+<mujocoinclude>
+  <geom type="box" pos=".25 0 -.006" size=".175 .047 .004" material="vise" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".25 -.050 .003" size=".175 .003 .006" material="silver" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".25 .050 .003" size=".175 .003 .006" material="silver" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".25 0 -.001" size=".175 .047 .001" material="housing" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".250 -.052 .011" size=".002 .002 .0008" material="handle_mark" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".170 -.052 .011" size=".002 .002 .0008" material="handle_mark" contype="0" conaffinity="0"/>
+  <body name="carrier">
+    <joint name="index" type="slide" axis="1 0 0" damping="4" range="-.19 .11"/>
+    <geom name="belt_contact" type="box" pos=".250 0 .003" size=".060 .044 .003" mass=".22" material="mat" contype="16" conaffinity="2" friction="1.1 .009 .0002"/>
+    <geom type="box" pos=".196 0 .00615" size=".001 .041 .00015" material="handle_mark" contype="0" conaffinity="0" mass="0"/>
+    <geom type="box" pos=".304 0 .00615" size=".001 .041 .00015" material="handle_mark" contype="0" conaffinity="0" mass="0"/>
+  </body>
+  <geom name="receiver" type="box" pos=".180 -.139 .004" size=".059 .050 .011" material="housing" contype="16" conaffinity="2" friction=".75 .01 .0002"/>
+  <geom type="box" pos=".180 -.184 .015" size=".054 .004 .006" material="vise" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".235 -.139 .015" size=".004 .049 .006" material="vise" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".123 -.139 .015" size=".004 .049 .006" material="vise" contype="0" conaffinity="0"/>
+</mujocoinclude>

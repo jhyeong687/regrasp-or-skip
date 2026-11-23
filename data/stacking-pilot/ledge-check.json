@@ -1,0 +1,41 @@
+{
+  "mujoco": "3.17.0",
+  "trials": [
+    {
+      "hidden_center_mm": -12,
+      "placement_mm": -12,
+      "tilt_deg": 90.0,
+      "stable_on_ledge": false
+    },
+    {
+      "hidden_center_mm": -12,
+      "placement_mm": 0,
+      "tilt_deg": 179.94,
+      "stable_on_ledge": false
+    },
+    {
+      "hidden_center_mm": -12,
+      "placement_mm": 12,
+      "tilt_deg": 0.0,
+      "stable_on_ledge": true
+    },
+    {
+      "hidden_center_mm": 12,
+      "placement_mm": -12,
+      "tilt_deg": 0.0,
+      "stable_on_ledge": true
+    },
+    {
+      "hidden_center_mm": 12,
+      "placement_mm": 0,
+      "tilt_deg": 179.94,
+      "stable_on_ledge": false
+    },
+    {
+      "hidden_center_mm": 12,
+      "placement_mm": 12,
+      "tilt_deg": 90.0,
+      "stable_on_ledge": false
+    }
+  ]
+}

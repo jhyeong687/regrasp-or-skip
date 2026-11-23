@@ -56,7 +56,7 @@ def chamfer_box(asset, name, x, y, z, bevel):
     ET.SubElement(asset, "mesh", name=name, vertex=vertices)
 
 
-def load_model(robot_scene):
+def load_model(robot_scene, scene_file=None, customize=None):
     xml = ET.parse(robot_scene).getroot()
     xml.set("model", "SO-ARM101 latch workbench")
     xml.find("compiler").set("meshdir", str(robot_scene.parent / "meshes"))
@@ -68,7 +68,7 @@ def load_model(robot_scene):
     world.find("geom[@name='table']").set("rgba", "0 0 0 0")
     for item in ET.parse(HERE / "workbench.xml").getroot():
         world.append(item)
-    for item in ET.parse(HERE / "fixture.xml").getroot():
+    for item in ET.parse(scene_file or HERE / "fixture.xml").getroot():
         world.append(item)
     default = ET.SubElement(ET.SubElement(xml, "default"), "default", {"class": "mechanism"})
     ET.SubElement(default, "geom", contype="16", conaffinity="16", condim="3",
@@ -116,6 +116,8 @@ def load_model(robot_scene):
         ET.SubElement(asset, "mesh", name=f"guide_{side}", vertex=funnel)
     ET.SubElement(asset, "texture", name="wood", type="2d", file="grain.png")
     ET.SubElement(asset, "material", name="oak", texture="wood", specular=".16", shininess=".22")
+    if customize is not None:
+        customize(xml)
     with tempfile.TemporaryDirectory() as directory:
         path = Path(directory) / "grain.png"
         save_wood(path)

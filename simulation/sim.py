@@ -134,6 +134,9 @@ class Sim:
             distances = np.abs(local) - size
         return np.linalg.norm(np.maximum(distances, 0), axis=1) + np.minimum(distances.max(axis=1), 0)
 
+    def _object_contact(self, geom1, geom2):
+        return self.object_geom in (geom1, geom2)
+
     def _sample_tactile(self):
         readings = np.zeros((2, len(POINTS), 3))
         object_readings = np.zeros_like(readings)
@@ -161,7 +164,7 @@ class Sim:
             weights = 1. / (r2[closest]+.00065**2)
             distributed = (weights/weights.sum())[:,None] * local_force
             readings[slot,closest] += distributed
-            if self.object_geom in (g1, g2):
+            if self._object_contact(g1, g2):
                 object_readings[slot,closest] += distributed
 
         patch = readings.copy()

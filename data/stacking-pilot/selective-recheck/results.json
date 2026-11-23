@@ -1,0 +1,1399 @@
+{
+  "requested_model": "gpt-6.2-astra",
+  "requested_reasoning_effort": "xhigh",
+  "lift": [
+    {
+      "xyz_mm": [
+        222,
+        36,
+        82
+      ],
+      "pitch_deg": -27,
+      "yaw_deg": 0,
+      "gap_mm": 76,
+      "time_s": 0.6
+    },
+    {
+      "xyz_mm": [
+        222,
+        36,
+        48
+      ],
+      "pitch_deg": -13,
+      "yaw_deg": 0,
+      "gap_mm": 76,
+      "time_s": 0.6
+    },
+    {
+      "xyz_mm": [
+        222,
+        36,
+        12
+      ],
+      "pitch_deg": -1,
+      "yaw_deg": 0,
+      "gap_mm": 76,
+      "time_s": 0.7
+    },
+    {
+      "xyz_mm": [
+        222,
+        36,
+        12
+      ],
+      "pitch_deg": -1,
+      "yaw_deg": 0,
+      "gap_mm": 22,
+      "time_s": 0.6
+    },
+    {
+      "xyz_mm": [
+        222,
+        36,
+        48
+      ],
+      "pitch_deg": -13,
+      "yaw_deg": 0,
+      "gap_mm": 22,
+      "time_s": 0.7
+    },
+    {
+      "xyz_mm": [
+        222,
+        36,
+        66
+      ],
+      "pitch_deg": -16,
+      "yaw_deg": 0,
+      "gap_mm": 22,
+      "time_s": 0.4
+    },
+    {
+      "xyz_mm": [
+        222,
+        36,
+        66
+      ],
+      "pitch_deg": -16,
+      "yaw_deg": 0,
+      "gap_mm": 22,
+      "time_s": 0.5
+    }
+  ],
+  "gate": {
+    "drift_floor_mm": 2.0,
+    "rail_half_width_factor": 0.36,
+    "window_samples": 4,
+    "read_stop_s": 0.44,
+    "alignment_s": 0.4
+  },
+  "observations": {
+    "dev-light": {
+      "case": {
+        "name": "dev-light",
+        "ballast_mm": -7,
+        "rail_half_mm": 11,
+        "pitch_handoff_deg": -26,
+        "route": "direct",
+        "split": "calibration"
+      },
+      "observation": {
+        "rail_width_mm": 22,
+        "initial_offset_mm": -5.562,
+        "transit_offset_shift_mm": 1.81,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 3.96,
+        "current_tcp": {
+          "xyz_mm": [
+            209.4,
+            -103.75,
+            81.56
+          ],
+          "pitch_deg": -25.87,
+          "yaw_deg": 0.03
+        }
+      },
+      "image": "dev-light-transit.jpg",
+      "image_sha256": null,
+      "gate_recommendation": false
+    },
+    "dev-shift": {
+      "case": {
+        "name": "dev-shift",
+        "ballast_mm": -16,
+        "rail_half_mm": 7,
+        "pitch_handoff_deg": -27,
+        "route": "raised",
+        "split": "calibration"
+      },
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": -13.88,
+        "transit_offset_shift_mm": 3.175,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            217.7,
+            -103.74,
+            81.56
+          ],
+          "pitch_deg": -26.88,
+          "yaw_deg": 0.03
+        }
+      },
+      "image": "dev-shift-transit.jpg",
+      "image_sha256": null,
+      "gate_recommendation": true
+    },
+    "dev-right": {
+      "case": {
+        "name": "dev-right",
+        "ballast_mm": 10,
+        "rail_half_mm": 8,
+        "pitch_handoff_deg": -30,
+        "route": "raised",
+        "split": "calibration"
+      },
+      "observation": {
+        "rail_width_mm": 16,
+        "initial_offset_mm": 10.485,
+        "transit_offset_shift_mm": 0.54,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.88,
+        "current_tcp": {
+          "xyz_mm": [
+            193.37,
+            -103.74,
+            81.52
+          ],
+          "pitch_deg": -29.86,
+          "yaw_deg": 0.04
+        }
+      },
+      "image": "dev-right-transit.jpg",
+      "image_sha256": null,
+      "gate_recommendation": false
+    },
+    "rail-a": {
+      "case": {
+        "name": "rail-a",
+        "ballast_mm": -17,
+        "rail_half_mm": 7,
+        "pitch_handoff_deg": -27,
+        "route": "raised",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": -14.794,
+        "transit_offset_shift_mm": 3.336,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            218.61,
+            -103.74,
+            81.56
+          ],
+          "pitch_deg": -26.88,
+          "yaw_deg": 0.03
+        }
+      },
+      "image": "rail-a-transit.jpg",
+      "image_sha256": "ca2e2b488e2f38c8fbc9eefe546462fd263f3b02f6190a8999de072249480230",
+      "gate_recommendation": true
+    },
+    "rail-b": {
+      "case": {
+        "name": "rail-b",
+        "ballast_mm": -11,
+        "rail_half_mm": 7,
+        "pitch_handoff_deg": -26,
+        "route": "raised",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": -9.267,
+        "transit_offset_shift_mm": 2.299,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            213.09,
+            -103.74,
+            81.57
+          ],
+          "pitch_deg": -25.88,
+          "yaw_deg": 0.03
+        }
+      },
+      "image": "rail-b-transit.jpg",
+      "image_sha256": "1ea95ff34bc9d70ccdea62b914c5cd4e5da52f206d16e1e002882dd0044ddfa5",
+      "gate_recommendation": false
+    },
+    "rail-c": {
+      "case": {
+        "name": "rail-c",
+        "ballast_mm": -5,
+        "rail_half_mm": 12,
+        "pitch_handoff_deg": -27,
+        "route": "direct",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 24,
+        "initial_offset_mm": -3.699,
+        "transit_offset_shift_mm": 1.713,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 4.32,
+        "current_tcp": {
+          "xyz_mm": [
+            207.54,
+            -103.74,
+            81.54
+          ],
+          "pitch_deg": -26.87,
+          "yaw_deg": 0.04
+        }
+      },
+      "image": "rail-c-transit.jpg",
+      "image_sha256": "7893e1992b28a499a3c4db9e74acee43142170bc7b64e96d440b02cc469ac13f",
+      "gate_recommendation": false
+    },
+    "rail-d": {
+      "case": {
+        "name": "rail-d",
+        "ballast_mm": 7,
+        "rail_half_mm": 11,
+        "pitch_handoff_deg": -28,
+        "route": "direct",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 22,
+        "initial_offset_mm": 7.608,
+        "transit_offset_shift_mm": 0.784,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 3.96,
+        "current_tcp": {
+          "xyz_mm": [
+            196.24,
+            -103.73,
+            81.53
+          ],
+          "pitch_deg": -27.86,
+          "yaw_deg": 0.07
+        }
+      },
+      "image": "rail-d-transit.jpg",
+      "image_sha256": "be0e581183a06b4489c418def7ccbef84f2066e4c4751c20ee5a78434b0d4125",
+      "gate_recommendation": false
+    },
+    "rail-e": {
+      "case": {
+        "name": "rail-e",
+        "ballast_mm": 12,
+        "rail_half_mm": 8,
+        "pitch_handoff_deg": -29,
+        "route": "direct",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 16,
+        "initial_offset_mm": 12.376,
+        "transit_offset_shift_mm": 0.481,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.88,
+        "current_tcp": {
+          "xyz_mm": [
+            191.48,
+            -103.74,
+            81.52
+          ],
+          "pitch_deg": -28.86,
+          "yaw_deg": 0.05
+        }
+      },
+      "image": "rail-e-transit.jpg",
+      "image_sha256": "8e02bb794d62a210d3f0629f5f64fca38336385343f40676fbe68325b718433f",
+      "gate_recommendation": false
+    },
+    "rail-f": {
+      "case": {
+        "name": "rail-f",
+        "ballast_mm": 17,
+        "rail_half_mm": 7,
+        "pitch_handoff_deg": -30,
+        "route": "raised",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": 17.21,
+        "transit_offset_shift_mm": 0.166,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            186.66,
+            -103.75,
+            81.52
+          ],
+          "pitch_deg": -29.87,
+          "yaw_deg": 0.05
+        }
+      },
+      "image": "rail-f-transit.jpg",
+      "image_sha256": "3c0db2e844919e83964368010342b11e8886792494b866a3dd16224f1732d475",
+      "gate_recommendation": false
+    },
+    "rail-g": {
+      "case": {
+        "name": "rail-g",
+        "ballast_mm": -14,
+        "rail_half_mm": 8,
+        "pitch_handoff_deg": -31,
+        "route": "raised",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 16,
+        "initial_offset_mm": -12.03,
+        "transit_offset_shift_mm": 3.525,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.88,
+        "current_tcp": {
+          "xyz_mm": [
+            215.86,
+            -103.74,
+            81.51
+          ],
+          "pitch_deg": -30.86,
+          "yaw_deg": 0.05
+        }
+      },
+      "image": "rail-g-transit.jpg",
+      "image_sha256": "a393d515044bc190eda599f1d50036abfebfc12838893ee6bf6c0986f8d37b46",
+      "gate_recommendation": true
+    },
+    "rail-h": {
+      "case": {
+        "name": "rail-h",
+        "ballast_mm": 5,
+        "rail_half_mm": 12,
+        "pitch_handoff_deg": -26,
+        "route": "raised",
+        "split": "evaluation"
+      },
+      "observation": {
+        "rail_width_mm": 24,
+        "initial_offset_mm": 5.718,
+        "transit_offset_shift_mm": 0.796,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 4.32,
+        "current_tcp": {
+          "xyz_mm": [
+            198.14,
+            -103.74,
+            81.56
+          ],
+          "pitch_deg": -25.88,
+          "yaw_deg": 0.06
+        }
+      },
+      "image": "rail-h-transit.jpg",
+      "image_sha256": "722f24c7e99e5a9f0fcacf18210fc8d26d6e07dccbca00d2d10023df472f8cbd",
+      "gate_recommendation": false
+    }
+  },
+  "model_receipts": {
+    "rail-d": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "be0e581183a06b4489c418def7ccbef84f2066e4c4751c20ee5a78434b0d4125",
+      "observation": {
+        "rail_width_mm": 22,
+        "initial_offset_mm": 7.608,
+        "transit_offset_shift_mm": 0.784,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 3.96,
+        "current_tcp": {
+          "xyz_mm": [
+            196.24,
+            -103.73,
+            81.53
+          ],
+          "pitch_deg": -27.86,
+          "yaw_deg": 0.07
+        }
+      },
+      "response": {
+        "remeasure": false,
+        "evidence": "Four transit samples were valid, and the absolute offset shift of 0.784 mm was below the 3.96 mm trigger threshold."
+      },
+      "wall_s": 8.154,
+      "usage": {
+        "input_tokens": 22351,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 48,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-b": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "1ea95ff34bc9d70ccdea62b914c5cd4e5da52f206d16e1e002882dd0044ddfa5",
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": -9.267,
+        "transit_offset_shift_mm": 2.299,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            213.09,
+            -103.74,
+            81.57
+          ],
+          "pitch_deg": -25.88,
+          "yaw_deg": 0.03
+        }
+      },
+      "response": {
+        "remeasure": false,
+        "evidence": "Four valid transit samples were available, and the absolute estimated shift of 2.299 mm was below the 2.52 mm trigger threshold."
+      },
+      "wall_s": 8.695,
+      "usage": {
+        "input_tokens": 22347,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-c": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "7893e1992b28a499a3c4db9e74acee43142170bc7b64e96d440b02cc469ac13f",
+      "observation": {
+        "rail_width_mm": 24,
+        "initial_offset_mm": -3.699,
+        "transit_offset_shift_mm": 1.713,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 4.32,
+        "current_tcp": {
+          "xyz_mm": [
+            207.54,
+            -103.74,
+            81.54
+          ],
+          "pitch_deg": -26.87,
+          "yaw_deg": 0.04
+        }
+      },
+      "response": {
+        "remeasure": false,
+        "evidence": "Four valid transit samples were available, and the absolute offset shift of 1.713 mm was below the 4.32 mm trigger threshold."
+      },
+      "wall_s": 9.894,
+      "usage": {
+        "input_tokens": 22349,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-a": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "ca2e2b488e2f38c8fbc9eefe546462fd263f3b02f6190a8999de072249480230",
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": -14.794,
+        "transit_offset_shift_mm": 3.336,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            218.61,
+            -103.74,
+            81.56
+          ],
+          "pitch_deg": -26.88,
+          "yaw_deg": 0.03
+        }
+      },
+      "response": {
+        "remeasure": true,
+        "evidence": "The four valid transit samples indicate an absolute offset shift of 3.336 mm, which exceeds the 2.52 mm trigger threshold."
+      },
+      "wall_s": 10.659,
+      "usage": {
+        "input_tokens": 22351,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 48,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-e": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "8e02bb794d62a210d3f0629f5f64fca38336385343f40676fbe68325b718433f",
+      "observation": {
+        "rail_width_mm": 16,
+        "initial_offset_mm": 12.376,
+        "transit_offset_shift_mm": 0.481,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.88,
+        "current_tcp": {
+          "xyz_mm": [
+            191.48,
+            -103.74,
+            81.52
+          ],
+          "pitch_deg": -28.86,
+          "yaw_deg": 0.05
+        }
+      },
+      "response": {
+        "remeasure": false,
+        "evidence": "Four valid transit samples show an absolute offset shift of 0.481 mm, below the 2.88 mm trigger threshold."
+      },
+      "wall_s": 6.624,
+      "usage": {
+        "input_tokens": 17278,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 46,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-f": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "3c0db2e844919e83964368010342b11e8886792494b866a3dd16224f1732d475",
+      "observation": {
+        "rail_width_mm": 14,
+        "initial_offset_mm": 17.21,
+        "transit_offset_shift_mm": 0.166,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.52,
+        "current_tcp": {
+          "xyz_mm": [
+            186.66,
+            -103.75,
+            81.52
+          ],
+          "pitch_deg": -29.87,
+          "yaw_deg": 0.05
+        }
+      },
+      "response": {
+        "remeasure": false,
+        "evidence": "Four valid transit samples were available, and the absolute estimated shift of 0.166 mm was below the 2.52 mm trigger threshold."
+      },
+      "wall_s": 6.852,
+      "usage": {
+        "input_tokens": 17276,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-h": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "722f24c7e99e5a9f0fcacf18210fc8d26d6e07dccbca00d2d10023df472f8cbd",
+      "observation": {
+        "rail_width_mm": 24,
+        "initial_offset_mm": 5.718,
+        "transit_offset_shift_mm": 0.796,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 4.32,
+        "current_tcp": {
+          "xyz_mm": [
+            198.14,
+            -103.74,
+            81.56
+          ],
+          "pitch_deg": -25.88,
+          "yaw_deg": 0.06
+        }
+      },
+      "response": {
+        "remeasure": false,
+        "evidence": "Four valid transit samples were available, and the absolute estimated shift of 0.796 mm was below the 4.32 mm trigger threshold."
+      },
+      "wall_s": 6.988,
+      "usage": {
+        "input_tokens": 22351,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49,
+        "reasoning_output_tokens": 0
+      }
+    },
+    "rail-g": {
+      "requested_model": "gpt-6.2-astra",
+      "requested_reasoning_effort": "xhigh",
+      "image_sha256": "a393d515044bc190eda599f1d50036abfebfc12838893ee6bf6c0986f8d37b46",
+      "observation": {
+        "rail_width_mm": 16,
+        "initial_offset_mm": -12.03,
+        "transit_offset_shift_mm": 3.525,
+        "valid_transit_samples": 4,
+        "trigger_threshold_mm": 2.88,
+        "current_tcp": {
+          "xyz_mm": [
+            215.86,
+            -103.74,
+            81.51
+          ],
+          "pitch_deg": -30.86,
+          "yaw_deg": 0.05
+        }
+      },
+      "response": {
+        "remeasure": true,
+        "evidence": "The 4 valid transit samples give an absolute offset shift of 3.525 mm, which exceeds the 2.88 mm trigger threshold."
+      },
+      "wall_s": 8.478,
+      "usage": {
+        "input_tokens": 17276,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 49,
+        "reasoning_output_tokens": 0
+      }
+    }
+  },
+  "trials": [
+    {
+      "id": "dev-light-first",
+      "case": "dev-light",
+      "split": "calibration",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 209.56162102400538,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.009,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          213.167,
+          -107.695,
+          54.345
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 7.54
+    },
+    {
+      "id": "dev-light-always",
+      "case": "dev-light",
+      "split": "calibration",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": -3.83928917839782,
+      "release_tcp_x_mm": 207.83928917839782,
+      "robot_time_s": 8.38,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.007,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          211.891,
+          -108.043,
+          54.346
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.38
+    },
+    {
+      "id": "dev-shift-first",
+      "case": "dev-shift",
+      "split": "calibration",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 217.87967635444602,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": false,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 7.928,
+        "speed_m_s": 5e-05,
+        "xyz_mm": [
+          228.49,
+          -107.841,
+          52.016
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "dev-shift-always",
+      "case": "dev-shift",
+      "split": "calibration",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": -10.784407371364187,
+      "release_tcp_x_mm": 214.78440737136418,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.045,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          220.457,
+          -108.228,
+          54.336
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "dev-right-first",
+      "case": "dev-right",
+      "split": "calibration",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 193.51495760055113,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.088,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          195.323,
+          -108.706,
+          54.352
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "dev-right-always",
+      "case": "dev-right",
+      "split": "calibration",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": 10.96088189039148,
+      "release_tcp_x_mm": 193.03911810960852,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.059,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          194.433,
+          -108.39,
+          54.347
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "rail-a-first",
+      "case": "rail-a",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 218.7936589060808,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": false,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 8.0,
+        "speed_m_s": 5e-05,
+        "xyz_mm": [
+          231.688,
+          -108.494,
+          51.555
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "rail-a-always",
+      "case": "rail-a",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": -11.529588618318037,
+      "release_tcp_x_mm": 215.52958861831803,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.042,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          221.385,
+          -108.202,
+          54.337
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "rail-a-selective",
+      "case": "rail-a",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": true,
+      "remeasured_offset_mm": -11.529588618318037,
+      "release_tcp_x_mm": 215.52958861831803,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.042,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          221.385,
+          -108.202,
+          54.337
+        ]
+      },
+      "astra_wall_s": 10.659,
+      "robot_plus_inference_s": 19.639
+    },
+    {
+      "id": "rail-b-first",
+      "case": "rail-b",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 213.26735398478453,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.204,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          218.307,
+          -108.347,
+          54.296
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "rail-b-always",
+      "case": "rail-b",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": -7.072574522248191,
+      "release_tcp_x_mm": 211.0725745222482,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.111,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          216.76,
+          -108.288,
+          54.321
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "rail-b-selective",
+      "case": "rail-b",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 213.26735398478453,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.204,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          218.307,
+          -108.347,
+          54.296
+        ]
+      },
+      "astra_wall_s": 8.695,
+      "robot_plus_inference_s": 16.835
+    },
+    {
+      "id": "rail-c-first",
+      "case": "rail-c",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 207.6992393797028,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.013,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          210.745,
+          -107.501,
+          54.346
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 7.54
+    },
+    {
+      "id": "rail-c-always",
+      "case": "rail-c",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": -2.0789651697845075,
+      "release_tcp_x_mm": 206.0789651697845,
+      "robot_time_s": 8.38,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.019,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          209.536,
+          -107.933,
+          54.347
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.38
+    },
+    {
+      "id": "rail-c-selective",
+      "case": "rail-c",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 207.6992393797028,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.013,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          210.745,
+          -107.501,
+          54.346
+        ]
+      },
+      "astra_wall_s": 9.894,
+      "robot_plus_inference_s": 17.434
+    },
+    {
+      "id": "rail-d-first",
+      "case": "rail-d",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 196.39230705493176,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.089,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          198.788,
+          -109.624,
+          54.345
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 7.54
+    },
+    {
+      "id": "rail-d-always",
+      "case": "rail-d",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": 8.328979361903869,
+      "release_tcp_x_mm": 195.67102063809614,
+      "robot_time_s": 8.38,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.075,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          197.776,
+          -109.412,
+          54.344
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.38
+    },
+    {
+      "id": "rail-d-selective",
+      "case": "rail-d",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 196.39230705493176,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.089,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          198.788,
+          -109.624,
+          54.345
+        ]
+      },
+      "astra_wall_s": 8.154,
+      "robot_plus_inference_s": 15.694
+    },
+    {
+      "id": "rail-e-first",
+      "case": "rail-e",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 191.62396300652364,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.086,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          193.303,
+          -108.376,
+          54.354
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 7.54
+    },
+    {
+      "id": "rail-e-always",
+      "case": "rail-e",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": 12.823614353883306,
+      "release_tcp_x_mm": 191.1763856461167,
+      "robot_time_s": 8.38,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.055,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          192.331,
+          -107.996,
+          54.347
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.38
+    },
+    {
+      "id": "rail-e-selective",
+      "case": "rail-e",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 191.62396300652364,
+      "robot_time_s": 7.54,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.086,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          193.303,
+          -108.376,
+          54.354
+        ]
+      },
+      "astra_wall_s": 6.624,
+      "robot_plus_inference_s": 14.164
+    },
+    {
+      "id": "rail-f-first",
+      "case": "rail-f",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 186.7903398918992,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.052,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          187.362,
+          -107.243,
+          54.35
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "rail-f-always",
+      "case": "rail-f",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": 17.344801755445925,
+      "release_tcp_x_mm": 186.65519824455407,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.051,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          186.72,
+          -107.248,
+          54.338
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "rail-f-selective",
+      "case": "rail-f",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 186.7903398918992,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.052,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          187.362,
+          -107.243,
+          54.35
+        ]
+      },
+      "astra_wall_s": 6.852,
+      "robot_plus_inference_s": 14.992
+    },
+    {
+      "id": "rail-g-first",
+      "case": "rail-g",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 216.0298465863121,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": false,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 8.167,
+        "speed_m_s": 6e-05,
+        "xyz_mm": [
+          226.352,
+          -108.409,
+          52.395
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "rail-g-always",
+      "case": "rail-g",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": -8.614577974647178,
+      "release_tcp_x_mm": 212.61457797464718,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.044,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          218.319,
+          -108.444,
+          54.34
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "rail-g-selective",
+      "case": "rail-g",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": true,
+      "remeasured_offset_mm": -8.614577974647178,
+      "release_tcp_x_mm": 212.61457797464718,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.044,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          218.319,
+          -108.444,
+          54.34
+        ]
+      },
+      "astra_wall_s": 8.478,
+      "robot_plus_inference_s": 17.458
+    },
+    {
+      "id": "rail-h-first",
+      "case": "rail-h",
+      "split": "evaluation",
+      "policy": "first",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 198.28217694084302,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.076,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          200.189,
+          -109.484,
+          54.343
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.14
+    },
+    {
+      "id": "rail-h-always",
+      "case": "rail-h",
+      "split": "evaluation",
+      "policy": "always",
+      "remeasure": true,
+      "remeasured_offset_mm": 6.40958766919955,
+      "release_tcp_x_mm": 197.59041233080046,
+      "robot_time_s": 8.98,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.07,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          199.545,
+          -109.414,
+          54.343
+        ]
+      },
+      "astra_wall_s": 0.0,
+      "robot_plus_inference_s": 8.98
+    },
+    {
+      "id": "rail-h-selective",
+      "case": "rail-h",
+      "split": "evaluation",
+      "policy": "selective",
+      "remeasure": false,
+      "remeasured_offset_mm": null,
+      "release_tcp_x_mm": 198.28217694084302,
+      "robot_time_s": 8.14,
+      "outcome": {
+        "stable": true,
+        "ledge_contact": true,
+        "released": true,
+        "tilt_deg": 0.076,
+        "speed_m_s": 0.0,
+        "xyz_mm": [
+          200.189,
+          -109.484,
+          54.343
+        ]
+      },
+      "astra_wall_s": 6.988,
+      "robot_plus_inference_s": 15.128
+    }
+  ]
+}

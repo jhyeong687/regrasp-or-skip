@@ -1,0 +1,6 @@
+{
+  "model": "gpt-6.2-astra",
+  "reasoningEffort": "xhigh",
+  "modelProvider": "openai",
+  "check": "Ephemeral runtime configuration, without a model inference call"
+}

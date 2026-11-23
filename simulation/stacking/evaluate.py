@@ -50,10 +50,10 @@ def observation_image(bench, path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def model_call(prompt, image_path):
+def model_call(prompt, image_path, *, schema_definition=SCHEMA):
     with tempfile.TemporaryDirectory(prefix="r7-stack-model-") as directory:
         schema = Path(directory)/"schema.json"
-        schema.write_text(json.dumps(SCHEMA))
+        schema.write_text(json.dumps(schema_definition))
         command = ["codex", "exec", "--json", "--ephemeral", "--ignore-user-config",
                    "--skip-git-repo-check", "--sandbox", "read-only", "-C", directory,
                    "-m", MODEL, "-c", f'model_reasoning_effort="{EFFORT}"',

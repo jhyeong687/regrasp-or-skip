@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SO-ARM101 · 촉각 재측정</title>
+<style>
+:root{color-scheme:dark;--bg:#111720;--card:#192130;--line:#354052;--ink:#eff3f9;--muted:#adbbcd;--accent:#c9b7fc;--mint:#86e3c8;--amber:#ffd0a0}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.48 "Inter","Apple SD Gothic Neo",system-ui,sans-serif}
+main{max-width:1300px;margin:auto;padding:18px clamp(14px,3vw,32px) 34px}
+header,.controls,.head,.metrics{display:flex;align-items:center;gap:9px;justify-content:space-between}header{margin-bottom:12px;flex-wrap:wrap}
+h1{font-size:clamp(22px,3vw,33px);letter-spacing:-.04em;margin:0}h2{margin:0;font-size:14px}
+small,p.muted{color:var(--muted)}a{color:var(--accent)}button,select{font:inherit;background:#243144;color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 9px}
+button{cursor:pointer}button:hover,select:hover{border-color:var(--accent)}button:disabled,select:disabled{opacity:.55}.primary{background:var(--accent);color:#2a1b43;font-weight:700}
+.controls{justify-content:flex-start;flex-wrap:wrap;margin-bottom:10px}.controls small{margin-left:auto}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card{padding:9px 11px}.card b{font-size:21px;display:block;color:var(--mint)}.card span{display:block}.card .notes{font-size:11px}
+.grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(254px,1fr);gap:10px;align-items:start}
+.head{padding:8px 10px}.metrics{padding:6px 10px;border-top:1px solid var(--line);flex-wrap:wrap}.metrics b{display:block;font-variant-numeric:tabular-nums}
+.media{display:block;width:100%;background:#121923;aspect-ratio:1280/480;object-fit:contain}.camera{aspect-ratio:1280/180}
+.timeline{padding:7px 10px;display:flex;gap:8px;align-items:center}.timeline input{flex:1;min-width:80px;accent-color:var(--accent)}
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 8px}.pad{background:#141b26;border:1px solid var(--line);border-radius:8px;text-align:center;padding:6px}
+.pad canvas{width:100%;display:block;max-width:139px;margin:auto}.pad output{color:var(--amber);display:block;font-weight:700}.pad small{font-size:10px}
+.note{margin:6px 10px;color:var(--muted);font-size:11px}.cameraLabels{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;color:var(--muted);font-size:11px;padding:4px}
+.row{margin-top:10px}.row p{margin:0;padding:8px 10px}.row b{color:var(--mint)}.tables{overflow:auto}table{width:100%;border-collapse:collapse;text-align:right;font-size:12px;white-space:nowrap}
+th,td{padding:5px 8px;border-top:1px solid var(--line)}th:first-child,td:first-child{text-align:left}.good{color:var(--mint)}.bad{color:var(--amber)}
+summary{cursor:pointer;padding:8px 11px;color:var(--accent)}#error{color:var(--amber)}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.controls small{margin-left:0}.card{padding:6px}.card b{font-size:18px}}
+</style>
+<main>
+<header><h1>SO-ARM101 <span style="color:var(--accent)">촉각 재측정</span></h1><small>새 이중 레일 치구 · MuJoCo</small></header>
+<div class="controls"><select id="example" aria-label="시연 조건" disabled><option>시연 준비 중</option></select>
+<button class="primary" id="play" disabled>재생</button><button id="live">실시간 상태</button><small id="status" role="status">모델 호출 연결 중</small></div>
+<div id="cards" class="cards" hidden></div>
+<div class="grid">
+<section class="panel">
+<div class="head"><h2>R7 작업대</h2><small>전체 팔 · 레일 확대</small></div>
+<img id="liveBench" class="media" alt="R7과 이중 레일 치구">
+<video id="bench" class="media" preload="auto" muted playsinline hidden></video>
+<div class="metrics"><div><b id="phase">—</b><small>동작</small></div><div><b id="clock">—</b><small>시뮬레이션 시간</small></div><div><b id="tcp">—</b><small>실제 TCP X</small></div><div><b id="wrench">—</b><small>Y 모멘트</small></div></div>
+<div class="timeline"><button id="moment" disabled>판단 구간</button><input id="seek" type="range" aria-label="영상 위치" min="0" max="10" value="0" step=".04" disabled></div>
+</section>
+<section class="panel">
+<div class="head"><h2>PaXini · 패드당 77점</h2><button id="json" disabled>센서 JSON</button></div>
+<div class="head"><select id="map" aria-label="촉각 표시 방식"><option value="pad_patch_N">접촉면 추정</option><option value="pad_force_N">접촉점 기반</option></select><small id="sensorTime">—</small></div>
+<div class="pads"><div class="pad"><b>왼쪽</b><output>—</output><canvas width="250" height="256" aria-label="왼쪽 촉각 맵"></canvas><small></small></div><div class="pad"><b>오른쪽</b><output>—</output><canvas width="250" height="256" aria-label="오른쪽 촉각 맵"></canvas><small></small></div></div>
+<p class="note">색은 법선력 Fz · 화살표는 전단력 Fx·Fy</p>
+</section>
+</div>
+<section class="panel row" id="evidence" hidden><p></p></section>
+<section class="panel row"><div class="head"><h2>카메라 피드</h2><small>좌우 RGB ±26 cm · 손목 D435i</small></div>
+<img id="liveCameras" class="media camera" alt="좌우 RGB, 손목 RGB와 깊이">
+<video id="cameras" class="media camera" preload="auto" muted playsinline hidden></video>
+<div class="cameraLabels"><span>왼쪽 RGB</span><span>오른쪽 RGB</span><span>손목 RGB</span><span>손목 깊이</span></div></section>
+<section id="outcomes" class="panel row tables" hidden><div class="head"><h2>평가 8조건</h2><small>변화량이 임계값 이상이면 0.84초를 추가해 재측정·조정</small></div>
+<table><thead><tr><th>조건</th><th>운반 중 변화량</th><th>임계값</th><th>처음만</th><th>항상</th><th>Astra 조건부</th></tr></thead><tbody id="caseRows"></tbody></table></section>
+<details class="panel row tables" id="receipts" open><summary>Astra 요청·응답 기록</summary>
+<table><thead><tr><th>조건</th><th>요청 모델 · 추론 설정</th><th>다시 측정</th><th>호출 시간</th><th>입력 토큰</th><th>출력 토큰</th><th>추론 토큰</th></tr></thead><tbody id="calls"></tbody></table></details>
+<p role="alert" id="error"></p>
+</main>
+<script>
+const el=id=>document.getElementById(id);
+const policyNames={first:"처음에만 읽기",always:"항상 다시 읽기",selective:"Astra 조건부"};
+const phases={execute_lift:"공통 동작",plan_place:"Astra 판단 대기",execute_place:"세 정책 실행 중",complete:"평가 24회 완료",
+  lift:"첫 들기",raise_for_transport:"높이 확보",transport:"운반",remeasure:"정지해 다시 읽기",realign:"좌표 재조정",place:"배치",settle:"손을 뗀 뒤 판정",ready:"준비"};
+const video=el("bench"), cameras=el("cameras"), pads=[...document.querySelectorAll(".pad")];
+const trialNames=["first","always","selective"];
+let dataset=null,replays=null,screen=[],current,lastLive,live=true,lastReceiptCount=-1;
+function setPoints(points){
+ const ys=points.map(p=>p.y_mm),mid=(Math.min(...ys)+Math.max(...ys))/2;
+ screen=points.map(p=>[125+7*p.x_mm,128+7*(mid-p.y_mm),p.index]);
+}
+function draw(sample){
+ if(!sample||!screen.length)return;
+ current=sample;
+ el("sensorTime").textContent=sample.t.toFixed(2)+" s";
+ pads.forEach((pad,side)=>{
+  const ctx=pad.querySelector("canvas").getContext("2d"), force=sample[el("map").value][side], total=sample.pad_resultant_N[side];
+  ctx.clearRect(0,0,250,256);
+  force.forEach(([fx,fy,fz],i)=>{
+   const [x,y]=screen[i],m=Math.sqrt(Math.min(1,Math.max(0,fz)/1.3));
+   ctx.beginPath();ctx.arc(x,y,2.8+6*m,0,2*Math.PI);ctx.fillStyle=fz>.004?`hsl(${275-228*m} 90% ${54+24*m}%)`:"#49586d";ctx.fill();
+   const s=Math.hypot(fx,fy);
+   if(s<.007)return;
+   const dx=fx/s,dy=-fy/s,l=Math.min(25,6+65*s),ex=x+l*dx,ey=y+l*dy;
+   ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(ex,ey);ctx.lineTo(ex-5*dx-3*dy,ey-5*dy+3*dx);
+   ctx.moveTo(ex,ey);ctx.lineTo(ex-5*dx+3*dy,ey-5*dy-3*dx);ctx.strokeStyle="#89ebd4";ctx.lineWidth=1.6;ctx.stroke();
+  });
+  pad.querySelector("output").textContent=total[2].toFixed(2)+" N";
+  pad.querySelector("small").textContent=total.map((v,i)=>["Fx","Fy","Fz"][i]+" "+v.toFixed(2)).join(" · ");
+ });
+ el("clock").textContent=sample.t.toFixed(2)+" s";el("tcp").textContent=sample.tcp.xyz_mm[0].toFixed(1)+" mm";
+ el("wrench").textContent=sample.pad_moment_about_tcp_mNm[1].toFixed(2)+" mNm";el("phase").textContent=phases[sample.phase]??sample.phase;
+ el("json").disabled=false;
+}
+function statusLine(state){
+ el("status").textContent=(phases[state.phase]??state.phase)+(state.trial?" · "+state.trial:"");
+ if(state.bench)el("liveBench").src=state.bench;
+ if(state.cameras)el("liveCameras").src=state.cameras;
+ draw(state.sample);
+}
+function setViewingLive(value){
+ live=value;video.hidden=cameras.hidden=value;el("liveBench").hidden=el("liveCameras").hidden=!value;
+ el("play").disabled=el("seek").disabled=el("moment").disabled=value;
+ if(value)video.pause();
+}
+function selected(){return dataset?.trials.find(t=>t.id===el("example").value);}
+function showClip(){
+ const record=selected();if(!record||!replays?.trials[record.id])return;
+ setViewingLive(false);video.src=record.id+".mp4";cameras.src=record.id+"-cameras.mp4";
+ el("seek").max=(replays.trials[record.id].length*.08).toFixed(2);
+ const outcome=record.outcome.stable?"안정":"실패";
+ el("status").textContent=policyNames[record.policy]+" · "+outcome+" · "+record.robot_time_s.toFixed(2)+" s 동작";
+ const observation=dataset.observations[record.case].observation;
+ const call=dataset.model_receipts[record.case];
+ const value=observation.transit_offset_shift_mm?.toFixed(2)??"측정 없음";
+ el("evidence").hidden=false;
+ el("evidence").querySelector("p").textContent="운반 중 "+value+" mm / 임계값 "+observation.trigger_threshold_mm.toFixed(2)+" mm · "+
+   (record.remeasure?"정지해 다시 확인":"첫 측정 유지")+
+   (record.policy==="selective"&&call?" · Astra 호출 "+call.wall_s.toFixed(2)+" s":"");
+ draw(replays.trials[record.id][0]);
+}
+function synchronize(){
+ if(cameras.readyState<1)return;
+ if(Math.abs(cameras.currentTime-video.currentTime)>.12)cameras.currentTime=video.currentTime;
+ if(video.paused)cameras.pause();else if(cameras.paused)cameras.play().catch(()=>{});
+}
+function showFrame(){
+ const record=selected(),trace=record&&replays?.trials[record.id];
+ if(live||!trace)return;
+ el("seek").value=video.currentTime;
+ draw(trace[Math.min(trace.length-1,Math.max(0,Math.round(video.currentTime/.08)))]);
+ synchronize();
+}
+for(const name of ["timeupdate","loadeddata","seeked","ended"])video.addEventListener(name,showFrame);
+video.addEventListener("play",()=>{el("play").textContent="일시 정지";synchronize();});
+video.addEventListener("pause",()=>{el("play").textContent="재생";synchronize();});
+cameras.addEventListener("loadeddata",synchronize);
+el("example").onchange=showClip;
+el("live").onclick=()=>{setViewingLive(true);if(lastLive)statusLine(lastLive);};
+el("play").onclick=()=>video.paused?video.play().catch(err=>el("error").textContent=err.message):video.pause();
+el("seek").oninput=()=>video.currentTime=Number(el("seek").value);
+el("moment").onclick=()=>{
+ const trace=replays.trials[selected().id], target=trace.find(s=>s.phase==="remeasure")??trace.filter(s=>s.phase==="transport").at(-1);
+ video.pause();video.currentTime=Math.max(0,target.t-.08);
+};
+el("map").onchange=()=>draw(current);
+el("json").onclick=()=>{
+ const content={...current,taxel_indices:screen.map(p=>p[2])};
+ const url=URL.createObjectURL(new Blob([JSON.stringify(content,null,2)],{type:"application/json"}));
+ const a=document.createElement("a");a.href=url;a.download="r7-tactile-"+current.t+"s.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+function addRow(target,values){
+ const row=el(target).insertRow();
+ for(const value of values)row.insertCell().textContent=value;
+ return row;
+}
+function showReceipts(calls){
+ const entries=Object.entries(calls??{}).sort(([a],[b])=>a.localeCompare(b));
+ if(lastReceiptCount===entries.length)return;
+ lastReceiptCount=entries.length;el("calls").replaceChildren();
+ for(const [name,call] of entries)addRow("calls",[name.toUpperCase(),call.requested_model+" · "+call.requested_reasoning_effort,
+   call.response.remeasure?"예":"아니오",call.wall_s.toFixed(2)+" s",call.usage.input_tokens.toLocaleString(),
+   call.usage.output_tokens,call.usage.reasoning_output_tokens]);
+}
+function showSummary(){
+ const test=dataset.trials.filter(row=>row.split==="evaluation");
+ el("cards").hidden=el("outcomes").hidden=false;
+ for(const mode of trialNames){
+  const all=test.filter(row=>row.policy===mode), count=all.length, successes=all.filter(row=>row.outcome.stable).length;
+  const avg=key=>(all.reduce((sum,row)=>sum+row[key],0)/count).toFixed(3);
+  const card=document.createElement("article");card.className="card";
+  const name=document.createElement("span"), big=document.createElement("b"), small=document.createElement("small");
+  name.textContent=policyNames[mode];big.textContent=successes+"/"+count+" 성공";
+  small.textContent="다시 읽기 "+all.filter(row=>row.remeasure).length+"회 · 동작 "+avg("robot_time_s")+" s · 호출 포함 "+avg("robot_plus_inference_s")+" s";
+  card.append(name,big,small);el("cards").append(card);
+ }
+ for(const [name,record] of Object.entries(dataset.observations)){
+  if(record.case.split!=="evaluation")continue;
+  const branches=test.filter(row=>row.case===name),q=record.observation;
+  const row=addRow("caseRows",[name.toUpperCase(),q.transit_offset_shift_mm?.toFixed(2)??"—",q.trigger_threshold_mm.toFixed(2),
+     ...branches.map(r=>(r.outcome.stable?"성공":"실패")+(r.remeasure?" · 재측정":""))]);
+  branches.forEach((branch,i)=>row.cells[i+3].className=branch.outcome.stable?"good":"bad");
+ }
+ showReceipts(dataset.model_receipts);
+}
+async function get(path){
+ try{const response=await fetch(path,{cache:"no-store"});return response.ok?await response.json():null;}catch{return null;}
+}
+async function refresh(){
+ if(!screen.length){const points=await get("points.json");if(points)setPoints(points);}
+ if(!dataset){dataset=await get("results.json");if(dataset)showSummary();}
+ if(!dataset)showReceipts(await get("model-receipts.json"));
+ lastLive=await get("live.json");
+ if(live&&lastLive)statusLine(lastLive);
+ if(dataset&&!replays){
+  replays=await get("replays.json");
+  if(replays){
+   setPoints(replays.points);el("example").replaceChildren();
+   for(const id of Object.keys(replays.trials)){
+    const r=dataset.trials.find(t=>t.id===id);
+    if(r)el("example").add(new Option(r.case.toUpperCase()+" · "+policyNames[r.policy],id));
+   }
+   el("example").disabled=false;
+   const target=new URLSearchParams(location.search).get("trial");
+   el("example").value=target&&replays.trials[target]?target:"rail-a-selective";
+   showClip();
+   const trace=replays.trials[el("example").value];
+   if(trace){
+    const frame=trace.find(s=>s.phase==="remeasure");
+    if(frame)video.addEventListener("loadeddata",()=>video.currentTime=Math.max(0,frame.t-.08),{once:true});
+   }
+  }
+ }
+ if(!replays)setTimeout(refresh,850);
+}
+refresh().catch(error=>el("error").textContent=error.message);
+</script>
+</html>

@@ -20,7 +20,7 @@ HOME = {"xyz_mm": [246, 36, 90], "yaw_deg": 0, "pitch_deg": -27, "gap_mm": 76, "
 BALLAST_MM = (-13, 13)
 
 
-def make_scene(robot_scene, ballast_mm):
+def make_scene(robot_scene, ballast_mm, fixture=None):
     def customize(xml):
         world, asset = xml.find("worldbody"), xml.find("asset")
         xml.set("model", "R7 hidden-ballast stacking")
@@ -42,12 +42,14 @@ def make_scene(robot_scene, ballast_mm):
         camera(world, "stack_full", (.627, -.641, .409), (.122, -.014, .086), 34)
         camera(world, "stack_detail", (.375, -.315, .197), (.208, -.074, .036), 43)
         camera(world, "stack_top", (.208, -.115, .30), (.212, -.033, .01), 40)
+        if fixture is not None:
+            fixture(world, asset)
     return load_model(robot_scene, HERE / "bench.xml", customize)
 
 
 class StackBench(Sim):
-    def __init__(self, scene, ballast_mm):
-        self.model = make_scene(scene, ballast_mm)
+    def __init__(self, scene, ballast_mm, *, fixture=None):
+        self.model = make_scene(scene, ballast_mm, fixture)
         self.data, self.fit = mj.MjData(self.model), mj.MjData(self.model)
         self.sites = [self.model.site(f"{side}_sensor_frame").id for side in ("left", "right")]
         self.skin_ids = {self.model.geom(f"{side}_skin").id: i for i, side in enumerate(("left", "right"))}

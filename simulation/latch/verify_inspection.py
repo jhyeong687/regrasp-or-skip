@@ -16,6 +16,7 @@ def verify(scene, archive):
     checked=[]
     prechecks={}
     ids=set()
+    errors_without_turn=0
     try:
         for variant in sorted({r["variant"] for r in doc["trials"]}):
             pairs=[]
@@ -44,11 +45,16 @@ def verify(scene, archive):
                 if hashlib.sha256((archive/call["image"]).read_bytes()).hexdigest()!=call["image_sha256"]:
                     raise ValueError("Input image hash mismatch")
                 turn=call.get("turn_fingerprint",call.get("turn_id"))
-                if turn in ids or not turn: raise ValueError("Missing or repeated turn")
-                ids.add(turn)
-                if call.get("error"): continue
-                assert call["turn_status"]=="completed" and call["runtime"]["model"]==doc["model"]
-                assert call["runtime"]["reasoningEffort"]==doc["effort"]
+                if turn:
+                    if turn in ids: raise ValueError("Repeated turn")
+                    ids.add(turn)
+                elif call.get("error"):
+                    errors_without_turn += 1
+                else:
+                    raise ValueError("Missing successful turn")
+                if not call.get("error"):
+                    assert call["turn_status"]=="completed" and call["runtime"]["model"]==doc["model"]
+                    assert call["runtime"]["reasoningEffort"]==doc["effort"]
                 if row["policy"]=="off" and any(x in call["prompt"].split("Use only supplied data.")[-1]
                       for x in ('"active_taxels"','"reaction_base_xyz_N"','"pad_resultant_xyz_N"')):
                     raise ValueError("Off-policy input contains touch")
@@ -62,7 +68,7 @@ def verify(scene, archive):
             checked.append(row["id"])
     finally: bench.close()
     return {"verified_episodes":checked,"unique_turns":len(ids),"precontact_by_variant":prechecks,
-            "camera_order":VIEWS,"untouched_control_s":4,"trace_replay":"identical at storage precision"}
+            "failed_calls_without_turn":errors_without_turn,"camera_order":VIEWS,"untouched_control_s":4,"trace_replay":"identical at storage precision"}
 
 
 if __name__=="__main__":

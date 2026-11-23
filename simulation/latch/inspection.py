@@ -109,7 +109,7 @@ def main():
     p.add_argument("--timeout", type=float, default=180, help="Seconds allowed for each Codex call")
     p.add_argument("--stop-after-errors", type=int, default=0,
                    help="Stop after this many consecutive episode-level backend errors (0 disables)")
-    p.add_argument("--retry-archive", type=Path, help="Rerun inference errors from a saved inspection run")
+    p.add_argument("--retry-archive", type=Path, help="Rerun backend errors and unfinished episodes from a saved inspection run")
     args=p.parse_args();f=args.output
     if (args.rule_only or args.model_only) and args.retry_archive:
         p.error("Policy selection and --retry-archive cannot be combined")
@@ -119,11 +119,16 @@ def main():
     previous = json.loads((args.retry_archive / "results.json").read_text()) if args.retry_archive else None
     retry_ids = set()
     if previous:
-        retry_ids = {r["id"] for r in previous["trials"] if any(c.get("error") for c in r["calls"])}
+        completed = {row["id"] for row in previous["trials"]
+                     if "answer" in row and not any(call.get("error") for call in row["calls"])}
+        policies = tuple(previous["policies"])
+        planned = {f"B{index:02}-{policy}"
+                   for index in range(1, len(previous["design"]) + 1) for policy in policies}
+        retry_ids = planned - completed
         if previous.get("setup_revision") != SETUP_REVISION:
             raise ValueError("Retry requires a run with the same gripper and observation setup")
         if not retry_ids:
-            raise ValueError("The archive has no inference errors to retry")
+            raise ValueError("The archive has no unfinished or errored episodes")
         if (previous["model"], previous["effort"], previous["probe_budget"]) != (MODEL, EFFORT, BUDGET):
             raise ValueError("The archive uses a different experimental configuration")
     live=Live(f);b=FlushBench(args.scene)

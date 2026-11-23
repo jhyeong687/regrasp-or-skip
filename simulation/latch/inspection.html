@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SO-ARM101 · PaXini Grasp Trials</title>
+<title>R7 · 걸쇠 검사</title>
 <style>
 :root{color-scheme:dark;--bg:#11111a;--panel:#1b1a27;--pad:#242135;--edge:#39354a;--ink:#f4f1fa;--muted:#b6afc4;--accent:#c7b1ff;--force:#ffc380;--shear:#74f5df;--missing:#151924}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,sans-serif}
@@ -16,15 +16,29 @@ header{display:flex;justify-content:space-between;align-items:start;gap:12px;mar
 .feeds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:8px 0 0}.feeds figcaption{font-size:clamp(10px,1.45vw,16px);font-weight:650;padding:3px 0}.feed-frame{aspect-ratio:16/9;background-color:var(--missing);background-image:var(--camera-frame);background-size:400% 100%;background-position:var(--position) center;background-repeat:no-repeat}
 [hidden]{display:none!important}.depth-note{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px 9px;color:var(--muted);font-size:11px;margin-top:5px}.depth-scale{display:inline-block;vertical-align:middle;width:49px;height:5px;border-radius:3px;background:linear-gradient(to right,#fabf65,#e15b7a,#7653b3,#26669e,#2e9aa8)}.depth-missing{display:inline-block;vertical-align:middle;width:8px;height:8px;background:var(--missing);border:1px solid #5a5768;border-radius:2px}
 .action{margin:10px 0 7px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}button,select{font:inherit;color:var(--ink);background:var(--pad);border:1px solid var(--edge);border-radius:5px;padding:4px 8px;cursor:pointer}button:hover,button:focus-visible,select:focus-visible{border-color:var(--accent)}.action p{font-size:12px}select,.hero-title button{font-size:11px;padding:2px 5px}.tactile-head{display:flex;justify-content:space-between;align-items:start;gap:4px;flex-wrap:wrap}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;font-variant-numeric:tabular-nums}th,td{padding:5px 8px;border-bottom:1px solid var(--edge);white-space:nowrap}
+
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:13px}
+.score{padding:8px 10px 9px;border:1px solid var(--edge);border-radius:7px;background:var(--panel)}
+.score b{display:block;margin:2px 0 1px;font-size:clamp(19px,3.1vw,29px);line-height:1.1;font-variant-numeric:tabular-nums;color:var(--accent)}
+.score span,.score small{display:block;color:var(--muted);font-size:clamp(9px,1.4vw,12px)}
+.library{border:1px solid var(--edge);border-radius:7px;margin-top:10px;background:var(--panel)}
+.library header{margin:0;padding:8px 10px;align-items:center;flex-wrap:wrap}
+.library a,.archive-links a{color:var(--accent);font-size:11px}
+.archive-links{margin:10px 0;color:var(--muted);padding:8px 10px;border:1px solid var(--edge);border-radius:7px}.archive-links summary{cursor:pointer}.archive-links nav{display:flex;gap:7px 13px;flex-wrap:wrap;margin-top:7px}
+.playback{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.playback select{max-width:100%}.playback input{min-width:75px;max-width:135px;accent-color:var(--accent)}
+td.good{color:var(--shear)}td.error{color:var(--force)}td.dim{color:var(--muted)}
+@media(max-width:420px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:590px){.hero{grid-template-columns:1fr}.pad svg{max-height:150px}.depth-note{justify-content:flex-start}}
 @media(max-width:350px){.feeds{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body><main>
 <header>
-  <div><h1 lang="en">SO-ARM101 PaXini Grasp Trials</h1><p class="sub" id="case">MuJoCo · 걸쇠 검사</p></div>
+  <div><h1>R7 걸쇠 검사</h1><p class="sub" id="case">MuJoCo · 걸쇠 검사</p></div>
   <div class="clock"><b id="clock">—</b><span id="phase">준비 중</span></div>
 </header>
+<section id="summary" class="summary" aria-label="정책별 결과" hidden></section>
 <div class="hero">
   <figure class="panel"><figcaption class="hero-title"><h2 id="hero-title">팔 전체</h2><button id="gripper" type="button" aria-pressed="false">집게 확대</button></figcaption><img id="wide" alt="MuJoCo SO-ARM101 전체 팔과 걸쇠 치구"></figure>
   <section class="panel tactile" aria-labelledby="tactile-title">
@@ -41,12 +55,25 @@ header{display:flex;justify-content:space-between;align-items:start;gap:12px;mar
   <figure><figcaption class="feed-label">손목 깊이</figcaption><div class="feed-frame" role="img" aria-label="손목 깊이 위색상 영상" style="--position:100%"></div></figure>
 </section>
 <p class="depth-note" id="depth-note" hidden><span>가까움 <i class="depth-scale"></i> 멂</span><span><i class="depth-missing"></i> 측정 범위 밖</span><span id="coverage"></span></p>
-<section class="panel action" aria-label="현재 시행"><p id="action" role="status">준비 중</p><button id="play" type="button" hidden>저장된 검사 재생</button></section>
-<section class="table-wrap" aria-label="검사 결과"><table><thead><tr><th>시행</th><th>정책</th><th>판정</th><th>상태 보존</th><th>성공</th></tr></thead><tbody id="results"></tbody></table></section>
+<section class="panel action" aria-label="현재 시행"><p id="action" role="status">준비 중</p>
+  <div class="playback" id="playback" hidden><select id="archive" aria-label="저장된 시행"></select><button id="play" type="button">재생</button>
+  <input id="seek" type="range" min="0" value="0" aria-label="저장 재생 위치" hidden><button id="live" type="button" hidden>실시간으로</button></div></section>
+<section class="library" aria-label="검사 결과">
+  <header><h2>시행 기록</h2><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/flush-latch-inspection.ko.md" target="_blank" rel="noreferrer">GitHub 결과와 데이터</a></header>
+  <div class="table-wrap"><table><thead><tr><th>시행</th><th>정책</th><th>초기</th><th>판정</th><th>상태 보존</th><th>성공</th><th>추론</th></tr></thead><tbody id="results"></tbody></table></div>
+</section>
+<details class="archive-links"><summary>이전 MuJoCo 실험</summary>
+<nav aria-label="이전 실험">
+<a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/latch-pilot.ko.md" target="_blank" rel="noreferrer">걸쇠 흔들기와 체결</a>
+<a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/conveyor-pilot.ko.md" target="_blank" rel="noreferrer">컨베이어 재집기</a>
+<a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/stacking-waypoint-pilot.ko.md" target="_blank" rel="noreferrer">무게 분포와 쌓기</a>
+<a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/stacking-selective-recheck.ko.md" target="_blank" rel="noreferrer">촉각 다시 읽기</a>
+<a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/stacking-astra-free-placement.ko.md" target="_blank" rel="noreferrer">Astra 놓기</a>
+</nav></details>
 </main>
 <script>
 const el = id => document.getElementById(id);
-const words = {loose:'불량', engaged:'정상', defer:'보류', on:'Astra · 촉각 켬', off:'Astra · 촉각 끔', rule:'규칙 · 촉각', current_rule:'규칙 · 전류'};
+const words = {loose:'불량', engaged:'정상', defer:'보류', runtime_error:'호출 오류', on:'Astra · 촉각 켬', off:'Astra · 촉각 끔', rule:'규칙 · 촉각', current_rule:'규칙 · 전류'};
 const phases = {reset:'초기 자세', approach:'접근', pinch:'집기', probe:'탐침 이동', hold:'유지 · 측정', return:'복귀', open:'턱 열기', withdraw:'후퇴'};
 const svgElement = name => document.createElementNS('http://www.w3.org/2000/svg', name);
 const padViews = ['왼쪽', '오른쪽'].map(side => {
@@ -143,11 +170,33 @@ function renderResults(results) {
   const key = JSON.stringify(results);
   if (key === resultKey) return;
   resultKey = key;
+  const summary = el('summary');
+  summary.replaceChildren();
+  for (const policy of ['on','off','rule','current_rule']) {
+    const set = results.filter(row => row.policy === policy);
+    const success = set.filter(row => row.success).length;
+    const runtimeErrors = set.filter(row => row.answer === 'runtime_error').length;
+    const panel = document.createElement('div');
+    panel.className = 'score';
+    const name = document.createElement('span');
+    name.textContent = words[policy];
+    const score = document.createElement('b');
+    score.textContent = set.length ? `${success}/${set.length}` : '—';
+    const note = document.createElement('small');
+    note.textContent = runtimeErrors ? `정답·보존 · 오류 ${runtimeErrors}` : '정답·보존 / 기록된 시행';
+    panel.append(name, score, note);
+    summary.append(panel);
+  }
+  summary.hidden = !results.length;
   const table = el('results');
   table.replaceChildren();
   for (const row of results.slice().reverse()) {
     const tr = table.insertRow();
-    for (const value of [row.id, words[row.policy], words[row.answer] ?? '오류', row.preserved ? '✓' : '전환', row.success ? '✓' : '—']) tr.insertCell().textContent = value;
+    const inference = Number.isFinite(row.inference_s) && row.inference_s > 0 ? `${row.inference_s.toFixed(1)} s` : '—';
+    for (const value of [row.id, words[row.policy], words[row.initial] ?? '—', words[row.answer] ?? '오류',
+      row.preserved ? '✓' : '전환', row.success ? '✓' : '—', inference]) tr.insertCell().textContent = value;
+    tr.cells[3].className = row.answer === 'runtime_error' ? 'error' : row.success ? 'good' : 'dim';
+    tr.cells[5].className = row.success ? 'good' : 'dim';
   }
 }
 
@@ -172,24 +221,48 @@ async function tick() {
 }
 
 function stopReplay() {
-  clearTimeout(playback.timer);
+  if (playback) clearTimeout(playback.timer);
   playback = undefined;
-  el('play').textContent = '저장된 검사 재생';
+  el('play').textContent = '재생';
+  el('live').hidden = el('seek').hidden = true;
   if (latest) render(latest);
 }
 
-el('play').addEventListener('click', () => {
-  if (playback) { stopReplay(); return; }
-  playback = {index:0};
-  el('play').textContent = '재생 닫기';
-  function next() {
-    const frame = replay.frames[playback.index++];
-    if (!frame) { el('play').textContent = '결과 화면으로'; return; }
-    render({...latest, ...frame, id:replay.id, policy:replay.policy, action:'저장된 동작 재생 · ' + replay.description, wait:0});
-    playback.timer = setTimeout(next, 200);
+function showFrame(index) {
+  const frame = replay.frames[index];
+  el('seek').value = index;
+  render({...latest, ...frame, id:replay.id, policy:replay.policy,
+    action:'저장된 검사 · ' + replay.description, wait:0});
+}
+function advanceFrame() {
+  const index = Number(el('seek').value) + 1;
+  if (index >= replay.frames.length) { el('play').textContent = '다시 재생'; playback.timer = undefined; return; }
+  showFrame(index);
+  playback.timer = setTimeout(advanceFrame, 200);
+}
+el('play').addEventListener('click', async () => {
+  if (playback?.timer) {
+    clearTimeout(playback.timer);
+    playback.timer = undefined;
+    el('play').textContent = '이어 재생';
+    return;
   }
-  next();
+  try {
+    if (!playback) {
+      replay = await readJson(el('archive').value);
+      playback = {};
+      el('seek').max = replay.frames.length - 1;
+      el('live').hidden = el('seek').hidden = false;
+      showFrame(0);
+    }
+    if (Number(el('seek').value) >= replay.frames.length - 1) showFrame(0);
+    el('play').textContent = '일시 정지';
+    playback.timer = setTimeout(advanceFrame, 200);
+  } catch { el('action').textContent = '저장된 시행을 불러오지 못했어요.'; }
 });
+el('seek').addEventListener('input', () => { if (playback) showFrame(Number(el('seek').value)); });
+el('archive').addEventListener('change', stopReplay);
+el('live').addEventListener('click', stopReplay);
 el('map-mode').addEventListener('change', () => { if (displayed) render(displayed); });
 el('gripper').addEventListener('click', () => {
   const button = el('gripper');
@@ -200,7 +273,25 @@ el('gripper').addEventListener('click', () => {
   el('wide').alt = zoomed ? 'MuJoCo PaXini 집게와 걸쇠 손잡이' : 'MuJoCo SO-ARM101 전체 팔과 걸쇠 치구';
   if (displayed) render(displayed);
 });
-readJson('replay.json').then(data => { if (data.frames?.length) { replay = data; el('play').hidden = false; } }).catch(() => {});
+async function loadReplays() {
+  let playlist;
+  try { playlist = await readJson('gallery.json'); }
+  catch {
+    try {
+      const one = await readJson('replay.json');
+      playlist = [{path:'replay.json', label:one.description}];
+    } catch { return; }
+  }
+  const selection = el('archive');
+  for (const entry of playlist) {
+    const option = document.createElement('option');
+    option.value = entry.path;
+    option.textContent = entry.label;
+    selection.append(option);
+  }
+  el('playback').hidden = !playlist.length;
+}
+loadReplays();
 tick();
 </script>
 </body>

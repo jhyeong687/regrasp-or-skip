@@ -1,0 +1,122 @@
+{
+  "model": "gpt-6.2-astra",
+  "effort": "xhigh",
+  "started_utc": "2026-11-23T08:41:58.476+00:00",
+  "probe_budget": 2,
+  "policies": [
+    "on",
+    "off"
+  ],
+  "camera_names": [
+    "rgb_scene_left",
+    "rgb_scene_right",
+    "wrist_rgb",
+    "wrist_depth"
+  ],
+  "trials": [
+    {
+      "id": "B02-off",
+      "variant": 2,
+      "policy": "off",
+      "initial": "loose",
+      "actions": [],
+      "calls": [
+        {
+          "started_utc": "2026-11-23T08:41:59.596+00:00",
+          "requested_model": "gpt-6.2-astra",
+          "requested_effort": "xhigh",
+          "error": "TimeoutError: Codex turn exceeded 120 s",
+          "wall_s": 120.002,
+          "finished_utc": "2026-11-23T08:43:59.597+00:00",
+          "image": "B02-off-0.jpg",
+          "image_sha256": "c5a5e046005acb67c3b0735052e154d2490444675c556a9b33397c180ebf314d",
+          "prompt": "You control a real-time-sampled SO-ARM101 R7 in MuJoCo for incoming inspection. Determine whether a latch was already engaged or loose on arrival. Preserve that original condition all the way through release. A sufficiently strong inspection can change the mechanism. The outside tab of both parts starts flush at the same nominal location. An engaged latch normally restrains play; grasp slip, arm compliance and bias can complicate interpretation. You have no calibration examples or labeled thresholds. The four tiles are fixed left and right RGB above, wrist RGB and masked wrist depth below. Dark invalid depth is missing. On follow-up the image is from the loaded hold of your last probe; control has since returned to open home. Each record describes your own earlier action and readings in order. Base axes +X forward and +Z up; currents are signed mA proxies, TCP is measured in mm. When supplied, touch is reaction on pads in base axes and local per-pad compression/shear. Select a contact point (x_mm along the handle, z_mm high or low relative to its calibrated center), motion dx_mm,dz_mm, and jaw gap. Common driver uses IK to pinch at your point, move by your displacement, hold, return, open and withdraw. It does not select further probes. Reachable ranges x [-8,8], z [-5,5], dx [-4,4], dz [-9,4], gap [23,31] mm. You may execute up to two probes, or stop before either. Return kind=finish with answer engaged/loose/defer when ready. For finish unused geometric fields may be zero. For probe the answer field is unused. Explain briefly which cue motivated your decision. Use only supplied data.\n{\"remaining_probes\":2,\"history\":[],\"initial_or_current_robot\":{\"tcp_xz_mm\":[202.0,209.0],\"gap_mm\":82.41,\"current_mA\":[-10,-120,-740,-405,-10]}}"
+        }
+      ],
+      "answer": "defer",
+      "error": "TimeoutError: Codex turn exceeded 120 s",
+      "preserved": true,
+      "correct": false,
+      "success": false,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 0.5,
+      "wall_s": 120.024,
+      "inference_s": 120.002
+    },
+    {
+      "id": "B02-on",
+      "variant": 2,
+      "policy": "on",
+      "initial": "loose",
+      "actions": [],
+      "calls": [
+        {
+          "started_utc": "2026-11-23T08:43:59.925+00:00",
+          "requested_model": "gpt-6.2-astra",
+          "requested_effort": "xhigh",
+          "error": "TimeoutError: Codex turn exceeded 120 s",
+          "wall_s": 120.001,
+          "finished_utc": "2026-11-23T08:45:59.924+00:00",
+          "image": "B02-on-0.jpg",
+          "image_sha256": "c5a5e046005acb67c3b0735052e154d2490444675c556a9b33397c180ebf314d",
+          "prompt": "You control a real-time-sampled SO-ARM101 R7 in MuJoCo for incoming inspection. Determine whether a latch was already engaged or loose on arrival. Preserve that original condition all the way through release. A sufficiently strong inspection can change the mechanism. The outside tab of both parts starts flush at the same nominal location. An engaged latch normally restrains play; grasp slip, arm compliance and bias can complicate interpretation. You have no calibration examples or labeled thresholds. The four tiles are fixed left and right RGB above, wrist RGB and masked wrist depth below. Dark invalid depth is missing. On follow-up the image is from the loaded hold of your last probe; control has since returned to open home. Each record describes your own earlier action and readings in order. Base axes +X forward and +Z up; currents are signed mA proxies, TCP is measured in mm. When supplied, touch is reaction on pads in base axes and local per-pad compression/shear. Select a contact point (x_mm along the handle, z_mm high or low relative to its calibrated center), motion dx_mm,dz_mm, and jaw gap. Common driver uses IK to pinch at your point, move by your displacement, hold, return, open and withdraw. It does not select further probes. Reachable ranges x [-8,8], z [-5,5], dx [-4,4], dz [-9,4], gap [23,31] mm. You may execute up to two probes, or stop before either. Return kind=finish with answer engaged/loose/defer when ready. For finish unused geometric fields may be zero. For probe the answer field is unused. Explain briefly which cue motivated your decision. Use only supplied data.\n{\"remaining_probes\":2,\"history\":[],\"initial_or_current_robot\":{\"tcp_xz_mm\":[202.0,209.0],\"gap_mm\":82.41,\"current_mA\":[-10,-120,-740,-405,-10]}}"
+        }
+      ],
+      "answer": "defer",
+      "error": "TimeoutError: Codex turn exceeded 120 s",
+      "preserved": true,
+      "correct": false,
+      "success": false,
+      "final": "loose",
+      "transitions": [],
+      "sim_s": 0.5,
+      "wall_s": 120.011,
+      "inference_s": 120.001
+    }
+  ],
+  "setup_revision": "r7-bounded-grasp",
+  "mujoco": "3.17.0",
+  "retry_of": "2026-11-23T08:34:59.974+00:00",
+  "retry_ids": [
+    "B02-off",
+    "B02-on",
+    "B03-off",
+    "B03-on",
+    "B04-off",
+    "B04-on",
+    "B05-off",
+    "B05-on",
+    "B06-off",
+    "B06-on"
+  ],
+  "design": [
+    {
+      "variant": 3,
+      "state": "engaged"
+    },
+    {
+      "variant": 2,
+      "state": "loose"
+    },
+    {
+      "variant": 1,
+      "state": "loose"
+    },
+    {
+      "variant": 1,
+      "state": "engaged"
+    },
+    {
+      "variant": 2,
+      "state": "engaged"
+    },
+    {
+      "variant": 3,
+      "state": "loose"
+    }
+  ],
+  "stopped_utc": "2026-11-23T08:45:59.933+00:00",
+  "stop_reason": "consecutive_backend_errors",
+  "elapsed_wall_s": 241.461
+}

@@ -23,8 +23,11 @@ def infer(prompt, image, schema, *, timeout=150):
     receipt = {"started_utc": started, "events": [], "requested_model": MODEL,
                "requested_effort": EFFORT}
     with tempfile.TemporaryDirectory(prefix="r7-placement-") as directory:
-        command = [os.environ.get("R7_CODEX_BIN", "codex"), "app-server", "-c", f'model="{MODEL}"',
-                   "-c", f'model_reasoning_effort="{EFFORT}"']
+        command = [os.environ.get("R7_CODEX_BIN", "codex"), "app-server"]
+        if os.environ.get("R7_CODEX_PROXY") == "1":
+            command.append("proxy")
+        else:
+            command.extend(["-c", f'model="{MODEL}"', "-c", f'model_reasoning_effort="{EFFORT}"'])
         with subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                               stderr=subprocess.DEVNULL, cwd=directory) as process:
             try:

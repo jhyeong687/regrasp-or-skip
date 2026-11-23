@@ -12,6 +12,8 @@ A weak lift can follow from poor contact, a slippery surface, or a load the arm 
 
 **Conveyor pilot · Regrasp or Let It Pass?** The same loaded part was picked after indexing closer at 25 mm/s and passed at 55 mm/s. Across eight paired conditions, the force rule delivered 7/8 and Astra `xhigh` delivered 6/8 with the simulator clock paused for inference. [Workbench replays and measurements](docs/conveyor-pilot.ko.md)
 
+**Waypoint stacking pilot.** GPT-6.2 Astra generated lift and placement waypoints for the same 85 g shell with mirrored internal ballast. Adding PaXini force and moment data changed its release targets and stabilized both variants in MuJoCo. [Videos, commands and sensor traces](docs/stacking-waypoint-pilot.ko.md)
+
 **Next study · Tactile Evidence for Agentic Manipulation.** Keep appearance fixed and change the hidden physics. Measure whether tactile feedback changes an agent's waypoints across stacking, latch inspection, and insertion. [Evaluation suite](docs/tactile-agent-suite.ko.md) · [Stacking protocol and stability check](docs/tactile-stacking-protocol.ko.md)
 
 ## Four grasps on one time axis

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SO-ARM101 · 무게중심 쌓기</title>
+<style>
+:root{color-scheme:dark;--bg:#11171f;--panel:#19222d;--rule:#343f4c;--muted:#a8b5c4;--violet:#c9b4fc;--mint:#79dfc2;--amber:#ffca88}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:#edf2f7;font:14px/1.5 "Inter","Apple SD Gothic Neo",system-ui,sans-serif}
+main{max-width:1300px;margin:auto;padding:20px clamp(12px,3vw,32px) 32px}
+h1{font-size:clamp(22px,3vw,33px);letter-spacing:-.04em;margin:0}h2{font-size:14px;margin:0}
+header,.tools,.head,.metrics{display:flex;align-items:center;gap:10px;justify-content:space-between}
+header{margin-bottom:13px;flex-wrap:wrap}.tools{justify-content:flex-start;flex-wrap:wrap;margin-bottom:10px}#status{margin-left:auto}
+small,.muted{color:var(--muted)}a{color:var(--violet)}
+button,select{font:inherit;color:inherit;background:#253140;border:1px solid var(--rule);border-radius:7px;padding:6px 9px;cursor:pointer}
+button:hover,select:hover{border-color:var(--violet)}button:disabled{opacity:.55;cursor:default}
+.primary{color:#26183e;background:var(--violet);font-weight:700}.grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(235px,1fr);gap:10px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.head{padding:8px 10px}.metrics{padding:7px 10px;border-top:1px solid var(--rule);background:#202a36;flex-wrap:wrap}
+.metrics strong,.pad output{display:block;font-variant-numeric:tabular-nums}.metrics strong{font-size:15px}
+.media{display:block;width:100%;background:#141b23;object-fit:contain;aspect-ratio:1280/480}.camera{aspect-ratio:1280/180}
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 8px}
+.pad{background:#131a22;border:1px solid var(--rule);border-radius:8px;padding:5px;text-align:center}
+.pad output{color:var(--amber);font-weight:700}.pad small{font-size:10px;display:block}.pad canvas{width:100%;max-width:135px;display:block;margin:auto;cursor:crosshair}
+.legend{margin:6px 10px;color:var(--muted);font-size:11px}#sensorTime{color:var(--mint)}
+.camera-panel,.results,.decision{margin-top:10px}.decision{padding:8px 11px;color:var(--muted)}
+.camera-labels{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;color:var(--muted);padding:3px;font-size:11px}
+.timeline{display:flex;align-items:center;gap:8px;padding:7px 10px}.timeline input{flex:1;min-width:100px;accent-color:var(--violet)}
+table{width:100%;border-collapse:collapse;text-align:right;font-size:12px}td,th{border-top:1px solid var(--rule);padding:6px 8px}td:first-child,th:first-child{text-align:left}
+.good{color:var(--mint)}.bad{color:var(--amber)}#error{color:#ffbfb1}
+pre{white-space:pre-wrap;margin:4px 10px 10px}.waypoints{padding:5px 10px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}#status{margin-left:0}}
+</style>
+<main>
+<header><h1>SO-ARM101 <span style="color:var(--violet)">무게중심 쌓기</span></h1><a href="https://github.com/jhyeong687/tactile-grasp-agent">GitHub</a></header>
+<div class="tools">
+<select id="trial" aria-label="시행" disabled><option>시행 선택</option></select>
+<button id="play" class="primary" disabled>재생</button><button id="live">실시간 상태</button>
+<small id="status" role="status">R7 시뮬레이션 연결 중</small>
+</div>
+<div class="grid">
+<section class="panel">
+<div class="head"><h2>R7 작업대</h2><small>전체 팔 · 상부 부품 확대</small></div>
+<img id="liveBench" class="media" alt="실시간 R7 작업대">
+<video id="bench" class="media" muted playsinline preload="auto" hidden></video>
+<div class="metrics">
+<div><strong id="phase">—</strong><small>단계</small></div>
+<div><strong id="clock">—</strong><small>시뮬레이션 시간</small></div>
+<div><strong id="tcpX">—</strong><small>실제 TCP X</small></div>
+<div><strong id="gap">—</strong><small>턱 간격</small></div>
+</div>
+<div class="timeline"><button id="hold" disabled>들고 있는 순간</button><input type="range" id="seek" aria-label="영상 재생 위치" min="0" max="10" value="0" step=".04" disabled></div>
+</section>
+<section class="panel">
+<div class="head"><h2>양쪽 PaXini · 각 77점</h2><button id="export" disabled>센서 JSON</button></div>
+<div class="head"><select id="map" aria-label="표시 모드"><option value="pad_patch_N">접촉면 추정</option><option value="pad_force_N">접촉점 기반</option></select><small id="sensorTime">—</small></div>
+<div class="pads">
+<div class="pad"><b>왼쪽</b><output>—</output><canvas width="250" height="256" aria-label="왼쪽 패드"></canvas><small></small></div>
+<div class="pad"><b>오른쪽</b><output>—</output><canvas width="250" height="256" aria-label="오른쪽 패드"></canvas><small></small></div>
+</div>
+<p class="legend" id="load">—</p><p class="legend" id="point">점을 눌러 Fx · Fy · Fz 확인</p>
+<p class="legend">촉각을 끈 조건에서도 평가 화면에는 기록이 표시돼요.</p>
+</section>
+</div>
+<div class="decision panel"><b id="decisionTitle"></b><span id="evidence">Astra의 첫 응답을 기다리는 중</span>
+<details class="waypoints"><summary>실행 웨이포인트</summary><pre id="waypoints"></pre></details></div>
+<section class="panel camera-panel">
+<div class="head"><h2>카메라 피드</h2><small>좌우 RGB ±26 cm · 손목 깊이 195 mm 이상</small></div>
+<img id="liveCameras" class="media camera" alt="실시간 카메라 네 뷰">
+<video id="cameras" class="media camera" muted playsinline preload="auto" hidden></video>
+<div class="camera-labels"><span>왼쪽 RGB</span><span>오른쪽 RGB</span><span>손목 RGB</span><span>손목 깊이</span></div>
+</section>
+<section class="panel results">
+<div class="head"><h2>쌍별 배치 결과</h2><small>아래 두 층은 미리 조립</small></div>
+<table><thead><tr><th>내부 추</th><th>모델 입력</th><th>놓기 X</th><th>최종 기울기</th><th>안정 판정</th></tr></thead><tbody id="results"></tbody></table>
+</section>
+<p role="alert" id="error"></p>
+</main>
+<script>
+const el=id=>document.getElementById(id);
+const video=el("bench"), cams=el("cameras"), panels=[...document.querySelectorAll(".pad")];
+const stages={initialize:"연결 중",ready:"준비",plan_lift:"Astra가 첫 들기 경로 계획 중",execute_lift:"R7이 직접 들어 확인 중",
+  plan_place:"Astra가 촉각 있음·없음 경로 계획 중",execute_place:"Astra가 제출한 위치 실행 중",
+  lift:"들어서 확인",place:"상부 배치",settle:"손을 뗀 뒤 안정 확인",complete:"4개 조건 완료"};
+let replays, rows=[], points=[], latest, displayed, sensor, selected, isLive=true;
+function setPoints(raw){
+ const y=raw.map(p=>p.y_mm), center=(Math.min(...y)+Math.max(...y))/2;
+ points=raw.map(p=>({...p,screen:[125+7*p.x_mm,128+7*(center-p.y_mm)]}));
+}
+function draw(sample, held=false){
+ if(!sample||!points.length)return;
+ sensor=sample;
+ el("sensorTime").textContent=(held?"들기 기록 · ":"센서 시각 · ")+sample.t.toFixed(2)+" s";
+ el("load").textContent="TCP 기준 Y 모멘트 "+sample.pad_moment_about_tcp_mNm[1].toFixed(2)+" mNm · 하중 "+(-sample.pad_load_world_N[2]).toFixed(3)+" N";
+ panels.forEach((panel,side)=>{
+  const canvas=panel.querySelector("canvas"),ctx=canvas.getContext("2d");
+  const vectors=sample[el("map").value][side], total=sample.pad_resultant_N[side];
+  ctx.clearRect(0,0,250,256);
+  let sx=0,sy=0,norm=0,active=0;
+  vectors.forEach(([fx,fy,fz],index)=>{
+   const [x,y]=points[index].screen,n=Math.max(0,fz),strength=Math.sqrt(Math.min(1,n/1.15));
+   ctx.beginPath();ctx.arc(x,y,2.8+6*strength,0,2*Math.PI);
+   ctx.fillStyle=n>.004?`hsl(${267-220*strength} 89% ${53+26*strength}%)`:"#475469";ctx.fill();
+   sx+=x*n;sy+=y*n;norm+=n;if(n>=.02)active++;
+   const shear=Math.hypot(fx,fy);
+   if(shear<.007)return;
+   const ux=fx/shear,uy=-fy/shear,len=Math.min(24,6+67*shear),ex=x+ux*len,ey=y+uy*len;
+   ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(ex,ey);ctx.lineTo(ex-5*ux-3*uy,ey-5*uy+3*ux);
+   ctx.moveTo(ex,ey);ctx.lineTo(ex-5*ux+3*uy,ey-5*uy-3*ux);ctx.strokeStyle="#88e4d0";ctx.lineWidth=1.7;ctx.stroke();
+  });
+  if(norm>.15){
+   const x=sx/norm,y=sy/norm;
+   ctx.beginPath();ctx.arc(x,y,7,0,2*Math.PI);ctx.moveTo(x-12,y);ctx.lineTo(x+12,y);ctx.moveTo(x,y-12);ctx.lineTo(x,y+12);
+   ctx.strokeStyle="#eee";ctx.lineWidth=1.5;ctx.stroke();
+  }
+  panel.querySelector("output").textContent=total[2].toFixed(2)+" N";
+  panel.querySelector("small").textContent=total.map((v,i)=>["Fx","Fy","Fz"][i]+" "+v.toFixed(2)).join(" · ")+" · "+active+"/77";
+ });
+ if(selected){
+  const f=sample[el("map").value][selected.side][selected.index];
+  el("point").textContent="#"+points[selected.index].index+" · "+f.map(v=>v.toFixed(3)).join(" / ")+" N";
+ }
+ el("export").disabled=false;
+}
+function inspect(sample, pinned=null){
+ if(!sample)return;
+ displayed=sample;
+ el("phase").textContent=stages[sample.phase]??sample.phase;
+ el("clock").textContent=sample.t.toFixed(2)+" s";
+ el("gap").textContent=sample.gap_mm.toFixed(1)+" mm";
+ el("tcpX").textContent=sample.tcp.xyz_mm[0].toFixed(1)+" mm";
+ draw(pinned??sample,!!pinned);
+}
+function synchronize(force=false){
+ if(cams.readyState<1)return;
+ if(force||Math.abs(video.currentTime-cams.currentTime)>.12)cams.currentTime=video.currentTime;
+ if(video.paused)cams.pause();
+ else if(cams.paused)cams.play().catch(()=>{});
+}
+function viewingLive(value){
+ isLive=value;
+ video.hidden=cams.hidden=value;
+ el("liveBench").hidden=el("liveCameras").hidden=!value;
+ el("play").disabled=el("seek").disabled=el("hold").disabled=value;
+ if(value)video.pause();
+}
+function selectedRow(){return rows.find(row=>row.id===el("trial").value);}
+function holdFrame(trace){return trace.filter(s=>s.phase==="lift").at(-1);}
+function showReplayFrame(){
+ const row=selectedRow();if(isLive||!row||!replays)return;
+ const trace=replays.trials[row.id];
+ const step=Math.min(trace.length-1,Math.max(0,Math.round(video.currentTime/.08)));
+ el("seek").value=video.currentTime;
+ inspect(trace[step],video.ended?holdFrame(trace):null);
+}
+function chooseReplay(auto=false){
+ const row=selectedRow();if(!row||!replays)return;
+ viewingLive(false);
+ const trace=replays.trials[row.id];if(!trace)return;
+ video.src=row.id+".mp4";cams.src=row.id+"-cameras.mp4";
+ el("seek").max=(trace.length*.08).toFixed(2);
+ el("status").textContent=(row.available_paxini?"PaXini 사용":"카메라·관절만")+" · "+(row.outcome.stable?"안정":"불안정");
+ el("decisionTitle").textContent="Astra xhigh · ";
+ el("evidence").textContent=row.calls.at(-1).response.evidence;
+ el("waypoints").textContent=row.place_waypoints.map((w,i)=>`${i+1}  XYZ [${w.xyz_mm.join(", ")}] mm · pitch ${w.pitch_deg}° · yaw ${w.yaw_deg}° · gap ${w.gap_mm} mm · ${w.time_s} s`).join("\n");
+ inspect(trace[0]);
+ if(auto)video.play().catch(e=>el("error").textContent=e.message);
+}
+el("trial").onchange=()=>chooseReplay();
+el("live").onclick=()=>{viewingLive(true);if(latest)showLive(latest);};
+el("play").onclick=()=>video.paused?video.play().catch(()=>{}):video.pause();
+el("hold").onclick=()=>{
+ const trace=replays.trials[selectedRow().id], target=holdFrame(trace);
+ video.pause();video.currentTime=Math.max(0,target.t-.08);
+};
+el("seek").oninput=()=>video.currentTime=Number(el("seek").value);
+el("map").onchange=()=>draw(sensor,sensor!==displayed);
+for(const kind of ["timeupdate","loadeddata","seeked","ended"])video.addEventListener(kind,()=>{synchronize(kind==="seeked");showReplayFrame();});
+video.addEventListener("play",()=>{el("play").textContent="일시 정지";synchronize(true);});
+video.addEventListener("pause",()=>{el("play").textContent="재생";cams.pause();});
+cams.addEventListener("loadeddata",()=>synchronize(true));
+panels.forEach((panel,side)=>{
+ const canvas=panel.querySelector("canvas");
+ canvas.onclick=event=>{
+  if(!sensor||!points.length)return;
+  const x=event.offsetX*canvas.width/canvas.clientWidth,y=event.offsetY*canvas.height/canvas.clientHeight;
+  const distance=p=>Math.hypot(p.screen[0]-x,p.screen[1]-y);
+  selected={side,index:points.reduce((best,p,i)=>distance(p)<distance(points[best])?i:best,0)};
+  draw(sensor,sensor!==displayed);
+ };
+});
+el("export").onclick=()=>{
+ const json={time_s:sensor.t,phase:sensor.phase,taxel_indices:points.map(p=>p.index),
+  force_N:sensor.pad_force_N,estimated_patch_N:sensor.pad_patch_N,torque_Nm:sensor.pad_torque_Nm,
+  force_base_N:sensor.pad_load_world_N,moment_about_tcp_mNm:sensor.pad_moment_about_tcp_mNm};
+ const url=URL.createObjectURL(new Blob([JSON.stringify(json,null,2)],{type:"application/json"}));
+ const a=document.createElement("a");a.href=url;a.download="paxini-"+sensor.t+"s.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+async function get(path){
+ try{const response=await fetch(path,{cache:"no-store"});return response.ok?await response.json():null;}
+ catch{return null;}
+}
+function showLive(state){
+ el("status").textContent=(stages[state.phase]??state.phase)+(state.trial?" · "+state.trial:"");
+ if(state.bench)el("liveBench").src=state.bench;
+ if(state.cameras)el("liveCameras").src=state.cameras;
+ inspect(state.sample);
+}
+function makeTable(){
+ el("results").replaceChildren();
+ const next=el("trial").value;
+ el("trial").replaceChildren();
+ for(const row of rows){
+  const side=row.hidden_cg_mm_eval<0?"왼쪽":"오른쪽", input=row.available_paxini?"PaXini 사용":"카메라·관절";
+  const xyz=row.place_waypoints?.find(p=>p.gap_mm>=60&&p.xyz_mm[2]<74)?.xyz_mm;
+  const result=row.outcome.stable?"안정":"실패";
+  const tr=el("results").insertRow();
+  [side,input,xyz?xyz[0].toFixed(1)+" mm":"—",row.outcome.tilt_deg==null?"—":row.outcome.tilt_deg.toFixed(1)+"°",result].forEach((value,i)=>{
+   const td=tr.insertCell();td.textContent=value;if(i===4)td.className=row.outcome.stable?"good":"bad";
+  });
+  if(replays?.trials[row.id])el("trial").add(new Option(side+" 추 · "+input,row.id));
+ }
+ el("trial").disabled=!el("trial").options.length;
+ if([...el("trial").options].some(option=>option.value===next))el("trial").value=next;
+}
+async function monitor(){
+ if(!points.length){const values=await get("points.json");if(values)setPoints(values);}
+ latest=await get("live.json");
+ if(latest&&isLive)showLive(latest);
+ if(!replays){replays=await get("replays.json");if(replays)setPoints(replays.points);}
+ const result=await get("results.json");
+ if(result&&result.trials.length!==rows.length){rows=result.trials;makeTable();}
+ else if(replays&&el("trial").disabled&&rows.length)makeTable();
+ if(replays&&isLive&&(!latest||latest.phase==="complete")&&el("trial").options.length){
+  const target=new URLSearchParams(location.search).get("trial");
+  el("trial").value=target&&replays.trials[target]?target:rows.find(r=>r.available_paxini&&r.outcome.stable)?.id??el("trial").value;
+  chooseReplay();
+  const trace=replays.trials[selectedRow().id], hold=holdFrame(trace);
+  video.addEventListener("loadeddata",()=>{video.currentTime=Math.max(0,hold.t-.08);},{once:true});
+ }
+ if(!replays||(latest&&latest.phase!=="complete"))setTimeout(monitor,800);
+}
+monitor().catch(e=>el("error").textContent=e.message);
+</script>
+</html>

@@ -1,0 +1,34 @@
+[
+  {
+    "physical_trial": "pair-1-touch",
+    "placement_donor": "pair-2-touch",
+    "outcome": {
+      "stable": false,
+      "ledge_contact": true,
+      "released": true,
+      "tilt_deg": 8.109,
+      "speed_m_s": 7e-05,
+      "xyz_mm": [
+        196.555,
+        -106.174,
+        54.385
+      ]
+    }
+  },
+  {
+    "physical_trial": "pair-2-touch",
+    "placement_donor": "pair-1-touch",
+    "outcome": {
+      "stable": false,
+      "ledge_contact": true,
+      "released": true,
+      "tilt_deg": 8.224,
+      "speed_m_s": 7e-05,
+      "xyz_mm": [
+        215.586,
+        -103.88,
+        53.82
+      ]
+    }
+  }
+]

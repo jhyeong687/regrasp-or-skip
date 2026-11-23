@@ -1,0 +1,9 @@
+<mujocoinclude>
+  <geom name="base_layer" type="mesh" mesh="base_layer" pos=".204 -.101 .0004" material="vise" contype="16" conaffinity="2"/>
+  <geom name="middle_layer" type="mesh" mesh="middle_layer" pos=".204 -.101 .0214" material="housing" contype="16" conaffinity="2"/>
+  <geom name="ledge" type="box" pos=".204 -.101 .0354" size=".007 .022 .003" material="silver" contype="16" conaffinity="2" friction=".85 .005 .0001"/>
+  <geom type="box" pos=".204 -.130 .021" size=".019 .0005 .003" material="vise" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".180 -.101 -.0071" size=".002 .038 .0003" material="handle_mark" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".228 -.101 -.0071" size=".002 .038 .0003" material="handle_mark" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".222 .036 -.0073" size=".048 .031 .00035" material="tray_finish" contype="0" conaffinity="0"/>
+</mujocoinclude>

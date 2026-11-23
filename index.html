@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#003876">
+  <meta name="description" content="An in-progress SO-ARM101 research project exploring how tactile feedback can guide manipulation decisions after contact.">
+  <meta property="og:title" content="Regrasp or Skip?">
+  <meta property="og:description" content="PaXini gripper CAD, synchronized MuJoCo replays, and tactile probing experiments by Lee Jin Hyeong.">
+  <title>Regrasp or Skip? · Lee Jin Hyeong</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top wrap">
+    <a class="wordmark" href="#main">Regrasp or Skip?</a>
+    <nav aria-label="Page sections">
+      <a href="#demo">Replays</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#experiments">Experiments</a>
+      <a href="https://github.com/jhyeong687/tactile-grasp-agent">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="label">Lee Jin Hyeong · Research in progress</p>
+          <h1>Regrasp <em>or skip?</em></h1>
+          <p class="deck">A PaXini-equipped SO-ARM101 testbed for studying when a robot should lift, try another grasp, or move on after contact.</p>
+          <div class="actions">
+            <a class="button primary" href="#demo">Watch the replays</a>
+            <a class="button" href="https://github.com/jhyeong687/tactile-grasp-agent">View source</a>
+          </div>
+        </div>
+        <figure class="hero-figure">
+          <img src="assets/gripper-r4.jpg" width="1920" height="1080" alt="CAD rendering of the R4 parallel-jaw tactile gripper with wrist camera" fetchpriority="high">
+          <figcaption>R4 parallel-jaw gripper · CAD render</figcaption>
+        </figure>
+        <dl class="facts">
+          <div><dt>Arm</dt><dd>SO-ARM101</dd></div>
+          <div><dt>Tactile</dt><dd>Two 77-point PaXini pads</dd></div>
+          <div><dt>Vision</dt><dd>Wrist RGB-D + two side cameras</dd></div>
+          <div><dt>Evaluation</dt><dd>MuJoCo pilots</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="wrap chapter" id="demo">
+      <div class="section-intro">
+        <h2>Four grasps on one clock</h2>
+        <p>The standard and slippery blocks had the same mass and the same reported mean normal force of 5.29 N per jaw. Their measured rise differed by 11.60 mm. A single normal-force reading can accompany very different lift outcomes.</p>
+      </div>
+      <div class="media-grid">
+        <figure class="player">
+          <video src="assets/so101-four-grasps.mp4" poster="assets/grasp-comparison.jpg" controls playsinline muted preload="none" aria-label="Four synchronized MuJoCo grasps and PaXini maps"></video>
+          <figcaption><strong>Four conditions, synchronized.</strong> The lift command runs from 7.50 to 8.90 s. Dots show normal compression and arrows show in-plane force.</figcaption>
+        </figure>
+        <figure class="player">
+          <video src="assets/so101-dashboard-synchronized-replay.mp4" poster="assets/mujoco-dashboard.jpg" controls playsinline muted preload="none" aria-label="Full arm, four camera feeds and PaXini dashboard replay"></video>
+          <figcaption><strong>Full-arm dashboard.</strong> Robot motion, wrist RGB and depth, both side views and the two force maps share one simulation timeline.</figcaption>
+        </figure>
+      </div>
+      <div class="table-scroll" role="region" aria-label="Four grasp measurements" tabindex="0">
+        <table>
+          <caption>Scripted MuJoCo trials · one episode per condition</caption>
+          <thead><tr><th scope="col">Condition</th><th scope="col">Mass</th><th scope="col">Pad friction</th><th scope="col">Rise at 8.90 s</th><th scope="col">Mean normal force / jaw</th><th scope="col">Mean |Fy| / jaw</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Standard block</th><td>50 g</td><td>0.80</td><td>11.60 mm</td><td>5.29 N</td><td>0.24 N</td></tr>
+            <tr><th scope="row">Cylinder</th><td>50 g</td><td>0.80</td><td>11.47 mm</td><td>5.15 N</td><td>0.24 N</td></tr>
+            <tr class="emphasis"><th scope="row">Slippery block</th><td>50 g</td><td>0.018</td><td>0.00 mm</td><td>5.29 N</td><td>0.09 N</td></tr>
+            <tr><th scope="row">Heavy block</th><td>600 g</td><td>0.80</td><td>0.93 mm</td><td>5.39 N</td><td>2.70 N</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="traces">
+        <summary>View aligned force and displacement traces</summary>
+        <img src="assets/pilot-force-traces.png" alt="Time traces comparing grip force, tangential force and object rise across four grasp conditions" loading="lazy">
+      </details>
+      <div class="inline-links">
+        <a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/data/trial-traces.csv">Trial CSV</a>
+        <a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/data/tactile-pilot.json">Tactile JSON</a>
+        <a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/data/README.md">Data schema</a>
+      </div>
+      <ol class="pipeline" aria-label="Recovery experiment sequence">
+        <li><strong>Probe</strong><span>Start with a pinch and short test lift.</span></li>
+        <li><strong>Observe</strong><span>Read both force histories, camera motion, and arm state.</span></li>
+        <li><strong>Decide</strong><span>Continue the lift, try a bounded regrasp, or set the item down.</span></li>
+      </ol>
+    </section>
+
+    <section class="wrap chapter" id="hardware">
+      <div class="section-intro">
+        <h2>Designing the tactile gripper</h2>
+        <p>The SO-ARM101 assembly adds a rack-and-pinion parallel gripper, two opposing PaXini M3025 pads, and camera mounts. The dimensions below come from CAD checks.</p>
+      </div>
+      <div class="media-grid">
+        <figure class="player">
+          <video src="assets/so101-gripper-r4.mp4" poster="assets/gripper-r4.jpg" controls playsinline muted preload="none" aria-label="R4 tactile gripper CAD design film"></video>
+          <figcaption><strong>R4 design film.</strong> Sensor mounts, parallel jaw travel, the cable window, and wrist hardware.</figcaption>
+        </figure>
+        <figure class="plate">
+          <img src="assets/fusion-r7-system.jpg" alt="Fusion CAD of the SO-ARM101 with parallel tactile jaws and two RGB cameras on violet stands" loading="lazy">
+          <figcaption><strong>R7 system assembly.</strong> Each side camera is 260 mm from center and 240 mm above the table.</figcaption>
+        </figure>
+      </div>
+      <dl class="design-rows">
+        <div><dt>R4 · Parallel jaws</dt><dd>Fitted two M3025 pads and connected the front screw supports around a cable window. The sensor-face gap spans 10.4–82.4 mm in CAD.</dd></div>
+        <div><dt>R5 · Wrist and cabling</dt><dd>Kept the D435i on the wrist, reduced bridge volume from 14.73 to 8.62 cm³, and compared wrist-side and forearm mounting routes for the PaXini box.</dd></div>
+        <div><dt>R7 · Fixed RGB mounts</dt><dd>Added split masts and rails for two SA26MCM cameras at a 27.1° downward tilt. No robot–mount intersections appeared in 51 sampled CAD poses.</dd></div>
+      </dl>
+      <details class="traces">
+        <summary>View detailed CAD views and camera feeds</summary>
+        <div class="media-grid">
+          <figure class="plate"><img src="assets/fusion-hardware-details.jpg" alt="Close Fusion CAD views of the R4 jaws and violet SA26MCM mount" loading="lazy"><figcaption>Gripper and fixed-camera mounts.</figcaption></figure>
+          <figure class="plate"><img src="assets/camera-views.jpg" alt="Four matched views from the two side cameras, wrist RGB and wrist depth" loading="lazy"><figcaption>Left RGB, right RGB, wrist RGB and depth.</figcaption></figure>
+        </div>
+      </details>
+      <div class="inline-links"><a href="https://github.com/jhyeong687/tactile-grasp-agent/tree/main/cad/rgb-26cm/STL">Printable STLs</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/cad/rgb-26cm/mount-assembly.step">STEP assembly</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/cad/README.md">Assembly guide</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/data/cad-clearance.json">CAD checks</a></div>
+    </section>
+
+    <section class="wrap chapter" id="experiments">
+      <div class="section-intro">
+        <h2>What touch changes</h2>
+        <p>These MuJoCo pilots test when evidence from contact changes a decision about placement, inspection, or whether there is time to try again.</p>
+      </div>
+      <article class="study" id="placement">
+        <video controls playsinline muted preload="none" src="assets/placement.mp4" poster="assets/placement-poster.jpg" aria-label="Where to release a load simulation replay"></video>
+        <div class="study-copy">
+          <h3>Where to release a load</h3>
+          <p>The same 85 g shell needed different release positions when its hidden ballast moved. A follow-up let Astra request a fresh tactile reading and choose release waypoints on three new shell shapes.</p>
+          <p class="result">Across 36 matched placement conditions, Astra passed 33/36 and the rule passed 34/36. Mean time including model inference was 39.66 s versus 7.97 s.</p>
+          <div class="inline-links"><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/stacking-astra-free-placement.ko.md">Protocol, replays and results</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/stacking-selective-recheck.ko.md">Selective remeasurement</a></div>
+        </div>
+      </article>
+      <article class="study" id="latch">
+        <video controls playsinline muted preload="none" src="assets/latch-inspection.mp4" poster="assets/latch-poster.jpg" aria-label="Inspecting a latch without changing it simulation replay"></video>
+        <div class="study-copy">
+          <h3>Inspecting a latch without changing it</h3>
+          <p>Two latch states start at the same height and look identical to the cameras. A small contact can reveal the state. A stronger press can seat the latch, which would erase the original defect during inspection.</p>
+          <p class="result">Fixed probes classified 6/6 cases using PaXini force and 6/6 using simulated joint current, with zero latch changes. One paired Astra trial completed before repeated inference timeouts.</p>
+          <div class="inline-links"><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/flush-latch-inspection.ko.md">Protocol, replays and results</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/diagnose-before-repair.ko.md">Physical evaluation plan</a></div>
+        </div>
+      </article>
+      <article class="study" id="conveyor">
+        <video controls playsinline muted preload="none" src="assets/conveyor.mp4" poster="assets/conveyor-poster.jpg" aria-label="When to let a part pass simulation replay"></video>
+        <div class="study-copy">
+          <h3>When to let a part pass</h3>
+          <p>The same loaded part was picked closer to the arm at 25 mm/s and passed at 55 mm/s. Grasp choice depends on the arm’s reach and the remaining time.</p>
+          <p class="result">Across eight paired conditions, the force rule delivered 7/8 and Astra delivered 6/8 with the simulator clock paused during inference.</p>
+          <div class="inline-links"><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/conveyor-pilot.ko.md">Protocol, replays and results</a></div>
+        </div>
+      </article>
+      <p class="note">In the earlier 26-trial recovery pilot, the sensor-based rule selected 13 useful picks. Qwen2.5-VL 7B selected five with aligned tactile observations and the same five with shuffled input. <a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/recovery-pilot.md">Recovery pilot results</a></p>
+    </section>
+
+    <section class="chapter resources" id="reproduce">
+      <div class="wrap resource-grid">
+        <div>
+          <h2>Reproduce the pilot</h2>
+          <p>The kit includes the simulator, printable parts and sensor traces. Each simulated pad exports 77 vectors with three force components. The dashboard offers both point-contact and estimated contact-patch views.</p>
+          <pre><code>python -m pip install -r simulation/requirements.txt
+python simulation/sim.py --verify --physics-only
+python simulation/sim.py --port 8770</code></pre>
+          <div class="inline-links"><a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-tactile-recovery-kit.zip">Download the kit</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/quickstart.md">Quickstart</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/simulation/README.md">Simulator controls</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/sources.md">Asset credits</a></div>
+        </div>
+        <div>
+          <h3>Next physical evaluation</h3>
+          <p>Calibrate pad zero, force axes and camera poses, then compare measured slip and regrasp traces with the simulator. The planned latch study independently records the latch state before and after inspection.</p>
+          <div class="inline-links"><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/experimental-plan.md">Experimental plan</a><a href="https://github.com/jhyeong687/tactile-grasp-agent/blob/main/docs/research-notes.ko.md">한국어 연구 기록</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>Lee Jin Hyeong · November 2026</span><a href="https://jhyeong687.github.io/">Portfolio</a><a href="https://jhyeong687.github.io/VTLA/">Prior VTLA project</a></footer>
+</body>
+</html>

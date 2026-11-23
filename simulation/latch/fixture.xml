@@ -1,0 +1,44 @@
+<mujocoinclude>
+  <body name="fixture" pos=".202 0 .038">
+    <geom type="mesh" mesh="fixture_base" pos="0 .001 -.0406" material="vise" contype="0" conaffinity="0"/>
+    <geom type="mesh" mesh="fixture_body" pos="0 0 -.023" material="housing" contype="0" conaffinity="0"/>
+    <geom type="box" pos="0 -.035 -.024" size=".019 .0007 .0045" material="vise" contype="0" conaffinity="0"/>
+    <geom type="box" pos="-.014 -.0359 -.024" size=".0011 .0002 .0017" material="handle_mark" contype="0" conaffinity="0"/>
+    <geom type="box" pos="-.0095 -.0359 -.024" size=".0011 .0002 .0017" material="handle_mark" contype="0" conaffinity="0"/>
+    <geom type="box" pos="-.005 -.0359 -.024" size=".0011 .0002 .0017" material="handle_mark" contype="0" conaffinity="0"/>
+    <geom type="box" pos="-.038 0 -.013" size=".008 .035 .011" material="housing" contype="0" conaffinity="0"/>
+    <geom type="box" pos=".038 0 -.013" size=".008 .035 .011" material="housing" contype="0" conaffinity="0"/>
+    <geom type="box" pos="0 -.031 -.010" size=".046 .004 .014" material="housing" group="5" contype="0" conaffinity="0"/>
+    <geom type="box" pos="0 .030 -.012" size=".046 .005 .013" material="housing" group="5" contype="0" conaffinity="0"/>
+    <geom type="box" pos="0 .041 -.017" size=".021 .014 .011" material="vise" group="5" contype="0" conaffinity="0"/>
+    <geom type="box" pos="0 .043 -.017" size=".018 .009 .009" material="silver" contype="0" conaffinity="0"/>
+    <geom type="cylinder" pos="-.056 -.033 -.034" size=".0035 .002" material="silver" contype="0" conaffinity="0"/>
+    <geom type="cylinder" pos=".056 .033 -.034" size=".0035 .002" material="silver" contype="0" conaffinity="0"/>
+    <geom type="cylinder" pos=".056 -.033 -.034" size=".0035 .002" material="silver" contype="0" conaffinity="0"/>
+    <geom type="cylinder" pos="-.056 .033 -.034" size=".0035 .002" material="silver" contype="0" conaffinity="0"/>
+    <geom name="guide_left" type="mesh" mesh="guide_left" material="silver" class="mechanism"/>
+    <geom name="guide_right" type="mesh" mesh="guide_right" material="silver" class="mechanism"/>
+    <body name="cover" gravcomp="1">
+      <inertial pos="0 0 .010" mass=".075" diaginertia=".00006 .00007 .0001"/>
+      <joint name="cover_side" type="slide" axis="1 0 0" range="-.0025 .0025" stiffness="48" damping=".4" solreflimit=".004 1"/>
+      <joint name="cover_down" type="slide" axis="0 0 1" range="-.010 0" stiffness="85" damping=".55" solreflimit=".004 1"/>
+      <geom name="shell" type="mesh" mesh="lid_finish" material="cover_finish" group="5" contype="0" conaffinity="0"/>
+      <geom type="box" pos="0 -.028 -.003" size=".042 .002 .0033" material="cover_finish" group="5" contype="0" conaffinity="0"/>
+      <geom type="box" pos="0 0 .005" size=".015 .017 .004" material="cover_finish" group="5" contype="0" conaffinity="0"/>
+      <geom name="object_surface" type="box" pos="0 0 .026" size=".013 .016 .017" group="3" contype="2" conaffinity="4"/>
+      <geom type="mesh" mesh="grip_finish" pos="0 0 .026" material="handle_finish" contype="0" conaffinity="0"/>
+      <geom type="box" pos="0 0 .04305" size=".0085 .0105 .00015" material="vise" contype="0" conaffinity="0"/>
+      <geom type="box" pos="0 0 .04324" size=".0058 .00035 .00012" material="handle_mark" contype="0" conaffinity="0"/>
+      <geom name="ramp" type="mesh" mesh="latch_ramp" material="brass" class="mechanism"/>
+      <geom name="tongue" type="box" pos="0 .005 -.002" size=".010 .005 .007" material="brass" class="mechanism"/>
+      <geom name="guide_peg" type="box" pos="0 -.017 -.010" size=".0011 .003 .0012" material="brass" class="mechanism"/>
+    </body>
+    <body name="bolt" pos="0 .023 -.0067">
+      <inertial pos="0 .011 0" mass=".011" diaginertia=".000001 .000001 .000001"/>
+      <joint name="bolt_travel" type="slide" axis="0 1 0" range="-.00025 .015" stiffness="60" springref="-.001" damping=".18" solreflimit=".004 1"/>
+      <geom name="bolt_tip" type="box" pos="0 -.004 0" size=".0017 .005 .00115" material="bolt_finish" class="mechanism"/>
+      <geom type="cylinder" fromto="0 -.004 0 0 .025 0" size=".0025" material="silver" contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 .013 0 0 .025 0" size=".004" material="bolt_finish" contype="0" conaffinity="0"/>
+    </body>
+  </body>
+</mujocoinclude>

@@ -8,7 +8,9 @@
 
 A weak lift can follow from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds a gripper and sensor rig to compare those cases under the same motion.
 
-**Planned study · Did It Come That Way?** A robot receives a cover with a hidden latch. Pressing it can erase the very defect it was asked to find. On the same hardware, we will ask a GPT-6.2 Astra agent to inspect one copy and repair its twin, then score what changed during contact. [Experimental protocol in Korean](docs/tactile-inspection-protocol.ko.md)
+**MuJoCo latch pilot · Did It Come That Way?** A light wiggle distinguished the two initial latch states in 10/10 perturbed simulation trials. Pressing the loose lid seated it in 5/5 trials, and the bolt retained it after the gripper withdrew. [Workbench replay, results and data](docs/latch-pilot.ko.md) · [Astra experimental protocol](docs/tactile-inspection-protocol.ko.md)
+
+**Conveyor study proposal.** Can a short tactile probe tell the robot whether to regrasp, wait for a better position, or let the item pass before its deadline? [Conveyor experiment design](docs/conveyor-tactile-triage.ko.md)
 
 ## Four grasps on one time axis
 

@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SO-ARM101 · 촉각 걸쇠 실험</title>
+<style>
+:root{color-scheme:dark;--bg:#11151b;--panel:#181e26;--rule:#303a47;--muted:#a8b4c5;--accent:#ccbbfc;--mint:#83e1ca;--amber:#ffcc8a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f1f2f8;font:14px/1.5 "Inter","Apple SD Gothic Neo",system-ui,sans-serif}
+main{max-width:1300px;margin:auto;padding:22px clamp(14px,3vw,32px) 28px}
+header,.bar,.section-head,.stats,.caption{display:flex;align-items:center;justify-content:space-between;gap:12px}
+header{margin-bottom:13px;flex-wrap:wrap}
+h1{font-size:clamp(21px,3vw,32px);letter-spacing:-.035em;margin:0}
+h2{font-size:14px;margin:0}
+a{color:var(--accent)}
+button,select{cursor:pointer;background:#232c38;color:#f3f3fc;border:1px solid var(--rule);border-radius:7px;padding:6px 9px;font:inherit}
+button:hover,select:hover{border-color:var(--accent)}
+.primary{background:var(--accent);color:#201639;font-weight:700}
+.bar{justify-content:flex-start;flex-wrap:wrap;margin-bottom:10px}
+.bar output{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted)}
+.viz{display:grid;grid-template-columns:minmax(0,2fr) minmax(255px,1fr);gap:10px;align-items:start}
+.panel{border:1px solid var(--rule);border-radius:10px;background:var(--panel);overflow:hidden}
+.section-head,.caption{padding:8px 12px}.caption{color:var(--muted);font-size:12px}
+video,.live-feed{display:block;width:100%;background:#131a22}
+[hidden]{display:none!important}
+.stats{padding:7px 11px;border-top:1px solid var(--rule);flex-wrap:wrap;background:#202632}
+.stats span{font-size:11px;color:var(--muted)}
+.stats strong{display:block;color:#f4effc;font-size:16px;font-variant-numeric:tabular-nums}
+#state[data-engaged="true"]{color:var(--mint)}#state[data-engaged="false"]{color:var(--amber)}
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 8px}
+.pad{background:#141922;border:1px solid var(--rule);border-radius:8px;padding:7px;text-align:center}
+.pad b{display:block;font-size:12px}.pad output{color:var(--amber);white-space:nowrap;font-size:13px;font-weight:700}
+.pad canvas{display:block;width:100%;height:auto;max-width:150px;margin:5px auto;cursor:crosshair}
+.pad small{color:var(--muted);font-size:10px;display:block;font-variant-numeric:tabular-nums}
+#point{padding:4px 10px;color:var(--mint);min-height:24px}
+.pad-details,.feeds,.results{margin-top:10px}
+.legend{color:var(--muted);font-size:11px;margin:0;padding:4px 10px}
+table{width:100%;border-collapse:collapse;text-align:right;font-size:12px}
+th,td{padding:5px 8px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+.camera-names{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;font-size:11px;color:var(--muted);padding:4px}
+.chart{display:block;width:100%;height:99px}
+#seek{flex:1;min-width:130px;accent-color:var(--accent)}
+summary{cursor:pointer;padding:6px 10px;color:var(--accent)}
+@media(max-width:660px){.viz{grid-template-columns:1fr}.bar output{margin-left:0}.camera-names{font-size:10px}}
+</style>
+<main>
+<header><h1>SO-ARM101 <span style="color:var(--accent)">촉각 걸쇠 실험</span></h1>
+<a href="http://127.0.0.1:8770/">기존 파지 대시보드</a></header>
+<div class="bar">
+<select id="trial" aria-label="실험 조건">
+<option value="loose-wiggle">덜 잠김 · 흔들기</option><option value="engaged-wiggle">잠김 · 흔들기</option>
+<option value="loose-press" selected>덜 잠김 · 누르기</option><option value="engaged-press">잠김 · 누르기</option>
+</select>
+<button class="primary" id="play">재생</button>
+<button id="rerun" hidden>실시간 실행</button>
+<button data-jump="grip">접촉</button><button data-jump="action">시험 동작</button><button data-jump="hold_clear">손 뗀 후</button>
+<button data-jump="peak">최대 접촉</button>
+<input type="range" id="seek" aria-label="재생 위치" min="0" max="5" step=".02" value="0">
+<output id="clock">0.00 s</output>
+</div>
+<div class="viz">
+<section class="panel">
+<div class="caption"><b>팔 전체 · 작업대</b><b>걸쇠 단면 · 채점용</b></div>
+<video id="bench" muted playsinline preload="auto" aria-label="동기화된 작업대와 단면 녹화"></video>
+<img id="liveBench" class="live-feed" alt="실시간 작업대와 걸쇠 단면" hidden>
+<div class="stats"><div><strong id="stage">—</strong><span>동작</span></div>
+<div><strong id="state">—</strong><span>걸쇠 상태</span></div>
+<div><strong id="travel">—</strong><span>뚜껑 높이 변화</span></div>
+<div><strong id="gap">—</strong><span>양 턱 간격</span></div>
+<div><strong id="elbow">—</strong><span>팔꿈치 토크</span></div></div>
+</section>
+<section class="panel">
+<div class="section-head"><h2>양쪽 PaXini · 각 77점</h2></div>
+<div class="section-head" style="padding-top:0">
+<select id="map" aria-label="촉각 분포 표시"><option value="patch">접촉면 추정</option><option value="raw">접촉점 기반</option></select>
+<button id="export" disabled>센서 JSON</button>
+</div>
+<div class="pads">
+<div class="pad"><b>왼쪽 패드</b><output>—</output><canvas width="260" height="254" aria-label="왼쪽 패드 힘 분포"></canvas><small></small></div>
+<div class="pad"><b>오른쪽 패드</b><output>—</output><canvas width="260" height="254" aria-label="오른쪽 패드 힘 분포"></canvas><small></small></div>
+</div>
+<p class="legend">색은 눌림 Fz · 화살표는 Fx·Fy · ⊕는 압력 중심</p>
+<div class="section-head" style="padding-block:3px"><output id="sensorTime"></output><button id="sensorMode" hidden>현재 프레임</button></div>
+<div id="point" role="status">점을 눌러 Fx · Fy · Fz 확인</div>
+<details class="pad-details"><summary>촉각 신호 상세</summary><table><thead><tr><th>항목</th><th>왼쪽</th><th>오른쪽</th></tr></thead><tbody id="features"></tbody></table></details>
+</section>
+</div>
+<section class="panel feeds">
+<div class="section-head"><h2>카메라 피드</h2><span style="color:var(--muted)">좌우 RGB ±26 cm · 손목 깊이 195 mm부터 표시</span></div>
+<video id="cameras" muted playsinline preload="auto" aria-label="좌우 RGB, 손목 RGB와 깊이 재생"></video>
+<img id="liveCameras" class="live-feed" alt="실시간 좌우 RGB, 손목 RGB와 깊이" hidden>
+<div class="camera-names"><span>왼쪽 RGB</span><span>오른쪽 RGB</span><span>손목 RGB</span><span>손목 깊이</span></div>
+</section>
+<section class="panel results">
+<div class="section-head"><h2>패드 표면 힘 · 작업대 좌표</h2><span><span style="color:var(--mint)">좌우 X</span>　<span style="color:var(--amber)">상하 Z</span></span></div>
+<canvas class="chart" id="chart" aria-label="선택 시행의 접선력 시간 그래프"></canvas>
+<details open><summary>시행 결과 비교</summary><table><thead><tr><th>조건</th><th>앞 방향 |Fx| 최대</th><th>전환 시점</th><th>손을 뗀 후</th></tr></thead><tbody id="comparison"></tbody></table></details>
+</section>
+<p id="error" role="alert"></p>
+</main>
+<script>
+const byId = id => document.getElementById(id);
+const trial = byId("trial");
+const video = byId("bench");
+const feeds = byId("cameras");
+const panels = [...document.querySelectorAll(".pad")];
+const phases = {settle:"시작",approach:"접근",grip:"잡기",wiggle_out:"옆으로 흔들기",wiggle_back:"반대로 흔들기",center:"중심 복귀",
+  press:"눌러 체결",unload:"하중 해제",release:"그리퍼 열기",retract:"팔 복귀",hold_clear:"접촉 종료"};
+let trials, points, rows, sample, sensorSample, selected, padCenterY;
+const padScale = 6.9;
+let liveRows = null, running = false;
+let pinPeak = true;
+
+function renderPads(frame, reference) {
+  panels.forEach((panel, side) => {
+    const canvas = panel.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    const forces = (byId("map").value === "patch" ? frame.pad_patch_N : frame.pad_force_N)[side];
+    const total = frame.pad_resultant_N[side];
+    const previous = reference.pad_resultant_N[side];
+    let cx = 0, cy = 0, sum = 0, active = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    forces.forEach(([fx, fy, fz], index) => {
+      const normal = Math.max(0, fz);
+      const [x,y] = points[index].screen;
+      const intensity = Math.sqrt(Math.min(1, normal / 1.2));
+      ctx.beginPath();
+      ctx.arc(x, y, 3 + intensity * 6, 0, Math.PI * 2);
+      ctx.fillStyle = normal > .004 ? `hsl(${268-215*intensity} 90% ${53+23*intensity}%)` : "#465368";
+      ctx.fill();
+      sum += normal; cx += x * normal; cy += y * normal;
+      if (normal >= .02) active++;
+      const shear = Math.hypot(fx, fy);
+      if (shear < .007) return;
+      const dx = fx / shear, dy = -fy / shear;
+      const length = Math.min(25, 6 + 69 * shear);
+      const ex = x + dx * length, ey = y + dy * length;
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(ex,ey);
+      ctx.lineTo(ex - 5*dx - 3*dy, ey - 5*dy + 3*dx);
+      ctx.moveTo(ex,ey); ctx.lineTo(ex - 5*dx + 3*dy, ey - 5*dy - 3*dx);
+      ctx.strokeStyle = "#84e6df"; ctx.lineWidth = 1.6; ctx.stroke();
+    });
+    if (sum > .15) {
+      cx /= sum; cy /= sum;
+      ctx.beginPath(); ctx.arc(cx,cy,9,0,2*Math.PI);
+      ctx.moveTo(cx-13,cy);ctx.lineTo(cx+13,cy);
+      ctx.moveTo(cx,cy-13);ctx.lineTo(cx,cy+13);
+      ctx.strokeStyle = "#eef5ff";ctx.lineWidth = 1.5;ctx.stroke();
+    }
+    panel.querySelector("output").textContent = total[2].toFixed(2) + " N";
+    panel.querySelector("small").textContent = total.map((f,i)=>["Fx","Fy","Fz"][i]+" "+f.toFixed(2)).join(" · ");
+    const ratio = total[2] >= .15 ? (Math.hypot(...total.slice(0,2))/total[2]).toFixed(2) : "—";
+    panel.features = [active + "/77점", ratio,
+      sum > .15 ? [(cx - 130) / padScale, padCenterY + (127 - cy) / padScale].map(v=>v.toFixed(1)).join(" · ") : "—",
+      total.map((x,i)=>(x-previous[i]).toFixed(2)).join(" · "),frame.pad_torque_Nm[side].map(x=>(x*1000).toFixed(2)).join(" · ")];
+  });
+  [...byId("features").rows].forEach((row,i)=>panels.forEach((panel,side)=>row.cells[side+1].textContent=panel.features[i]));
+  if (selected) {
+    const p = points[selected.index];
+    const vectors = byId("map").value === "patch" ? frame.pad_patch_N : frame.pad_force_N;
+    const f = vectors[selected.side][selected.index];
+    byId("point").textContent = `${selected.side ? "오른쪽" : "왼쪽"} #${p.index} · ${f.map(x=>x.toFixed(3)).join(" / ")} N`;
+  } else {
+    byId("point").textContent = frame.pinch_N < .02 ? "패드 접촉 없음" : "점을 눌러 Fx · Fy · Fz 확인";
+  }
+}
+function paintChart(time, trace) {
+  const canvas = byId("chart");
+  const h = 126, w = canvas.width = canvas.clientWidth * 2;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  const maxTime = rows.at(-1).t, y = force => (h/2) - force * (h/21);
+  const x = t => 45 + t/maxTime * (w-52);
+  ctx.font = "17px system-ui";ctx.fillStyle="#a8b4c5";
+  for (const f of [8,0,-8]) {
+    ctx.fillText(f.toString(),6,y(f)+5);
+    ctx.beginPath();ctx.moveTo(40,y(f));ctx.lineTo(w,y(f));ctx.strokeStyle="#303a47";ctx.stroke();
+  }
+  for (const [key,color] of [["shear_x_N","#83e1ca"],["shear_z_N","#ffcc8a"]]) {
+    ctx.beginPath();
+    trace.forEach((row,i)=>i ? ctx.lineTo(x(row.t),y(row[key])) : ctx.moveTo(x(row.t),y(row[key])));
+    ctx.strokeStyle = color;ctx.lineWidth=2;ctx.stroke();
+  }
+  ctx.beginPath();ctx.moveTo(x(time),0);ctx.lineTo(x(time),h);ctx.strokeStyle="#e0d7ff";ctx.stroke();
+}
+function refresh() {
+  if (!rows) return;
+  if (liveRows?.length) {
+    showSample(liveRows, liveRows.length - 1);
+    return;
+  }
+  const index = Math.min(rows.length-1,Math.max(0,Math.round((video.currentTime + .05)/.02)-1));
+  showSample(rows, index);
+}
+function peakIndex(trace) {
+  const wiggle = trial.value.endsWith("wiggle");
+  const phase = wiggle ? "wiggle_out" : "press";
+  const axis = wiggle ? "shear_x_N" : "shear_z_N";
+  return trace.reduce((best, frame, index) =>
+    frame.phase === phase && (trace[best].phase !== phase || Math.abs(frame[axis]) > Math.abs(trace[best][axis]))
+      ? index : best, 0);
+}
+function showSample(trace, index) {
+  sample = trace[index];
+  const time = sample.t;
+  byId("seek").value = liveRows ? time : video.currentTime;
+  byId("clock").textContent = time.toFixed(2) + " s";
+  byId("stage").textContent = phases[sample.phase];
+  byId("state").dataset.engaged = sample.engaged;
+  byId("state").textContent = sample.engaged ? "잠김" : "덜 잠김";
+  byId("travel").textContent = sample.cover_z_mm.toFixed(2) + " mm";
+  byId("gap").textContent = sample.gap_mm.toFixed(1) + " mm";
+  byId("elbow").textContent = sample.elbow_Nm.toFixed(2) + " N·m";
+  const canPin = sample.phase === "hold_clear" && !running;
+  const pinned = canPin && pinPeak;
+  const sensorIndex = pinned ? peakIndex(trace) : index;
+  sensorSample = trace[sensorIndex];
+  const prior = Math.max(0, sensorIndex - (liveRows ? 1 : 5));
+  byId("sensorMode").hidden = !canPin;
+  byId("sensorMode").textContent = pinned ? "현재 프레임" : "최대 접촉 보기";
+  byId("sensorTime").textContent = (pinned ? "접촉 기록 · " : "센서 시각 · ") + sensorSample.t.toFixed(2) + " s";
+  renderPads(sensorSample,trace[prior]);
+  paintChart(time,trace);
+}
+function play() {
+  if (liveRows) {
+    liveRows = null;
+    video.hidden = feeds.hidden = false;
+    byId("liveBench").hidden = byId("liveCameras").hidden = true;
+    video.currentTime = 0;
+  }
+  if (video.ended) video.currentTime = 0;
+  video.play().catch(error=>byId("error").textContent=error.message);
+}
+function selectTrial(autoplay) {
+  pinPeak = true;
+  liveRows = null;
+  video.hidden = feeds.hidden = false;
+  byId("liveBench").hidden = byId("liveCameras").hidden = true;
+  rows = trials[trial.value];
+  video.src = trial.value+".mp4";
+  feeds.src = trial.value+"-cameras.mp4";
+  byId("seek").max=rows.at(-1).t;
+  if (autoplay) play();
+  refresh();
+}
+function synchronize(force=false) {
+  if (feeds.readyState < 1) return;
+  if (force || Math.abs(feeds.currentTime-video.currentTime) > .1) feeds.currentTime=video.currentTime;
+  if (video.paused) feeds.pause();
+  else if (feeds.paused) feeds.play().catch(()=>{});
+}
+video.addEventListener("timeupdate",()=>{synchronize();refresh();});
+video.addEventListener("seeked",()=>{synchronize(true);refresh();});
+video.addEventListener("loadeddata",refresh);
+feeds.addEventListener("loadeddata",()=>synchronize(true));
+video.addEventListener("play",()=>{byId("play").textContent="일시 정지";synchronize(true);});
+video.addEventListener("pause",()=>{byId("play").textContent="재생";synchronize();});
+video.addEventListener("error",()=>byId("error").textContent="실험 영상 재생에 실패했어요.");
+byId("play").onclick = ()=>video.paused ? play() : video.pause();
+byId("rerun").onclick = async ()=>{
+  if (!rows || running) return;
+  running = true;
+  const controls = [trial,byId("seek"),byId("play"),byId("rerun"),...document.querySelectorAll("[data-jump]")];
+  controls.forEach(control=>control.disabled=true);
+  video.pause();
+  liveRows = [];
+  byId("error").textContent = "";
+  try {
+    const response = await fetch("/live?trial=" + encodeURIComponent(trial.value));
+    if (!response.ok) throw new Error("실시간 실행에 실패했어요.");
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    let pending = "";
+    for (;;) {
+      const {value,done}=await reader.read();
+      if (done) break;
+      const lines=(pending+value).split("\n");
+      pending=lines.pop();
+      for (const line of lines) {
+        const frame=JSON.parse(line);
+        if (!frame.sample) continue;
+        liveRows.push(frame.sample);
+        byId("liveBench").src=frame.bench;
+        byId("liveCameras").src=frame.cameras;
+        video.hidden=feeds.hidden=true;
+        byId("liveBench").hidden=byId("liveCameras").hidden=false;
+        refresh();
+      }
+    }
+  } catch(error) {
+    byId("error").textContent=error.message;
+  } finally {
+    running=false;
+    controls.forEach(control=>control.disabled=false);
+    refresh();
+  }
+};
+function showReplay() {
+  if (!liveRows) return;
+  liveRows=null;
+  video.hidden=feeds.hidden=false;
+  byId("liveBench").hidden=byId("liveCameras").hidden=true;
+}
+byId("seek").oninput = event=>{
+  const target=Number(event.target.value);
+  showReplay();
+  video.currentTime=target;
+};
+trial.onchange = ()=>selectTrial(true);
+byId("map").onchange = refresh;
+byId("sensorMode").onclick = ()=>{pinPeak = !pinPeak;refresh();};
+document.querySelectorAll("[data-jump]").forEach(button=>button.onclick=()=>{
+  if (!rows) return;
+  showReplay();
+  const target = button.dataset.jump === "action" ? (trial.value.endsWith("press") ? "press" : "wiggle_out") : button.dataset.jump;
+  const targetRows = rows.filter(row=>row.phase===target);
+  const at = target === "peak" ? rows[peakIndex(rows)] :
+    target === "grip" ? targetRows.at(-1) : targetRows[Math.floor(targetRows.length / 2)];
+  video.currentTime = Math.max(0, at.t - .05);
+});
+panels.forEach((panel,side)=>{
+  const canvas = panel.querySelector("canvas");
+  canvas.onclick = event=>{
+    if (!points) return;
+    const x=event.offsetX*canvas.width/canvas.clientWidth,y=event.offsetY*canvas.height/canvas.clientHeight;
+    const distance=point=>Math.hypot(point.screen[0]-x,point.screen[1]-y);
+    const index=points.reduce((best,point,i)=>distance(point)<distance(points[best]) ? i : best,0);
+    selected={side,index};
+    refresh();
+  };
+});
+byId("export").onclick=()=>{
+  const fields={trial:trial.value,time_s:sensorSample.t,units:"N",axes:["Fx","Fy","Fz"],normal_positive:"compression",
+    taxel_indices:points.map(point=>point.index),force_N:sensorSample.pad_force_N,estimated_patch_N:sensorSample.pad_patch_N,
+    resultant_N:sensorSample.pad_resultant_N,torque_Nm:sensorSample.pad_torque_Nm};
+  const url=URL.createObjectURL(new Blob([JSON.stringify(fields,null,2)],{type:"application/json"}));
+  const link=document.createElement("a");link.href=url;link.download=trial.value+"-"+sensorSample.t+"s.json";link.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+function addRow(table, cells) {
+  const row=byId(table).insertRow();
+  for (const cell of cells) row.insertCell().textContent=cell;
+}
+Promise.all(["replays.json","results.json"].map(async path=>{
+  const response=await fetch(path);
+  if(!response.ok) throw new Error(path + " 파일을 열 수 없어요.");
+  return response.json();
+})).then(([replay,results])=>{
+  trials=replay.trials;
+  const yCoords = replay.points.map(p=>p.y_mm);
+  padCenterY = (Math.min(...yCoords) + Math.max(...yCoords)) / 2;
+  points=replay.points.map(p=>({...p,screen:[130 + padScale * p.x_mm,127 - padScale * (p.y_mm - padCenterY)]}));
+  for (const name of ["반응점","전단/법선","압력 중심 (mm)","100 ms 힘 변화 (N)","합토크 (mN·m)"]) addRow("features",[name,"",""]);
+  for (const option of trial.options) {
+    const r=results.nominal[option.value];
+    addRow("comparison",[option.textContent,r.motion==="wiggle" ? r.peak_wiggle_x_N.toFixed(2)+" N" : "—",
+      r.transitions.map(t=>t.s.toFixed(3)+" s").join(", ")||"—", r.final_engaged ? "잠김" : "덜 잠김"]);
+  }
+  byId("export").disabled=false;
+  selectTrial(false);
+}).catch(error=>byId("error").textContent=error.message);
+if (new URLSearchParams(location.search).has("live")) byId("rerun").hidden=false;
+</script>
+</html>

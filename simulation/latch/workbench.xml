@@ -1,0 +1,22 @@
+<mujocoinclude>
+  <geom type="box" pos=".095 0 -.035" size=".59 .42 .024" material="oak" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".077 .005 -.010" size=".31 .283 .0023" material="mat" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.91 0 .61" size=".014 1.45 .82" material="wall" contype="0" conaffinity="0"/>
+  <geom type="box" pos=".09 .65 .60" size="1.06 .014 .80" material="wall" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.52 .39 .24" size=".012 .30 .23" material="pegboard" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.27 -.20 -.0088" size=".077 .051 .003" euler="0 0 -.19" material="notebook" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.27 -.20 -.0048" size=".073 .048 .002" euler="0 0 -.19" material="paper" contype="0" conaffinity="0"/>
+  <geom type="capsule" fromto="-.31 -.252 .0007 -.23 -.268 .0007" size=".0027" material="violet" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.26 .31 -.003" size=".072 .053 .007" material="tray_finish" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.26 .357 .012" size=".072 .005 .009" material="tray_finish" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.26 .262 .012" size=".072 .005 .009" material="tray_finish" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.327 .31 .012" size=".005 .053 .009" material="tray_finish" contype="0" conaffinity="0"/>
+  <geom type="box" pos="-.193 .31 .012" size=".005 .053 .009" material="tray_finish" contype="0" conaffinity="0"/>
+  <geom type="capsule" fromto="-.30 .339 .009 -.226 .298 .009" size=".002" material="silver" contype="0" conaffinity="0"/>
+  <geom type="capsule" fromto="-.30 .339 .011 -.268 .321 .011" size=".004" material="cover_finish" contype="0" conaffinity="0"/>
+  <geom type="cylinder" pos="-.349 -.105 .021" size=".022 .031" material="cup" contype="0" conaffinity="0"/>
+  <geom type="cylinder" pos="-.349 -.105 .0521" size=".018 .0006" material="coffee" contype="0" conaffinity="0"/>
+  <geom type="capsule" fromto="-.371 -.105 .043 -.386 -.105 .036" size=".0035" material="cup" contype="0" conaffinity="0"/>
+  <geom type="capsule" fromto="-.386 -.105 .036 -.386 -.105 .022" size=".0035" material="cup" contype="0" conaffinity="0"/>
+  <geom type="capsule" fromto="-.386 -.105 .022 -.371 -.105 .016" size=".0035" material="cup" contype="0" conaffinity="0"/>
+</mujocoinclude>

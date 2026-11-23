@@ -2,9 +2,9 @@
 
 **A PaXini-equipped SO-ARM101 testbed for studying when a robot should lift, regrasp, or skip after contact**
 
-[![Synchronized MuJoCo dashboard replay with a fixed full-arm view, PaXini force maps, and four camera feeds](media/mujoco-dashboard-timeline.webp)](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4)
+[![Synchronized MuJoCo dashboard replay with a fixed full-arm view, PaXini force maps, and four camera feeds](media/mujoco-dashboard-timeline.webp)](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4)
 
-[Watch the full-arm replay](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
+[Watch the full-arm replay](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)
 
 A weak lift can follow from poor contact, a slippery surface, or a load the arm cannot raise in its current posture. This pilot builds a gripper and sensor rig to compare those cases under the same motion.
 
@@ -16,30 +16,30 @@ At **5.29 N per jaw**, the standard block lifted **11.60 mm** and the slippery b
   <tr>
     <td width="50%" align="center">
       <strong>Standard block</strong><br>
-      <a href="https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/grasp-normal.mp4"><img src="./media/grasp-normal.gif" alt="Standard block lift and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/grasp-normal.mp4"><img src="./media/grasp-normal.gif" alt="Standard block lift and left and right PaXini force maps"></a><br>
       <sub>50 g · friction 0.80 · rise 11.60 mm at 8.90 s</sub>
     </td>
     <td width="50%" align="center">
       <strong>Cylinder</strong><br>
-      <a href="https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/grasp-round.mp4"><img src="./media/grasp-round.gif" alt="Cylinder lift and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/grasp-round.mp4"><img src="./media/grasp-round.gif" alt="Cylinder lift and left and right PaXini force maps"></a><br>
       <sub>50 g · friction 0.80 · rise 11.47 mm at 8.90 s</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
       <strong>Slippery block</strong><br>
-      <a href="https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/grasp-slippery.mp4"><img src="./media/grasp-slippery.gif" alt="Slippery block lift attempt and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/grasp-slippery.mp4"><img src="./media/grasp-slippery.gif" alt="Slippery block lift attempt and left and right PaXini force maps"></a><br>
       <sub>50 g · friction 0.018 · rise 0.00 mm at 8.90 s</sub>
     </td>
     <td width="50%" align="center">
       <strong>Heavy block</strong><br>
-      <a href="https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/grasp-heavy_matched.mp4"><img src="./media/grasp-heavy_matched.gif" alt="Heavy block lift attempt and left and right PaXini force maps"></a><br>
+      <a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/grasp-heavy_matched.mp4"><img src="./media/grasp-heavy_matched.gif" alt="Heavy block lift attempt and left and right PaXini force maps"></a><br>
       <sub>600 g · friction 0.80 · rise 0.93 mm at 8.90 s</sub>
     </td>
   </tr>
 </table>
 
-Each clip uses the same simulation timestamps. The dot colors show compression and arrows show in-plane force on the estimated contact patch. Use the [synchronized MP4](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-four-grasps.mp4) for frame-locked playback. The lift command runs from 7.50 to 8.90 s.
+Each clip uses the same simulation timestamps. The dot colors show compression and arrows show in-plane force on the estimated contact patch. Use the [synchronized MP4](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-four-grasps.mp4) for frame-locked playback. The lift command runs from 7.50 to 8.90 s.
 
 | Condition | Mass | Pad friction | Object rise | Mean Fz per jaw | Mean abs. Fy per jaw |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -56,15 +56,15 @@ The heavy block applies more tangential force at the same nominal friction as th
 
 ## How the rig comes together
 
-[![Fusion 360 assembly of the parallel jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-fusion-assembly.mp4)
+[![Fusion 360 assembly of the parallel jaws, tactile pads and 26 cm RGB mounts](media/fusion-assembly-motion.gif)](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-fusion-assembly.mp4)
 
-[Fusion assembly MP4](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-fusion-assembly.mp4)
+[Fusion assembly MP4](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-fusion-assembly.mp4)
 
 ### R4 gripper design film
 
-[![R4 tactile gripper design film showing the PaXini mounts, parallel jaw travel, and wrist hardware](media/r4-gripper-design-film.webp)](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-gripper-r4.mp4)
+[![R4 tactile gripper design film showing the PaXini mounts, parallel jaw travel, and wrist hardware](media/r4-gripper-design-film.webp)](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-gripper-r4.mp4)
 
-[R4 design film MP4](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-gripper-r4.mp4)
+[R4 design film MP4](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-gripper-r4.mp4)
 
 ### Build details
 
@@ -95,7 +95,7 @@ The dashboard records arm motion, dual tactile maps and four camera feeds. In th
 
 ## Download and run
 
-Download and extract the [reproduction kit](https://github.com/jhyeong687/regrasp-or-skip/releases/download/v0.2.2/so101-tactile-recovery-kit.zip), or clone this repository. Run these commands from the repository root in a Python environment.
+Download and extract the [reproduction kit](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-tactile-recovery-kit.zip), or clone this repository. Run these commands from the repository root in a Python environment.
 
     python -m pip install -r simulation/requirements.txt
     python simulation/sim.py --verify --physics-only

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#003876">
+  <meta name="theme-color" content="#100e15">
   <meta name="description" content="An in-progress SO-ARM101 research project exploring how tactile feedback can guide manipulation decisions after contact.">
   <meta property="og:title" content="Regrasp or Skip?">
   <meta property="og:description" content="PaXini gripper CAD, synchronized MuJoCo replays, and tactile probing experiments by Lee Jin Hyeong.">
   <title>Regrasp or Skip? · Lee Jin Hyeong</title>
-  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="site.css?v=2">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -30,13 +30,13 @@
           <h1>Regrasp <em>or skip?</em></h1>
           <p class="deck">A PaXini-equipped SO-ARM101 testbed for studying when a robot should lift, try another grasp, or move on after contact.</p>
           <div class="actions">
-            <a class="button primary" href="#demo">Watch the replays</a>
+            <a class="button primary" href="#demo">Explore the results</a>
             <a class="button" href="https://github.com/jhyeong687/tactile-grasp-agent">View source</a>
           </div>
         </div>
-        <figure class="hero-figure">
-          <img src="assets/gripper-r4.jpg" width="1920" height="1080" alt="CAD rendering of the R4 parallel-jaw tactile gripper with wrist camera" fetchpriority="high">
-          <figcaption>R4 parallel-jaw gripper · CAD render</figcaption>
+        <figure class="hero-figure player">
+          <video src="assets/so101-four-grasps.mp4" poster="assets/grasp-comparison.jpg" controls playsinline muted preload="none" aria-label="Four synchronized MuJoCo grasps and PaXini maps"></video>
+          <figcaption><strong>Four synchronized MuJoCo trials.</strong> Dots show normal compression and arrows show in-plane force.</figcaption>
         </figure>
         <dl class="facts">
           <div><dt>Arm</dt><dd>SO-ARM101</dd></div>
@@ -54,12 +54,12 @@
       </div>
       <div class="media-grid">
         <figure class="player">
-          <video src="assets/so101-four-grasps.mp4" poster="assets/grasp-comparison.jpg" controls playsinline muted preload="none" aria-label="Four synchronized MuJoCo grasps and PaXini maps"></video>
-          <figcaption><strong>Four conditions, synchronized.</strong> The lift command runs from 7.50 to 8.90 s. Dots show normal compression and arrows show in-plane force.</figcaption>
-        </figure>
-        <figure class="player">
           <video src="assets/so101-dashboard-synchronized-replay.mp4" poster="assets/mujoco-dashboard.jpg" controls playsinline muted preload="none" aria-label="Full arm, four camera feeds and PaXini dashboard replay"></video>
           <figcaption><strong>Full-arm dashboard.</strong> Robot motion, wrist RGB and depth, both side views and the two force maps share one simulation timeline.</figcaption>
+        </figure>
+        <figure class="plate">
+          <img src="assets/grasp-comparison.jpg" alt="Synchronized comparison of a standard block, cylinder, slippery block and heavy block at the end of the lift window" loading="lazy">
+          <figcaption><strong>Matched lift window.</strong> Each lift command runs from 7.50 to 8.90 s. Read the four conditions at the same point in the replay.</figcaption>
         </figure>
       </div>
       <div class="table-scroll" role="region" aria-label="Four grasp measurements" tabindex="0">

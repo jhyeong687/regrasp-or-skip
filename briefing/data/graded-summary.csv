@@ -1,0 +1,6 @@
+condition,median_target_rgb_pixels_retained_pct,front_alignment_available,with_tactile_only_successes,without_tactile_only_successes,with_tactile_successes,with_tactile_trials,with_tactile_median_total_s,with_tactile_median_inference_s,without_tactile_successes,without_tactile_trials,without_tactile_median_total_s,without_tactile_median_inference_s,median_paired_wall_delta_s
+clear,100.0,4,0,0,6,6,8.3395,5.991,6,6,8.938500000000001,6.656000000000001,-0.7600000000000007
+marker_occlusion,100.0,0,1,0,6,6,8.845,6.5395,5,6,15.565000000000001,13.2995,-7.1290000000000004
+one_side,52.7,0,1,0,6,6,9.2105,6.699,5,6,16.9465,14.173,-6.798
+slit,13.6,0,2,0,6,6,8.563500000000001,6.514,4,6,21.637999999999998,19.558,-12.9725
+full_occlusion,0.0,0,2,0,6,6,9.020499999999998,6.8895,4,6,17.1075,14.645,-7.495

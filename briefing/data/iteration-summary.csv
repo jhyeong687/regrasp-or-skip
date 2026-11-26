@@ -1,0 +1,13 @@
+stage,mode,successes,trials,median_elapsed_s,median_astra_s
+astra-recovery-paired-12,with_tactile,9,12,9.533999999999999,7.6935
+astra-recovery-paired-12,without_tactile,9,12,23.118499999999997,21.3395
+astra-recovery-paired-12-contact-history,with_tactile,10,12,8.100999999999999,6.142
+astra-recovery-paired-12-contact-history,without_tactile,9,12,22.497,20.7285
+astra-recovery-paired-12-clearance-recovery,with_tactile,12,12,8.2725,6.138
+astra-recovery-paired-12-clearance-recovery,without_tactile,11,12,19.063000000000002,17.316000000000003
+astra-recovery-paired-12-visual-alignment,with_tactile,12,12,8.2475,6.237500000000001
+astra-recovery-paired-12-visual-alignment,without_tactile,12,12,8.3505,6.359
+astra-recovery-paired-12-novel-occlusion,with_tactile,12,12,8.3945,6.165
+astra-recovery-paired-12-novel-occlusion,without_tactile,10,12,12.646,10.6405
+astra-recovery-paired-12-graded-30,with_tactile,30,30,8.8185,6.465
+astra-recovery-paired-12-graded-30,without_tactile,24,30,17.1645,14.6845

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R7 · 촉각 복구 비교</title>
+<style>
+:root{color-scheme:dark;background:#10151b;color:#eef2f5;font-family:Inter,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;--surface:#192129;--line:#33414d;--muted:#aab9c8;--mint:#8ad4bd;--sand:#e9c18a}
+*{box-sizing:border-box}body{margin:0}main{max-width:1300px;margin:auto;padding:clamp(14px,2.7vw,34px);display:grid;gap:14px}
+h1,h2,h3,p{margin:0}h1{font-size:clamp(24px,4vw,38px);letter-spacing:-.05em}h2{font-size:15px}h3{font-size:14px}.muted{color:var(--muted)}
+header,.head,.line{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.sub{font-size:13px;margin-top:5px}
+.badge{color:var(--mint);border:1px solid var(--line);padding:6px 10px;font-size:12px;border-radius:30px;white-space:nowrap}
+.card{border:1px solid var(--line);background:var(--surface);border-radius:11px;overflow:hidden;min-width:0}.head{padding:11px 12px}.head span{font-size:11px}
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mode{padding:10px 12px}.scores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}
+.score{font-size:clamp(14px,3.2vw,25px);font-weight:630;white-space:nowrap;font-variant-numeric:tabular-nums}.score:first-child{color:var(--mint)}
+.caption{margin-top:3px;font-size:11px;font-weight:400;color:var(--muted);white-space:normal}.status{padding:10px 12px;display:grid;gap:8px;font-size:12px}
+progress{width:100%;height:5px;accent-color:var(--mint);display:block}progress::-webkit-progress-bar{background:#2b3741;border-radius:4px}progress::-webkit-progress-value{background:var(--mint);border-radius:4px}
+.scene{display:grid;grid-template-columns:minmax(0,1.23fr) minmax(0,1fr);gap:10px}.scene img{width:100%;display:block;object-fit:contain;background:#111820}.motion{aspect-ratio:1.77}.scene img:not([src]){visibility:hidden}
+.inputs{display:grid;max-height:494px;overflow:auto}.inputs img{width:100%}.evidence{padding:10px 12px;overflow-wrap:anywhere;line-height:1.45;color:#becbd8;font-size:12px}
+.diagnosis{padding:0 12px 9px;font-size:12px;line-height:1.45;color:var(--mint)}.pads{padding:0 10px 9px}.pads summary{cursor:pointer;font-size:12px;padding:6px 2px;color:#b1c6dc}.pads table{width:100%;font-size:11px}
+.scroll{overflow:auto}table{border-collapse:collapse;white-space:nowrap;font-size:12px;width:100%;font-variant-numeric:tabular-nums}
+th,td{border-top:1px solid #2d3a46;text-align:right;padding:7px 8px}th{color:var(--muted);font-weight:500}th:first-child,td:first-child{padding-left:12px}
+td:nth-child(2),th:nth-child(2){text-align:left}.good{color:var(--mint)}.bad{color:#efab92}.wait{color:var(--muted)}.time{font-weight:600;color:var(--sand)}
+.actions{display:flex;gap:9px;align-items:center;font-size:12px}a,button{color:#c0d8f5}a{text-underline-offset:3px}
+button{background:#24313d;border:1px solid var(--line);border-radius:6px;font:inherit;cursor:pointer;padding:3px 6px}button[aria-pressed="true"]{border-color:var(--mint)}button:focus-visible,a:focus-visible{outline:2px solid var(--mint)}
+@media(max-width:710px){.scene{grid-template-columns:1fr}.inputs{max-height:410px}}@media(max-width:340px){.comparison{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+  <header><div><h1>촉각 유무 복구 비교</h1><p class="muted sub">SO-ARM101 R7 · 동일한 12개 배치 · 편심 6쌍 / 저마찰 6쌍</p></div><span class="badge" id="controllerBadge">GPT-6.2 Astra · xhigh</span></header>
+  <section class="card" id="baseline" hidden>
+    <div class="head"><h2>이전 실험과 비교</h2><span class="muted">총 시간은 Astra 호출 포함</span></div>
+    <div class="scroll"><table><thead><tr><th scope="col">입력</th><th scope="col">지표</th><th scope="col">이전</th><th scope="col">이번</th><th scope="col">차이</th></tr></thead><tbody id="baselineBody"></tbody></table></div>
+  </section>
+  <div class="comparison" id="comparison"></div>
+  <section class="card status">
+    <div class="line"><strong id="phase" role="status">실험 시작 대기</strong><span class="muted" id="counter">0 / 24회</span></div>
+    <progress id="progress" value="0" max="24" aria-label="완료된 비교 실험 횟수"></progress>
+    <div class="muted" id="paired"></div>
+  </section>
+  <div class="scene">
+    <section class="card"><div class="head"><h2>MuJoCo 장면</h2><span class="muted" id="motionLabel">실시간</span></div><img class="motion" id="motion" alt="SO-ARM101의 시험 리프트와 복구 동작"><p class="evidence" id="evidence"></p><p class="diagnosis" id="diagnosis" hidden></p><details class="pads" id="padPanel" hidden><summary>모델에 제공된 PaXini 관측</summary><div id="padData" class="scroll"></div></details></section>
+    <section class="card"><div class="head"><h2>Astra 입력 영상</h2><span class="muted">접촉 전 · 파지 · 시험 리프트</span></div><div class="inputs"><img id="vision" alt="좌우 및 손목 카메라와 손목 깊이 영상"></div></section>
+  </div>
+  <section class="card"><div class="head"><h2>조건별 비교</h2><span class="muted">트레이 안착 · 회당 실제 시간 중앙값</span></div>
+    <div class="scroll"><table><thead><tr><th>조건</th><th>촉각 제공</th><th>촉각 제외</th><th>제공만 성공</th><th>제외만 성공</th></tr></thead><tbody id="conditions"></tbody></table></div>
+  </section>
+  <section class="card"><div class="head"><h2>배치별 결과</h2><div class="actions">
+    <button id="showLive" hidden type="button">실시간 보기</button><a id="csv" href="runs.csv" hidden download>CSV</a><a id="json" href="results.json" hidden download>JSON</a></div></div>
+    <div class="scroll"><table><thead><tr><th>배치</th><th>물체 · 조건</th><th>입력</th><th>복구 선택</th><th>안착</th><th>총 시간</th><th>추론</th><th>재생</th></tr></thead><tbody id="runs"></tbody></table></div>
+  </section>
+</main>
+<script>
+const el=id=>document.getElementById(id);
+const names={with_tactile:"촉각 제공",without_tactile:"촉각 제외",off_center:"파지 편심",low_friction:"저마찰",brick:"직육면체",cylinder:"원기둥",bar:"긴 직육면체"};
+const contactPatterns={
+  no_pad_contact_during_closure:"닫는 동안 접촉 없음",
+  only_one_pad_contact_during_closure:"닫는 동안 한쪽만 접촉",
+  no_simultaneous_bilateral_contact:"양쪽 동시 접촉 없음",
+  bilateral_contact_at_closure_absent_at_hold:"양쪽 접촉 후 유지 구간에서 접촉 상실",
+  bilateral_contact_at_closure_and_hold:"닫힘·유지 구간에 양쪽 접촉"};
+const actions={position_correction:"위치 보정",grip_reinforcement:"그립 보강"};
+const phases={reset:"배치 초기화",probe:"시험 리프트",inference:"Astra 추론 대기",recovery:"복구 시작",lower_probe:"작업대로 내리기",clear_jaws:"현재 높이에서 턱 열기",descend_clear:"턱을 연 채 하강",settle_grip:"재파지 안정화",lift_clear:"8 mm 시험 상승",open_probe:"그리퍼 열기",retract:"그리퍼 후퇴",reposition:"복구 위치로 이동",descend_retry:"복구 위치에서 하강",close_retry:"재파지",lift_retry:"들어 올리기",hold_retry:"파지 유지",transfer:"트레이로 이동",lower_tray:"트레이에서 하강",release:"물체 놓기",retreat:"최종 후퇴",settle:"안착 판정"};
+const sec=x=>x==null?"—":x.toFixed(2)+" s";
+const score=o=>o.trials?o.successes+" / "+o.trials:"—";
+const rate=o=>o.trials?(100*o.successes/o.trials).toFixed(1)+"%":"";
+const modes=["with_tactile","without_tactile"];
+let data, selected, rowsKey="", lastPoll=0;
+function image(id,src){
+  const img=el(id);
+  if(src&&img.getAttribute("src")!==src)img.setAttribute("src",src);
+  if(!src)img.removeAttribute("src");
+}
+function tableRow(cells){
+  const tr=document.createElement("tr");
+  cells.forEach(text=>{const td=tr.insertCell();td.textContent=text;});
+  return tr;
+}
+function render(){
+  const {active,records,summary,done,aborted,planned,previous}=data;
+  const overall=summary.all;
+  if(data.recovery_controller==="clearance_recovery"){
+    el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · 그립 보강 개선";
+  }
+  el("baseline").hidden=!previous;
+  if(previous) showBaseline(previous.summary.all,overall,done);
+  el("comparison").innerHTML=modes.map(mode=>{
+    const metric=overall.modes[mode];
+    return '<section class="card mode"><h3>'+names[mode]+'</h3><div class="scores">'+
+      '<div class="score">'+score(metric)+'<div class="caption">트레이 안착 '+rate(metric)+'</div></div>'+
+      '<div class="score">'+sec(metric.median_total_s)+'<div class="caption">총 시간 중앙값</div></div>'+
+      '<div class="score">'+sec(metric.median_inference_s)+'<div class="caption">추론 중앙값</div></div></div></section>';
+  }).join("");
+  const phase=active?active.trial+"번 · "+names[active.fault]+" · "+names[active.mode]+" · "+phases[active.phase]:(done?(aborted?"실험 중단":"비교 완료"):"다음 회차 준비");
+  el("phase").textContent=phase;
+  el("progress").value=records.length;
+  el("counter").textContent=records.length+" / "+planned+"회 · "+sec(done?data.batch_s:Date.now()/1000-data.batch_started_unix_s);
+  const delta=overall.median_paired_wall_delta_s;
+  const cross=previous?" · 이전 장면과 "+records.filter(r=>r.baseline_replay_verified).length+" / "+planned+"회 일치":"";
+  el("paired").textContent=overall.pairs_match+" / 12쌍 RGB-D·초기 관측 일치"+cross+
+    (delta==null?"":" · 짝별 총 시간 차이 중앙값 "+(delta>0?"+":"")+sec(delta)+" (제공−제외)");
+  el("csv").hidden=el("json").hidden=!done;
+  el("showLive").hidden=selected==null;
+  const recent=records.at(-1), chosen=records.find(r=>r.trial+"-"+r.mode===selected);
+  const item=chosen||active||recent;
+  if(chosen||done){
+    const replay=chosen||recent;
+    image("motion",replay?.replay);
+    el("motionLabel").textContent=replay?replay.trial+"번 · "+names[replay.mode]+" · 물리 시간 재생":"";
+  }else if(item){
+    image("motion","frame.jpg?t="+lastPoll);
+    el("motionLabel").textContent="실시간";
+  }
+  image("vision",item?.image);
+  el("evidence").textContent=item?.evidence?(actions[item.action]+" · "+item.evidence):(item?.error??(item?.action?actions[item.action]:phase));
+  const history=item?.contact_history;
+  const old=previous?.records.find(r=>r.trial===item?.trial&&r.mode===item?.mode);
+  const label=history ? contactPatterns[history.contact_pattern]+" · 닫힘 구간 양쪽 동시 "+
+     history.phases.closure.bilateral_samples+"/"+history.phases.closure.samples+"샘플" : "";
+  const prior=old&&item?.action ? "이전 선택 "+actions[old.action]+" · "+(old.success?"안착":"실패")+
+    (item.total_s==null?"":" · "+sec(old.total_s)+" → "+sec(item.total_s)) : "";
+  const motion=item?.recovery_motion?.clear_before_descent
+    ? "복구 동작 · 턱 열고 하강 → 재파지 → 8 mm 상승" : "";
+  el("diagnosis").hidden=!(label||prior||motion);
+  el("diagnosis").textContent=[motion,label,prior].filter(Boolean).join(" / ");
+  const pads=item?.tactile??null;
+  el("padPanel").hidden=!pads;
+  if(pads)displayPads(pads);
+  el("conditions").replaceChildren(...["off_center","low_friction"].map(condition=>{
+    const group=summary[condition], a=group.modes.with_tactile, b=group.modes.without_tactile;
+    return tableRow([names[condition],score(a)+" · "+sec(a.median_total_s),score(b)+" · "+sec(b.median_total_s),
+      group.discordant.with_tactile+" / "+group.pairs,group.discordant.without_tactile+" / "+group.pairs]);
+  }));
+  const key=records.length+"/"+selected;
+  if(key===rowsKey)return;
+  rowsKey=key;
+  el("runs").replaceChildren(...records.slice().sort((a,b)=>a.trial-b.trial||modes.indexOf(a.mode)-modes.indexOf(b.mode)).map(row=>{
+    const key=row.trial+"-"+row.mode;
+    const tr=tableRow([String(row.trial).padStart(2,"0"),names[row.shape]+" · "+names[row.fault_eval.condition],names[row.mode],
+      actions[row.action]??"—",row.success?"성공":(row.outcome==="placement_failed"?"실패":"오류"),sec(row.total_s),sec(row.inference_s),""]);
+    tr.cells[4].className=row.success?"good":"bad";tr.cells[5].className="time";
+    if(row.replay||row.image){
+      const button=document.createElement("button");
+      button.type="button";button.textContent="보기";
+      button.setAttribute("aria-label",row.trial+"번 "+names[row.mode]+" 보기");
+      button.setAttribute("aria-pressed",String(selected===key));
+      button.addEventListener("click",()=>{selected=key;render()});tr.lastChild.append(button);
+    }
+    return tr;
+  }));
+}
+function showBaseline(previous,current,done){
+  const rows=[];
+  for(const mode of modes){
+    const a=previous.modes[mode], b=current.modes[mode];
+    const aRate=100*a.successes/a.trials, bRate=b.trials?100*b.successes/b.trials:null;
+    const metrics=[
+      ["안착률",score(a)+" ("+rate(a)+")",b.trials?score(b)+" ("+rate(b)+")":"—",
+       bRate==null?null:bRate-aRate,"pp",1],
+      ["회당 총 시간 중앙값",sec(a.median_total_s),sec(b.median_total_s),
+       b.median_total_s==null?null:b.median_total_s-a.median_total_s,"s",2],
+      ["Astra 호출 중앙값",sec(a.median_inference_s),sec(b.median_inference_s),
+       b.median_inference_s==null?null:b.median_inference_s-a.median_inference_s,"s",2]
+    ];
+    for(const [label,before,after,delta,unit,places] of metrics){
+      const diff=delta==null||!done?"—":(delta>0?"+":"")+delta.toFixed(places)+" "+unit;
+      const row=tableRow([names[mode],label,before,after,diff]);
+      row.cells[3].className="time";
+      rows.push(row);
+    }
+  }
+  el("baselineBody").replaceChildren(...rows);
+}
+function displayPads(pads){
+  const table=document.createElement("table"), head=table.createTHead();
+  const labels=["구간","패드","법선력 N","전단력 N","압력 중심 X mm"];
+  for(const label of labels){const th=document.createElement("th");th.scope="col";th.textContent=label;(head.rows[0]||head.insertRow()).append(th)}
+  const body=table.createTBody();
+  const stages={pinch:"파지",early_lift:"리프트 초반",hold:"유지"};
+  for(const [phase,values] of Object.entries(pads))for(const side of ["left","right"]){
+    const p=values[side];
+    body.append(tableRow([stages[phase],side==="left"?"왼쪽":"오른쪽",p.normal_N.toFixed(3),p.shear_N.toFixed(3),p.contact_x_from_pad_center_mm?.toFixed(2)??"—"]));
+  }
+  el("padData").replaceChildren(table);
+}
+el("showLive").addEventListener("click",()=>{selected=null;render()});
+async function poll(){
+  try{const response=await fetch("live.json",{cache:"no-store"});
+    if(response.ok){data=await response.json();lastPoll=Date.now();render()}
+  }catch(error){el("phase").textContent="상태 다시 불러오는 중"}
+  if(!data?.done)setTimeout(poll,850);
+}
+poll();
+</script>
+</body></html>

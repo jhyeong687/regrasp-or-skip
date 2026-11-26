@@ -194,6 +194,8 @@ select { width: 100%; min-height: 38px; margin-top: .28rem; padding: .3rem .45re
 .replay-head h3 { font-size: 1.03rem; letter-spacing: -.02em; }
 .replay-head span { font-size: .77rem; color: var(--dash-muted); font-weight: 500; }
 .replay-head .button { min-height: 32px; font-size: .76rem; }
+.pad-tools { display: flex; gap: .25rem; flex-wrap: wrap; align-items: center; }
+.pad-tools select { width: auto; margin: 0; min-height: 32px; padding: .23rem .35rem; font-size: .76rem; }
 .scene-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-block: 1px solid var(--dash-line); }
 .scene-metrics div { padding: .5rem .68rem; }
 .scene-metrics div + div { border-inline-start: 1px solid var(--dash-line); }
@@ -237,10 +239,20 @@ select { width: 100%; min-height: 38px; margin-top: .28rem; padding: .3rem .45re
 .view-grid figcaption span { font-size: .78rem; margin-top: .18rem; }
 
 @media (max-width: 890px) {
-  .touch-layout, .story { grid-template-columns: minmax(0, 1fr); }
+  .story { grid-template-columns: minmax(0, 1fr); }
   .view-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .case-overview button { grid-template-columns: minmax(0, 1fr); }
-  .case-forces { grid-column: auto; }
+  .touch-layout { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: .65rem; }
+  .case-overview { gap: .45rem; margin-top: .88rem; }
+  .case-overview button { align-items: center; padding: .42rem; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+  .case-overview b { font-size: .82rem; }
+  .case-overview small { font-size: .68rem; }
+  .case-forces { gap: .3rem; }
+  .mini-maps { width: 3.5rem; }
+  .replay-pad .pad-map { height: clamp(120px, 18vw, 167px); }
+  .pad-head, .replay-head { padding-inline: .46rem; }
+  .touch-pads { padding: .4rem; gap: .34rem; }
+  .pad-head h4 { font-size: .8rem; }
+  .pad-total { font-size: .84rem; }
 }
 @media (max-width: 620px) {
   .cause-grid { grid-template-columns: minmax(0, 1fr); }
@@ -264,4 +276,11 @@ select { width: 100%; min-height: 38px; margin-top: .28rem; padding: .3rem .45re
   .slide-label { gap: .35rem; font-size: .7rem; min-width: 0; overflow: hidden; }
   #slide-name { text-overflow: ellipsis; overflow: hidden; }
   #slide-number { font-size: .71rem; }
+}
+
+@media (max-width: 580px) {
+  .touch-layout { grid-template-columns: minmax(0, 1fr); }
+  .replay-pads { grid-row: 1; }
+  .case-overview button { grid-template-columns: minmax(0, 1fr); }
+  .case-forces { grid-column: auto; }
 }

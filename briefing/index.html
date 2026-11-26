@@ -9,9 +9,9 @@
   <meta property="og:description" content="30 matched pairs across five levels of camera occlusion.">
   <meta property="og:image" content="https://jhyeong687.github.io/tactile-grasp-agent/briefing/media/start-here.jpg?rev=hd">
   <title>Recovering a missed grasp · Regrasp or Skip?</title>
-  <link rel="stylesheet" href="brief.css?v=hd">
+  <link rel="stylesheet" href="brief.css?v=pad">
   <script src="brief.js?v=hd" defer></script>
-  <script src="touch.js?v=hd" defer></script>
+  <script src="touch.js?v=pad" defer></script>
 </head>
 <body>
 <a class="skip" href="#opening">Skip to content</a>
@@ -90,7 +90,14 @@
         <figcaption id="touch-caption">Only the left pad registered contact during closure.</figcaption>
       </figure>
       <section class="plate replay-pads" aria-labelledby="touch-pad-title">
-        <div class="replay-head"><h3 id="touch-pad-title">PaXini <span>· 77 points per pad</span></h3><a id="touch-download" class="button button-small" href="data/touch-offset.json?v=hd" download="touch-offset.json">Sensor JSON</a></div>
+        <div class="replay-head"><h3 id="touch-pad-title">PaXini <span>· 77 points per pad</span></h3>
+          <div class="pad-tools">
+            <select id="touch-mode" aria-label="Tactile map display">
+              <option value="estimate">Contact estimate</option>
+              <option value="active">Contact points</option>
+            </select>
+            <a id="touch-download" class="button button-small" href="data/touch-offset.json?v=pad" download="touch-offset.json">Sensor JSON</a>
+          </div></div>
         <div class="touch-pads" id="touch-pads"></div>
         <p class="touch-legend"><span class="normal">● Compression <var>Fz</var></span><span class="shear">↗ Surface force <var>Fx</var> / <var>Fy</var></span><span>⊕ Center of pressure</span></p>
         <output id="touch-point" hidden></output>

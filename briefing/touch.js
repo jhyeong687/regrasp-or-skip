@@ -23,6 +23,7 @@
   const observations = [...document.querySelectorAll("[data-feed]")];
   const padRow = document.querySelector("#touch-pads");
   const pointOutput = document.querySelector("#touch-point");
+  const mapMode = document.querySelector("#touch-mode");
   const svgNamespace = "http://www.w3.org/2000/svg";
   const sides = ["Left pad", "Right pad"];
   const readings = new Map();
@@ -43,7 +44,7 @@
 
   function recording(id) {
     if (!readings.has(id)) {
-      readings.set(id, fetch(`data/touch-${id}.json?v=hd`).then(response => {
+      readings.set(id, fetch(`data/touch-${id}.json?v=pad`).then(response => {
         if (!response.ok) throw new Error("Recording unavailable");
         return response.json();
       }).catch(error => {
@@ -73,7 +74,7 @@
   function showPoint() {
     if (!focusedPoint || !currentFrame) return;
     const {side, index} = focusedPoint;
-    const [, fx, fy, fz] = currentFrame.active[side].find(entry => entry[0] === index) || [index, 0, 0, 0];
+    const [, fx, fy, fz] = currentFrame[mapMode.value][side].find(entry => entry[0] === index) || [index, 0, 0, 0];
     pointOutput.hidden = false;
     pointOutput.textContent = `${sides[side]} · Point ${index + 1} · Fx ${measure(fx, 3)} · Fy ${measure(fy, 3)} · Fz ${measure(fz, 3)} N`;
   }
@@ -184,11 +185,12 @@
     lift.textContent = `${measure(frame.lift, 1)} mm`;
     gap.textContent = `${measure(frame.gap, 1)} mm`;
     padViews.forEach((pad, side) => {
-      const {active, totals} = frame;
+      const {totals} = frame;
+      const displayed = frame[mapMode.value][side];
       pad.total.textContent = `${measure(Math.max(0, totals[side][2]))} N`;
       pad.axes.forEach((axis, index) => axis.textContent = measure(totals[side][index]));
-      pad.active.textContent = `${active[side].filter(entry => entry[3] >= .02).length} of 77 active`;
-      paintMap(pad.map, active[side]);
+      pad.active.textContent = `${displayed.filter(entry => entry[3] >= .02).length} of 77 active`;
+      paintMap(pad.map, displayed);
     });
     const event = activeRecording.jumps.findIndex(value => Math.abs(frame.s - value) < .02);
     jumps.forEach((jump, index) => jump.setAttribute("aria-pressed", String(video.paused && index === event)));
@@ -215,7 +217,7 @@
     mini.className = "case-forces";
     const maps = document.createElement("span");
     maps.className = "mini-maps";
-    for (const side of [0,1]) paintMap(makeMap(maps, data.coords, side, false), frame.active[side]);
+    for (const side of [0,1]) paintMap(makeMap(maps, data.coords, side, false), frame.estimate[side]);
     const readout = document.createElement("small");
     readout.textContent = `Fz · L ${measure(frame.totals[0][2])} / R ${measure(frame.totals[1][2])} N`;
     mini.append(maps, readout);
@@ -253,7 +255,7 @@
         link.href = url;
         link.querySelector("img").src = url;
       }
-      download.href = `data/touch-${id}.json?v=hd`;
+      download.href = `data/touch-${id}.json?v=pad`;
       download.download = `touch-${id}.json`;
       const url = `media/touch-${id}.mp4?v=hd`;
       if (video.getAttribute("src") !== url) {
@@ -276,6 +278,9 @@
   for (const [index, button] of jumps.entries()) {
     button.addEventListener("click", () => jumpTo(activeRecording.jumps[index]));
   }
+  mapMode.addEventListener("change", () => {
+    if (currentFrame) render(currentFrame.s, true);
+  });
   seek.addEventListener("input", () => jumpTo(activeRecording.videoStart + Number(seek.value)));
   play.addEventListener("click", () => {
     if (!video.paused) {

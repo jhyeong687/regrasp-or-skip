@@ -68,3 +68,18 @@ python simulation/random_pick/recovery/occlusion.py --scene /path/to/scene.xml \
 python simulation/random_pick/serve.py --out /path/to/novel-occlusion \
   --page simulation/random_pick/recovery/index.html --port 62658
 ```
+
+## 30쌍 가림 강도 실험
+
+`--suite graded`는 모서리 절삭 블록, 둥근 직사각기둥, 테이퍼 블록 세 개에서 편심과 저마찰을 한 배치씩 사용한다. 여섯 배치를 모두 다섯 단계의 시야에서 반복한다. 단계는 추가 가림 없음, 정면 표식 가림, 정면과 오른쪽 카메라 가림, 왼쪽 카메라의 좁은 수평 틈만 유지, 양쪽 측면 가림이다. 손목 RGB-D의 최초 배치 확인은 전 단계에 있다. 여섯 배치는 기존 가림 실험과 마찰 보정에 쓰지 않은 자세다.
+
+마찰 보정은 별도 자세에서 짧은 리프트가 실패하고 그립 보강으로 안착 가능한 계수에 한해 가장 높은 값을 고른다. 보정 뒤 물리 설정과 다섯 개의 패널 배치를 고정하고 Astra 결과를 수집한다. 화면에서는 안착률, 경과 시간 중앙값, 추론만 걸린 시간 중앙값, 촉각 제공과 제외 가운데 한쪽만 성공한 페어를 표시한다. 추론이 기술 오류를 반환하면 같은 관측으로 한 번 다시 호출한다. 같은 회차의 시간에는 실제 대기가 모두 포함된다.
+
+```sh
+python simulation/random_pick/recovery/occlusion.py --scene /path/to/scene.xml \
+  --out /path/to/calibration-folder --calibrate-only
+python simulation/random_pick/recovery/occlusion.py --scene /path/to/scene.xml \
+  --suite graded --calibration /path/to/calibration-folder/calibration.json --out /path/to/graded-results
+python simulation/random_pick/serve.py --out /path/to/graded-results \
+  --page simulation/random_pick/recovery/index.html --port 62659
+```

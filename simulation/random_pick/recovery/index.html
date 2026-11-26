@@ -52,7 +52,7 @@ button{background:#24313d;border:1px solid var(--line);border-radius:6px;font:in
 </main>
 <script>
 const el=id=>document.getElementById(id);
-const names={with_tactile:"촉각 제공",without_tactile:"촉각 제외",off_center:"파지 편심",low_friction:"저마찰",brick:"직육면체",cylinder:"원기둥",bar:"긴 직육면체",hex_prism:"육각기둥",oval_prism:"타원기둥",clear:"가림 없음",marker_occlusion:"턱 표식 가림",object_occlusion:"물체·턱 표식 가림"};
+const names={with_tactile:"촉각 제공",without_tactile:"촉각 제외",off_center:"파지 편심",low_friction:"저마찰",brick:"직육면체",cylinder:"원기둥",bar:"긴 직육면체",hex_prism:"육각기둥",oval_prism:"타원기둥",beveled_block:"모서리 절삭 블록",rounded_rectangle:"둥근 직사각기둥",tapered_block:"테이퍼 블록",clear:"가림 없음",marker_occlusion:"턱 표식 가림",object_occlusion:"물체·턱 표식 가림",one_side:"한쪽 RGB만 보임",slit:"한쪽 RGB의 좁은 틈",full_occlusion:"측면 RGB 모두 가림"};
 const contactPatterns={
   no_pad_contact_during_closure:"닫는 동안 접촉 없음",
   only_one_pad_contact_during_closure:"닫는 동안 한쪽만 접촉",
@@ -81,7 +81,9 @@ function render(){
   const {active,records,summary,done,aborted,planned,previous}=data;
   const overall=summary.all;
   if(data.occlusion_benchmark){
-    el("subtitle").textContent="SO-ARM101 R7 · 새 물체 2종 · 새 배치 4개 × 시야 3종";
+    el("subtitle").textContent=data.suite==="graded"
+      ? "SO-ARM101 R7 · 새 물체 3종 · 새 배치 6개 × 시야 5종"
+      : "SO-ARM101 R7 · 새 물체 2종 · 새 배치 4개 × 시야 3종";
     el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · 가림 비교";
     el("conditionsTitle").textContent="가림 조건별 비교";
     el("conditionsCaption").textContent="트레이 안착 · 총 시간 / 추론 시간 중앙값";
@@ -101,13 +103,14 @@ function render(){
   }).join("");
   const phase=active?active.trial+"번 · "+(active.visibility?names[active.visibility]+" · ":"")+names[active.fault]+" · "+names[active.mode]+" · "+phases[active.phase]:(done?(aborted?"실험 중단":"비교 완료"):"다음 회차 준비");
   el("phase").textContent=phase;
+  el("progress").max=planned;
   el("progress").value=records.length;
   el("counter").textContent=records.length+" / "+planned+"회 · "+sec(done?data.batch_s:Date.now()/1000-data.batch_started_unix_s);
   const delta=overall.median_paired_wall_delta_s;
   const cross=previous?" · 이전 장면과 "+records.filter(r=>r.baseline_replay_verified).length+" / "+planned+"회 일치":"";
   const retried=data.technical_attempts?.length;
-  const attempts=retried?" · 시스템 시간 초과 "+retried+"회 재실행":"";
-  el("paired").textContent=overall.pairs_match+" / 12쌍 RGB-D·초기 관측 일치"+cross+attempts+
+  const attempts=retried?" · 기술 검사 후 "+retried+"회 재실행":"";
+  el("paired").textContent=overall.pairs_match+" / "+planned/2+"쌍 RGB-D·초기 관측 일치"+cross+attempts+
     (delta==null?"":" · 짝별 총 시간 차이 중앙값 "+(delta>0?"+":"")+sec(delta)+" (제공−제외)");
   el("csv").hidden=el("json").hidden=!done;
   el("showLive").hidden=selected==null;
@@ -142,7 +145,9 @@ function render(){
   const pads=item?.tactile??null;
   el("padPanel").hidden=!pads;
   if(pads)displayPads(pads);
-  const types=data.occlusion_benchmark?["clear","marker_occlusion","object_occlusion"]:["off_center","low_friction"];
+  const types=data.occlusion_benchmark
+    ? (data.visibility_order??["clear","marker_occlusion","object_occlusion"])
+    : ["off_center","low_friction"];
   el("conditions").replaceChildren(...types.map(condition=>{
     const group=data.occlusion_benchmark?data.visibility_summary[condition].all:summary[condition];
     const a=group.modes.with_tactile, b=group.modes.without_tactile;
@@ -208,7 +213,7 @@ async function poll(){
   try{const response=await fetch("live.json",{cache:"no-store"});
     if(response.ok){data=await response.json();lastPoll=Date.now();render()}
   }catch(error){el("phase").textContent="상태 다시 불러오는 중"}
-  if(!data?.done || data.records.some(r=>r.outcome==="inference_error"))setTimeout(poll,850);
+  if(!data?.done || data.records.some(r=>r.outcome==="inference_error"||r.error?.includes("diverged across the two modalities")))setTimeout(poll,850);
 }
 poll();
 </script>

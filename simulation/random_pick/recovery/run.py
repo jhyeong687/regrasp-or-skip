@@ -6,6 +6,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+import shutil
 from statistics import median
 import sys
 import time
@@ -355,6 +356,30 @@ def summarize_results(records):
     return counts
 
 
+def pair_observations(image, trial, paired, signals):
+    """Give paired policies identical pixels after checking repeatable observations."""
+    previous = paired.get(trial)
+    if previous is None:
+        paired[trial] = {"image": image, "signals": signals}
+        return None
+    if previous["signals"] != signals:
+        raise ValueError("The pre-decision physical signals diverged across the two modalities")
+    canonical = previous["image"]
+    if digest(canonical) == digest(image):
+        return None
+    with Image.open(canonical) as saved, Image.open(image) as fresh:
+        if saved.size != fresh.size:
+            raise ValueError("The pre-decision image sizes differ across modalities")
+        delta = np.abs(np.asarray(saved, dtype=np.int16) - np.asarray(fresh, dtype=np.int16))
+    changed = int(np.count_nonzero(delta.max(axis=2)))
+    if changed / (delta.shape[0] * delta.shape[1]) > .001 or delta.max() > 10:
+        raise ValueError("The pre-decision images diverged across the two modalities")
+    alternate = image.with_name(f"{image.stem}-capture{image.suffix}")
+    shutil.copy2(image, alternate)
+    shutil.copy2(canonical, image)
+    return {"capture": alternate.name, "changed_pixels": changed, "max_channel_delta": int(delta.max())}
+
+
 def run_trial(bench, case, condition, sign, mode, selected, friction, out, paired_inputs, stage, *, use_contact_history=False, clearance_recovery=False, vision_alignment=False, prior=None, inference_retries=0):
     start = time.monotonic()
     row = {"trial": case.trial, "shape": case.shape, "mode": mode,
@@ -424,11 +449,11 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
                            pinch_front_depth_m=front_depth, pinch_front_K=front_k,
                            pinch_front_world_from_optical=front_world)
         row["image"] = image.name
+        reference = (arm, tactile, row["probe_eval"], alignment)
+        canonicalized = pair_observations(image, case.trial, paired_inputs, reference)
+        if canonicalized is not None:
+            row["shared_image_adjustment"] = canonicalized
         visual_digest = digest(image)
-        reference = (visual_digest, arm, tactile, row["probe_eval"], alignment)
-        if case.trial in paired_inputs and paired_inputs[case.trial] != reference:
-            raise ValueError("The shared pre-decision observations diverged across the two modalities")
-        paired_inputs[case.trial] = reference
         row["input_replay_verified"] = True
         inputs = {"measured_arm": arm}
         if prior is not None:

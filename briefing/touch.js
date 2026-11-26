@@ -244,11 +244,14 @@
   function setupSynchronizedComparison() {
     const movie = document.querySelector("#compare-video");
     const playAll = document.querySelector("#compare-play");
+    const speed = document.querySelector("#compare-speed");
+    const repeat = document.querySelector("#compare-repeat");
     const slider = document.querySelector("#compare-seek");
     const clock = document.querySelector("#compare-time");
     const status = document.querySelector("#compare-status");
     const markers = [...document.querySelectorAll("[data-compare-jump]")];
     const groups = [...document.querySelectorAll("[data-live-trial]")];
+    const controls = [playAll, speed, repeat, slider, ...markers];
     const labels = {Start: "Before closure", Closing: "Closing jaws", "Jaws closed": "Jaws closed",
       "Lift starts": "Lifting", "Late lift": "Late lift", End: "Comparison complete"};
     let timeline;
@@ -303,15 +306,25 @@
       }
     }
 
+    function applySpeed() {
+      const rate = Number(speed.value);
+      movie.defaultPlaybackRate = rate;
+      movie.playbackRate = rate;
+    }
+
+    function applyRepeat() {
+      movie.loop = repeat.checked;
+    }
+
     function enableControls() {
       if (!timeline || movie.readyState < HTMLMediaElement.HAVE_METADATA) return;
-      playAll.disabled = slider.disabled = false;
-      for (const marker of markers) marker.disabled = false;
+      applySpeed();
+      applyRepeat();
+      for (const control of controls) control.disabled = false;
     }
 
     function showError() {
-      playAll.disabled = slider.disabled = true;
-      for (const marker of markers) marker.disabled = true;
+      for (const control of controls) control.disabled = true;
       status.textContent = "Synchronized replay unavailable. The key frames are below.";
     }
 
@@ -359,6 +372,8 @@
     video.addEventListener("play", () => movie.pause());
     for (const marker of markers) marker.addEventListener("click", () => jump(timeline.milestones[marker.dataset.compareJump]));
     slider.addEventListener("input", () => jump(Number(slider.value)));
+    speed.addEventListener("change", applySpeed);
+    repeat.addEventListener("change", applyRepeat);
     playAll.addEventListener("click", () => {
       if (!movie.paused) movie.pause();
       else {

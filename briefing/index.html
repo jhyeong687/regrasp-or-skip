@@ -9,9 +9,9 @@
   <meta property="og:description" content="30 matched pairs across five levels of camera occlusion.">
   <meta property="og:image" content="https://jhyeong687.github.io/tactile-grasp-agent/briefing/media/start-here.jpg?rev=hd">
   <title>Tactile Grasp Recovery · Regrasp or Skip?</title>
-  <link rel="stylesheet" href="brief.css?v=sync">
+  <link rel="stylesheet" href="brief.css?v=slow">
   <script src="brief.js?v=sync" defer></script>
-  <script src="touch.js?v=sync" defer></script>
+  <script src="touch.js?v=slow" defer></script>
 </head>
 <body>
 <a class="skip" href="#opening">Skip to content</a>
@@ -62,6 +62,15 @@
           <button class="button button-small" type="button" data-compare-jump="Jaws closed" disabled>Jaws closed</button>
           <button class="button button-small" type="button" data-compare-jump="Lift starts" disabled>Lift starts</button>
           <button class="button button-small" type="button" data-compare-jump="Late lift" disabled>Late lift</button>
+        </div>
+        <div class="compare-options">
+          <label class="compare-speed">Speed
+            <select id="compare-speed" aria-label="Playback speed" disabled>
+              <option value="1" selected>1×</option>
+              <option value="0.5">0.5×</option>
+            </select>
+          </label>
+          <label class="compare-repeat"><input id="compare-repeat" type="checkbox" disabled>Repeat</label>
         </div>
         <div class="clip-clock compare-clock">
           <label class="visually-hidden" for="compare-seek">Comparison timeline</label>

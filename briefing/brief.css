@@ -296,6 +296,15 @@ select { width: 100%; min-height: 38px; margin-top: .28rem; padding: .3rem .45re
 .compare-jumps { display: flex; flex-wrap: wrap; gap: .3rem; }
 .compare-jumps button[aria-pressed="true"] { border-color: var(--lilac); background: var(--lift); }
 .compare-toolbar button:disabled { opacity: .48; cursor: default; }
+.compare-options { display: flex; align-items: center; flex-wrap: wrap; gap: .28rem .62rem; }
+.compare-speed, .compare-repeat {
+  display: inline-flex; align-items: center; gap: .29rem; min-height: 35px;
+  color: var(--muted); font-size: .8rem; white-space: nowrap;
+}
+.compare-speed select { width: auto; min-height: 35px; margin: 0; padding: .2rem .32rem; font-size: .8rem; }
+.compare-repeat { padding: 0 .34rem; border: 1px solid var(--line); border-radius: .38rem; cursor: pointer; }
+.compare-repeat input { margin: 0; accent-color: var(--lilac); cursor: inherit; }
+
 .compare-clock output { min-width: 6.9em; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; font-size: .83rem; white-space: nowrap; }
 .compare-status { margin-top: .42rem; color: var(--lilac); font-weight: 650; font-size: .83rem; }
 .live-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .31%; }

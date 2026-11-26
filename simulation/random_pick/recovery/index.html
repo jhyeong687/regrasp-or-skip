@@ -27,7 +27,7 @@ button{background:#24313d;border:1px solid var(--line);border-radius:6px;font:in
 </style>
 </head>
 <body><main>
-  <header><div><h1>촉각 유무 복구 비교</h1><p class="muted sub">SO-ARM101 R7 · 동일한 12개 배치 · 편심 6쌍 / 저마찰 6쌍</p></div><span class="badge" id="controllerBadge">GPT-6.2 Astra · xhigh</span></header>
+  <header><div><h1>촉각 유무 복구 비교</h1><p class="muted sub" id="subtitle">SO-ARM101 R7 · 동일한 12개 배치 · 편심 6쌍 / 저마찰 6쌍</p></div><span class="badge" id="controllerBadge">GPT-6.2 Astra · xhigh</span></header>
   <section class="card" id="baseline" hidden>
     <div class="head"><h2>이전 실험과 비교</h2><span class="muted">총 시간은 Astra 호출 포함</span></div>
     <div class="scroll"><table><thead><tr><th scope="col">입력</th><th scope="col">지표</th><th scope="col">이전</th><th scope="col">이번</th><th scope="col">차이</th></tr></thead><tbody id="baselineBody"></tbody></table></div>
@@ -42,7 +42,7 @@ button{background:#24313d;border:1px solid var(--line);border-radius:6px;font:in
     <section class="card"><div class="head"><h2>MuJoCo 장면</h2><span class="muted" id="motionLabel">실시간</span></div><img class="motion" id="motion" alt="SO-ARM101의 시험 리프트와 복구 동작"><p class="evidence" id="evidence"></p><p class="diagnosis" id="diagnosis" hidden></p><details class="pads" id="padPanel" hidden><summary>모델에 제공된 PaXini 관측</summary><div id="padData" class="scroll"></div></details></section>
     <section class="card"><div class="head"><h2>Astra 입력 영상</h2><span class="muted">접촉 전 · 파지 · 시험 리프트</span><button id="showAlignment" hidden type="button">정렬 영상 보기</button></div><div class="inputs" id="visionScroll"><img id="vision" alt="좌우 및 손목 카메라와 손목 깊이 영상"></div></section>
   </div>
-  <section class="card"><div class="head"><h2>조건별 비교</h2><span class="muted">트레이 안착 · 회당 실제 시간 중앙값</span></div>
+  <section class="card"><div class="head"><h2 id="conditionsTitle">조건별 비교</h2><span class="muted" id="conditionsCaption">트레이 안착 · 회당 실제 시간 중앙값</span></div>
     <div class="scroll"><table><thead><tr><th>조건</th><th>촉각 제공</th><th>촉각 제외</th><th>제공만 성공</th><th>제외만 성공</th></tr></thead><tbody id="conditions"></tbody></table></div>
   </section>
   <section class="card"><div class="head"><h2>배치별 결과</h2><div class="actions">
@@ -52,7 +52,7 @@ button{background:#24313d;border:1px solid var(--line);border-radius:6px;font:in
 </main>
 <script>
 const el=id=>document.getElementById(id);
-const names={with_tactile:"촉각 제공",without_tactile:"촉각 제외",off_center:"파지 편심",low_friction:"저마찰",brick:"직육면체",cylinder:"원기둥",bar:"긴 직육면체"};
+const names={with_tactile:"촉각 제공",without_tactile:"촉각 제외",off_center:"파지 편심",low_friction:"저마찰",brick:"직육면체",cylinder:"원기둥",bar:"긴 직육면체",hex_prism:"육각기둥",oval_prism:"타원기둥",clear:"가림 없음",marker_occlusion:"턱 표식 가림",object_occlusion:"물체·턱 표식 가림"};
 const contactPatterns={
   no_pad_contact_during_closure:"닫는 동안 접촉 없음",
   only_one_pad_contact_during_closure:"닫는 동안 한쪽만 접촉",
@@ -80,7 +80,12 @@ function tableRow(cells){
 function render(){
   const {active,records,summary,done,aborted,planned,previous}=data;
   const overall=summary.all;
-  if(data.visual_alignment){
+  if(data.occlusion_benchmark){
+    el("subtitle").textContent="SO-ARM101 R7 · 새 물체 2종 · 새 배치 4개 × 시야 3종";
+    el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · 가림 비교";
+    el("conditionsTitle").textContent="가림 조건별 비교";
+    el("conditionsCaption").textContent="트레이 안착 · 총 시간 / 추론 시간 중앙값";
+  }else if(data.visual_alignment){
     el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · RGB-D 정렬";
   }else if(data.recovery_controller==="clearance_recovery"){
     el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · 그립 보강 개선";
@@ -94,7 +99,7 @@ function render(){
       '<div class="score">'+sec(metric.median_total_s)+'<div class="caption">총 시간 중앙값</div></div>'+
       '<div class="score">'+sec(metric.median_inference_s)+'<div class="caption">추론 중앙값</div></div></div></section>';
   }).join("");
-  const phase=active?active.trial+"번 · "+names[active.fault]+" · "+names[active.mode]+" · "+phases[active.phase]:(done?(aborted?"실험 중단":"비교 완료"):"다음 회차 준비");
+  const phase=active?active.trial+"번 · "+(active.visibility?names[active.visibility]+" · ":"")+names[active.fault]+" · "+names[active.mode]+" · "+phases[active.phase]:(done?(aborted?"실험 중단":"비교 완료"):"다음 회차 준비");
   el("phase").textContent=phase;
   el("progress").value=records.length;
   el("counter").textContent=records.length+" / "+planned+"회 · "+sec(done?data.batch_s:Date.now()/1000-data.batch_started_unix_s);
@@ -137,9 +142,12 @@ function render(){
   const pads=item?.tactile??null;
   el("padPanel").hidden=!pads;
   if(pads)displayPads(pads);
-  el("conditions").replaceChildren(...["off_center","low_friction"].map(condition=>{
-    const group=summary[condition], a=group.modes.with_tactile, b=group.modes.without_tactile;
-    return tableRow([names[condition],score(a)+" · "+sec(a.median_total_s),score(b)+" · "+sec(b.median_total_s),
+  const types=data.occlusion_benchmark?["clear","marker_occlusion","object_occlusion"]:["off_center","low_friction"];
+  el("conditions").replaceChildren(...types.map(condition=>{
+    const group=data.occlusion_benchmark?data.visibility_summary[condition].all:summary[condition];
+    const a=group.modes.with_tactile, b=group.modes.without_tactile;
+    const display=x=>score(x)+" · "+sec(x.median_total_s)+(data.occlusion_benchmark?" / "+sec(x.median_inference_s):"");
+    return tableRow([names[condition],display(a),display(b),
       group.discordant.with_tactile+" / "+group.pairs,group.discordant.without_tactile+" / "+group.pairs]);
   }));
   const key=records.length+"/"+selected;
@@ -147,7 +155,7 @@ function render(){
   rowsKey=key;
   el("runs").replaceChildren(...records.slice().sort((a,b)=>a.trial-b.trial||modes.indexOf(a.mode)-modes.indexOf(b.mode)).map(row=>{
     const key=row.trial+"-"+row.mode;
-    const tr=tableRow([String(row.trial).padStart(2,"0"),names[row.shape]+" · "+names[row.fault_eval.condition],names[row.mode],
+    const tr=tableRow([String(row.trial).padStart(2,"0"),names[row.shape]+" · "+names[row.fault_eval.condition]+(row.visibility?" · "+names[row.visibility]:""),names[row.mode],
       actions[row.action]??"—",row.success?"성공":(row.outcome==="placement_failed"?"실패":"오류"),sec(row.total_s),sec(row.inference_s),""]);
     tr.cells[4].className=row.success?"good":"bad";tr.cells[5].className="time";
     if(row.replay||row.image){

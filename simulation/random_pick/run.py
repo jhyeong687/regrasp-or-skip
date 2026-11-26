@@ -68,16 +68,18 @@ def cases(seed):
             for i, shape in enumerate(order, 1)]
 
 
-def build_scene(scene, shape, visual_fixture=None):
+def build_scene(scene, shape, visual_fixture=None, object_fixture=None):
     kind, size = SHAPES[shape]
 
     def customize(xml):
         world = xml.find("worldbody")
         obj = ET.SubElement(world, "body", name="pick_object", pos=".212 0 .01")
         ET.SubElement(obj, "freejoint", name="pick_free")
-        ET.SubElement(obj, "geom", name="object_surface", type=kind,
+        surface = ET.SubElement(obj, "geom", name="object_surface", type=kind,
                       size=" ".join(map(str, size)), rgba=".98 .44 .07 1", mass=".05",
                       contype="2", conaffinity="21", condim="4", friction=".83 .005 .0001")
+        if object_fixture is not None:
+            object_fixture(xml.find("asset"), surface)
         x, y = np.array(TRAY) / 1000
         half_x, half_y = TRAY_HALF_MM / 1000
         ET.SubElement(world, "geom", name="target_tray", type="box", pos=f"{x} {y} -.0045",
@@ -96,8 +98,8 @@ def build_scene(scene, shape, visual_fixture=None):
 
 
 class PickBench(StackBench):
-    def __init__(self, scene, shape, *, visual_fixture=None):
-        self.model = build_scene(scene, shape, visual_fixture)
+    def __init__(self, scene, shape, *, visual_fixture=None, object_fixture=None):
+        self.model = build_scene(scene, shape, visual_fixture, object_fixture)
         self.data, self.fit = mj.MjData(self.model), mj.MjData(self.model)
         self.sites = [self.model.site(f"{side}_sensor_frame").id for side in ("left", "right")]
         self.skin_ids = {self.model.geom(f"{side}_skin").id: i for i, side in enumerate(("left", "right"))}

@@ -18,7 +18,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 from run import (
     Case, EFFORT, MODEL, PickBench, SHAPES, infer,
-    TRAY, rgbd, waypoint, write_json,
+    TRAY, proposals, rgbd, waypoint, write_json,
 )
 from sim import COMPRESSION_POSITIVE, CONTACT_NORMAL_N, POINTS
 from recovery import vision_alignment as visual
@@ -131,6 +131,9 @@ def layouts(source):
 class RecoveryBench(PickBench):
     archive_raw = False
 
+    def plan_grasp(self, selected, condition, sign, shape):
+        return grasp_parameters(self, selected, condition, sign, shape)
+
     def reset_trial(self, case, friction):
         for side in ("left", "right"):
             pair = self.model.pair(f"{side}_tactile_pair").id
@@ -169,13 +172,16 @@ def setpoint(pose, height, pitch, gap, seconds):
     return waypoint(x, y, height, pitch, gap, seconds, yaw)
 
 
-def grasp_parameters(bench, selected, condition, sign, shape):
+def grasp_parameters(bench, selected, condition, sign, shape, *, geometry=None):
     nominal = [*selected["tcp_world_mm"], selected["yaw_deg"]]
     first = nominal.copy()
-    gap = {"brick": 26, "cylinder": 30, "bar": 22}[shape]
+    if geometry is None:
+        gap = {"brick": 26, "cylinder": 30, "bar": 22}[shape]
+        half_x_mm = SHAPES[shape][1][0] * 1000
+    else:
+        gap, half_x_mm = geometry
     if condition == "off_center":
         # Preserve the workpiece layout and bias the initial tool target along X.
-        half_x_mm = SHAPES[shape][1][0] * 1000
         for margin in (9., 6., 3.):
             first[0] = nominal[0] + sign * (half_x_mm + margin)
             try:
@@ -349,7 +355,7 @@ def summarize_results(records):
     return counts
 
 
-def run_trial(bench, case, condition, sign, mode, selected, friction, out, paired_inputs, stage, *, use_contact_history=False, clearance_recovery=False, vision_alignment=False, prior=None):
+def run_trial(bench, case, condition, sign, mode, selected, friction, out, paired_inputs, stage, *, use_contact_history=False, clearance_recovery=False, vision_alignment=False, prior=None, inference_retries=0):
     start = time.monotonic()
     row = {"trial": case.trial, "shape": case.shape, "mode": mode,
            "fault_eval": {"condition": condition, "pad_friction": friction,
@@ -378,10 +384,12 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
     try:
         bench.reset_trial(case, friction)
         baseline = float(bench.data.xpos[bench.object_id, 2] * 1000)
-        nominal, first, gap = grasp_parameters(bench, selected, condition, sign, case.shape)
+        sensed = rgbd(bench) if vision_alignment or selected is None else None
+        if selected is None:
+            selected = proposals(bench, sensed[0])["A"]
+        nominal, first, gap = bench.plan_grasp(selected, condition, sign, case.shape)
         row["fault_eval"]["first_target_offset_x_mm"] = round(first[0] - nominal[0], 3)
         row["nominal_gap_mm"] = gap
-        sensed = rgbd(bench) if vision_alignment else None
         before = get_vision(bench, sensed)
 
         def read_alignment():
@@ -445,11 +453,21 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
         write_json(out / row["input_json"], inputs)
         stage("inference", image=image.name, wait_started_unix_s=time.time(),
               tactile=tactile if mode == MODES[0] else None, contact_history=row.get("contact_history"), visual_alignment=alignment)
-        receipt = infer(prompt, image, SCHEMA)
-        row["inference_s"] = receipt["wall_s"]
+        attempts = []
+        for index in range(inference_retries + 1):
+            receipt = infer(prompt, image, SCHEMA)
+            receipt.update(image=image.name, image_sha256=visual_digest, prompt=prompt, trial=case.trial, mode=mode)
+            if "error" not in receipt or index == inference_retries:
+                break
+            archived = f"{prefix}-astra-attempt-{index + 1}.json"
+            write_json(out / archived, receipt)
+            attempts.append({"receipt": archived, "wall_s": receipt["wall_s"], "error": receipt["error"]})
+            stage("inference", wait_started_unix_s=time.time())
+        if attempts:
+            row["inference_retries"] = attempts
+        row["inference_s"] = round(receipt["wall_s"] + sum(r["wall_s"] for r in attempts), 3)
         row["receipt"] = f"{prefix}-astra.json"
         row["turn_id"] = receipt.get("turn_id")
-        receipt.update(image=image.name, image_sha256=visual_digest, prompt=prompt, trial=case.trial, mode=mode)
         write_json(out / row["receipt"], receipt)
         if "error" in receipt:
             row["outcome"] = "inference_error"

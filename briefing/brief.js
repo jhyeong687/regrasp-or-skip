@@ -22,7 +22,7 @@ function visibleVideo(video) {
 function updatePlayback() {
   for (const video of videos) {
     const visible = visibleVideo(video);
-    if (visible && !reducedMotion.matches && !autoVisible.get(video)) {
+    if (visible && !reducedMotion.matches && !autoVisible.get(video) && !video.dataset.inspecting) {
       video.muted = true;
       video.play().catch(() => {});
     }
@@ -95,32 +95,6 @@ if (document.fullscreenEnabled && document.documentElement.requestFullscreen) {
   document.addEventListener("fullscreenchange", () => {
     fullscreen.textContent = document.fullscreenElement ? "전체 화면 닫기" : "전체 화면";
     queueUpdate();
-  });
-}
-
-for (const switcher of document.querySelectorAll("[data-switch]")) {
-  const tabs = [...switcher.querySelectorAll("[role=tab]")];
-  function select(tab, focus = false) {
-    for (const item of tabs) {
-      const selected = item === tab;
-      item.setAttribute("aria-selected", String(selected));
-      item.tabIndex = selected ? 0 : -1;
-      document.getElementById(item.getAttribute("aria-controls")).hidden = !selected;
-    }
-    if (focus) tab.focus();
-    queueUpdate();
-  }
-  select(tabs[0]);
-  tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => select(tab));
-    tab.addEventListener("keydown", event => {
-      const keys = {ArrowLeft: (index + tabs.length - 1) % tabs.length,
-                    ArrowRight: (index + 1) % tabs.length, Home: 0, End: tabs.length - 1};
-      if (Object.hasOwn(keys, event.key)) {
-        event.preventDefault();
-        select(tabs[keys[event.key]], true);
-      }
-    });
   });
 }
 

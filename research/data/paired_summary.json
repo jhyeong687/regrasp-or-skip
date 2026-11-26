@@ -1,0 +1,229 @@
+{
+  "crossed": {
+    "n": 144,
+    "layout_count": 12,
+    "policies": {
+      "continue": [
+        43,
+        6.72,
+        0.838
+      ],
+      "position_correction": [
+        70,
+        12.58,
+        2.044
+      ],
+      "grip_reinforcement": [
+        87,
+        12.58,
+        5.974
+      ],
+      "recenter_and_reinforce": [
+        144,
+        12.58,
+        8.006
+      ],
+      "timing": [
+        112,
+        10.22,
+        5.297
+      ],
+      "spatial": [
+        124,
+        10.382,
+        5.608
+      ]
+    },
+    "pairs": {
+      "spatial minus timing": {
+        "gains": 12,
+        "losses": 0,
+        "descriptive_layout_interval_pp": [
+          1.39,
+          15.97
+        ]
+      },
+      "spatial minus recenter_and_reinforce": {
+        "gains": 0,
+        "losses": 20,
+        "descriptive_layout_interval_pp": [
+          -16.67,
+          -10.42
+        ]
+      }
+    },
+    "sweep": {
+      "0": 128,
+      "1": 129,
+      "1.5": 129,
+      "2": 129,
+      "2.5": 124,
+      "3": 120,
+      "3.5": 120,
+      "4": 120,
+      "5": 120,
+      "7": 120,
+      "10": 112
+    }
+  },
+  "transfer": {
+    "n": 81,
+    "layout_count": 9,
+    "policies": {
+      "continue": [
+        21,
+        6.72,
+        0.498
+      ],
+      "position_correction": [
+        45,
+        12.58,
+        1.62
+      ],
+      "grip_reinforcement": [
+        42,
+        12.58,
+        4.564
+      ],
+      "recenter_and_reinforce": [
+        81,
+        12.58,
+        7.609
+      ],
+      "timing": [
+        75,
+        11.061,
+        5.747
+      ],
+      "spatial": [
+        81,
+        11.278,
+        6.092
+      ]
+    },
+    "pairs": {
+      "spatial minus timing": {
+        "gains": 6,
+        "losses": 0,
+        "descriptive_layout_interval_pp": [
+          0.0,
+          14.81
+        ]
+      },
+      "spatial minus recenter_and_reinforce": {
+        "gains": 0,
+        "losses": 0,
+        "descriptive_layout_interval_pp": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "sweep": {
+      "0": 81,
+      "1": 81,
+      "1.5": 81,
+      "2": 81,
+      "2.5": 81,
+      "3": 81,
+      "3.5": 78,
+      "4": 77,
+      "5": 76,
+      "7": 76,
+      "10": 75
+    }
+  },
+  "moved-object": {
+    "n": 72,
+    "layout_count": 12,
+    "policies": {
+      "continue": [
+        26,
+        6.72,
+        0.969
+      ],
+      "position_correction": [
+        36,
+        12.58,
+        2.059
+      ],
+      "grip_reinforcement": [
+        52,
+        12.58,
+        6.812
+      ],
+      "recenter_and_reinforce": [
+        68,
+        12.58,
+        7.984
+      ],
+      "timing": [
+        48,
+        9.65,
+        4.208
+      ],
+      "spatial": [
+        62,
+        9.813,
+        4.987
+      ],
+      "stale_combined": [
+        52,
+        12.58,
+        6.812
+      ],
+      "vision_gap": [
+        60,
+        12.336,
+        5.039
+      ]
+    },
+    "pairs": {
+      "spatial minus timing": {
+        "gains": 14,
+        "losses": 0,
+        "descriptive_layout_interval_pp": [
+          11.11,
+          27.78
+        ]
+      },
+      "spatial minus recenter_and_reinforce": {
+        "gains": 2,
+        "losses": 8,
+        "descriptive_layout_interval_pp": [
+          -13.89,
+          -1.39
+        ]
+      },
+      "spatial minus vision_gap": {
+        "gains": 3,
+        "losses": 1,
+        "descriptive_layout_interval_pp": [
+          -2.78,
+          8.33
+        ]
+      },
+      "recenter_and_reinforce minus stale_combined": {
+        "gains": 18,
+        "losses": 2,
+        "descriptive_layout_interval_pp": [
+          13.89,
+          29.17
+        ]
+      }
+    },
+    "sweep": {
+      "0": 60,
+      "1": 63,
+      "1.5": 63,
+      "2": 62,
+      "2.5": 62,
+      "3": 62,
+      "3.5": 62,
+      "4": 62,
+      "5": 58,
+      "7": 56,
+      "10": 48
+    }
+  }
+}

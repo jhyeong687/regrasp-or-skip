@@ -64,8 +64,8 @@ def vector(values, places=4):
 
 
 class ProbeRunner:
-    def __init__(self):
-        self.sim = Sim()
+    def __init__(self, scene_path=None):
+        self.sim = Sim(scene_path=scene_path)
         self.model = self.sim.model
         self.fit = mj.MjData(self.model)
         self.object_q = int(self.model.joint("object_free").qposadr[0])

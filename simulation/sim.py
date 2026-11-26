@@ -30,6 +30,7 @@ SCENARIOS = {
     "round": (0.05, 0.8),
 }
 ARM = ("shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll")
+GRIPPER_VISUAL_PARTS = ("left_rack", "right_rack", "rail", "support", "servo_plate", "pinion")
 KEYS = [(t, np.radians(q), slide, label) for t, q, slide, label in SETUP["keyframes"]]
 DURATION = KEYS[-1][0]
 
@@ -53,7 +54,8 @@ def jpeg(image):
 class Sim:
     """Model coordinates: radians, metres, seconds, newtons and N·m."""
 
-    def __init__(self, scenario="normal"):
+    def __init__(self, scenario="normal", *, scene_path=None):
+        self.scene_path = Path(scene_path).resolve() if scene_path else HERE / "scene.xml"
         self.renderers = {}
         self.option = mj.MjvOption()
         self.option.geomgroup[3:] = 0
@@ -65,12 +67,20 @@ class Sim:
         self.close()
         assets = {}
         if round_object:
-            object_xml = (HERE / "object.xml").read_text()
+            object_xml = (self.scene_path.parent / "object.xml").read_text()
             object_xml = object_xml.replace('type="box" size="0.016 0.017 0.04023"',
                                             'type="cylinder" size="0.017 0.04023"')
             object_xml = object_xml.replace('rgba=".95 .51 .14 1"', 'rgba=".22 .68 .63 1"')
             assets["object.xml"] = object_xml.encode()
-        self.model = mj.MjModel.from_xml_path(str(HERE / "scene.xml"), assets)
+        self.model = mj.MjModel.from_xml_path(str(self.scene_path), assets)
+        # Only the presentation camera is widened to keep both jaws and the
+        # shell in frame through the short lift. Sensor cameras stay calibrated.
+        self.model.camera("grasp_detail").fovy[0] = 34.0
+        geom_ids = [mj.mj_name2id(self.model, mj.mjtObj.mjOBJ_GEOM, name)
+                    for name in GRIPPER_VISUAL_PARTS]
+        self.gripper_visual_meshes = int(sum(geom_id >= 0 and
+                                              self.model.geom_type[geom_id] == mj.mjtGeom.mjGEOM_MESH
+                                              for geom_id in geom_ids))
         self.round_object = round_object
         self.data = mj.MjData(self.model)
         self.sites = [self.model.site(f"{side}_sensor_frame").id for side in SIDES]
@@ -327,6 +337,7 @@ class Sim:
 
     def frames(self, include_cameras=True):
         state = self.observations()
+        state["gripper_visual_meshes"] = self.gripper_visual_meshes
         state["side_rgb_offset_mm"] = 260
         state["images"] = {"overview": jpeg(self._render("overview", (640,360))),
                            "grasp": jpeg(self._render("grasp_detail", (640,360)))}
@@ -444,10 +455,11 @@ def serve(sim, port):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port",type=int,default=8768)
+    parser.add_argument("--scene", type=Path, help="Load a local R7 scene and its adjacent assets")
     parser.add_argument("--verify",action="store_true")
     parser.add_argument("--physics-only",action="store_true",help="Skip OpenGL in verification")
     args=parser.parse_args()
-    sim=Sim()
+    sim=Sim(scene_path=args.scene)
     try:
         if args.verify:
             print(json.dumps(verify(sim,render=not args.physics_only),indent=2))

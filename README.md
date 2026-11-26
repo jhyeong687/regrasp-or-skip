@@ -20,6 +20,8 @@ A weak lift can follow from poor contact, a slippery surface, or a load the arm 
 
 **Planned study · Diagnose Before Repair.** Pressing a loose latch can erase the defect a robot was asked to inspect. Can fingertip sensing help the robot identify the incoming state and preserve it through release? The protocol pairs inspection and repair on the same fixtures, records every latch transition independently, and compares an agent with calibrated fixed probes and a model-based planner. [Research proposal and physical evaluation plan (한국어)](docs/diagnose-before-repair.ko.md) · [Three-object stacking inference audit](data/stacking-pilot/tower-inference-audit.json)
 
+**Paired regrasp comparison.** The same 50 g shell is tested across lateral offsets and pad friction levels. Both retries branch from the same released state. [Protocol, results and Fusion-derived scene setup](docs/regrasp-comparison.ko.md)
+
 [Earlier evaluation suite](docs/tactile-agent-suite.ko.md) · [Stacking protocol and stability check](docs/tactile-stacking-protocol.ko.md)
 
 ## Four grasps on one time axis

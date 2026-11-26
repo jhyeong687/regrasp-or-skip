@@ -89,6 +89,7 @@ tr[data-case]{cursor:pointer}tr[data-case]:hover{background:var(--panel)}
       <h2 id="heroTitle">팔 전체</h2><button id="focus">집기 확대</button>
     </figcaption>
     <img id="heroImg" alt="SO-ARM101 팔 전체">
+    <p class="fine" id="gripperGeometry"></p>
     <div class="metrics">
       <div class="metric"><b id="lift">—</b><span class="meta">물체 상승</span></div>
       <div class="metric"><b id="gap">—</b><span class="meta">양 턱 간격</span></div>
@@ -294,6 +295,9 @@ function showView(name) {
 function showFrame(data) {
   last=data;
   $("exportVector").disabled=false;
+  $("gripperGeometry").textContent=data.gripper_visual_meshes === 6
+    ? "R7 그리퍼 상세 메시 · 6개"
+    : "공개 장면 · 그리퍼 단순 외형";
   Object.assign(videos,data.images);
   if (data.images[activeView]) $("heroImg").src=data.images[activeView];
   for (const [name,img] of Object.entries(data.images)) {

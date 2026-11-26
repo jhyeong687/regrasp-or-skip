@@ -1,7 +1,7 @@
 "use strict";
 
 const slides = [...document.querySelectorAll(".slide")];
-const videos = [...document.querySelectorAll("video:not(#touch-video)")];
+const videos = [...document.querySelectorAll("video:not([data-manual-playback])")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const prevButton = document.querySelector("#previous");
 const nextButton = document.querySelector("#next");

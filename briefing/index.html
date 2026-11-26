@@ -9,9 +9,9 @@
   <meta property="og:description" content="30 matched pairs across five levels of camera occlusion.">
   <meta property="og:image" content="https://jhyeong687.github.io/tactile-grasp-agent/briefing/media/start-here.jpg?rev=hd">
   <title>Tactile Grasp Recovery · Regrasp or Skip?</title>
-  <link rel="stylesheet" href="brief.css?v=compare">
-  <script src="brief.js?v=hd" defer></script>
-  <script src="touch.js?v=compare" defer></script>
+  <link rel="stylesheet" href="brief.css?v=sync">
+  <script src="brief.js?v=sync" defer></script>
+  <script src="touch.js?v=sync" defer></script>
 </head>
 <body>
 <a class="skip" href="#opening">Skip to content</a>
@@ -55,6 +55,37 @@
     <p class="eyebrow">SO-ARM101 · Two 77-point PaXini pads</p>
     <h2>Contact at closure and during lift</h2>
     <p class="lede">Trials 15 and 27 show the test grasp. Trial 28 shows the successful retry. All maps share the same force scale.</p>
+    <section class="comparison-live" aria-label="Synchronized playback of all three trials">
+      <div class="compare-toolbar" aria-label="Shared playback controls">
+        <button class="button primary" id="compare-play" type="button" disabled>Play all</button>
+        <div class="compare-jumps" aria-label="Shared phase markers">
+          <button class="button button-small" type="button" data-compare-jump="Jaws closed" disabled>Jaws closed</button>
+          <button class="button button-small" type="button" data-compare-jump="Lift starts" disabled>Lift starts</button>
+          <button class="button button-small" type="button" data-compare-jump="Late lift" disabled>Late lift</button>
+        </div>
+        <div class="clip-clock compare-clock">
+          <label class="visually-hidden" for="compare-seek">Comparison timeline</label>
+          <input id="compare-seek" type="range" disabled min="0" max="50" step="1" value="0">
+          <output id="compare-time" for="compare-seek">0.00 s</output>
+        </div>
+      </div>
+      <p id="compare-status" class="compare-status">Loading comparison</p>
+      <div class="live-grid live-headings">
+        <div><h3>Off-center grasp</h3><p>Trial 15 · Test grasp</p></div>
+        <div><h3>Low-friction slip</h3><p>Trial 27 · Test grasp</p></div>
+        <div><h3>Successful regrasp</h3><p>Trial 28 · Retry</p></div>
+      </div>
+      <video id="compare-video" data-manual-playback width="1932" height="360" muted playsinline preload="metadata"
+        src="media/touch-synchronized.mp4" poster="media/touch-synchronized.jpg"
+        aria-label="Trials 15, 27, and 28 aligned at jaw closure and lift onset"></video>
+      <div class="live-grid">
+        <div class="live-pads comparison-pads" data-live-trial="offset" role="group" aria-label="Trial 15 tactile pads"></div>
+        <div class="live-pads comparison-pads" data-live-trial="slip" role="group" aria-label="Trial 27 tactile pads"></div>
+        <div class="live-pads comparison-pads" data-live-trial="recovered" role="group" aria-label="Trial 28 tactile pads"></div>
+      </div>
+      <p class="comparison-legend"><span>Playback speed varies between phase markers. Pad forces follow the original frames.</span><a href="#touch-keyframes">Key frames ↓</a></p>
+    </section>
+    <h3 id="touch-keyframes">Key frames</h3>
     <div class="case-overview" id="touch-comparison" aria-label="Three cases compared at closure and during lift">
       <article class="plate comparison-case" data-comparison="offset">
         <header><h3>Off-center grasp</h3><p>Trial 15 · Test grasp</p></header>
@@ -109,7 +140,7 @@
     <div class="touch-layout">
       <figure class="plate replay-scene">
         <div class="replay-head"><h3>Robot view</h3><span id="touch-phase">Loading recording</span></div>
-        <video id="touch-video" width="1280" height="720" src="media/touch-offset.mp4?v=compare" poster="media/touch-offset.jpg?v=compare" muted playsinline preload="auto" aria-label="Full-arm replay synchronized with both tactile pads"></video>
+        <video id="touch-video" data-manual-playback width="1280" height="720" src="media/touch-offset.mp4?v=compare" poster="media/touch-offset.jpg?v=compare" muted playsinline preload="auto" aria-label="Full-arm replay synchronized with both tactile pads"></video>
         <div class="scene-metrics">
           <div><output id="touch-lift">—</output><span>Object rise</span></div>
           <div><output id="touch-gap">—</output><span>Jaw gap</span></div>

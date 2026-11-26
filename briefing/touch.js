@@ -214,20 +214,161 @@
     render(bounded, true);
   }
 
+  function makeSummaryPad(container, coords, side) {
+    const panel = document.createElement("figure");
+    const caption = document.createElement("figcaption");
+    const name = document.createElement("span");
+    const total = document.createElement("strong");
+    name.textContent = sides[side];
+    caption.append(name, total);
+    panel.append(caption);
+    const map = makeMap(panel, coords, side, false);
+    container.append(panel);
+    return {map, total};
+  }
+
+  function setSummaryPad(pad, frame, side) {
+    pad.total.textContent = `${measure(frame.totals[side][2])} N`;
+    paintMap(pad.map, frame.estimate[side]);
+  }
+
   function drawComparison(card, data) {
     for (const stage of card.querySelectorAll("[data-compare-stage]")) {
       const second = data.jumps[Number(stage.dataset.compareStage)];
       const frame = nearest(data.frames, second);
       const group = stage.querySelector(".comparison-pads");
-      for (const [side, name] of sides.entries()) {
-        const panel = document.createElement("figure");
-        const label = document.createElement("figcaption");
-        label.innerHTML = `<span>${name}</span><strong>${measure(frame.totals[side][2])} N</strong>`;
-        panel.append(label);
-        paintMap(makeMap(panel, data.coords, side, false), frame.estimate[side]);
-        group.append(panel);
+      sides.forEach((_, side) => setSummaryPad(makeSummaryPad(group, data.coords, side), frame, side));
+    }
+  }
+
+  function setupSynchronizedComparison() {
+    const movie = document.querySelector("#compare-video");
+    const playAll = document.querySelector("#compare-play");
+    const slider = document.querySelector("#compare-seek");
+    const clock = document.querySelector("#compare-time");
+    const status = document.querySelector("#compare-status");
+    const markers = [...document.querySelectorAll("[data-compare-jump]")];
+    const groups = [...document.querySelectorAll("[data-live-trial]")];
+    const labels = {Start: "Before closure", Closing: "Closing jaws", "Jaws closed": "Jaws closed",
+      "Lift starts": "Lifting", "Late lift": "Late lift", End: "Comparison complete"};
+    let timeline;
+    let views;
+    let shown = -1;
+    let callback;
+    const videoFrameCallback = typeof movie.requestVideoFrameCallback === "function";
+
+    function show(index) {
+      if (!timeline) return;
+      const frameIndex = Math.min(Number(slider.max), Math.max(0, index));
+      if (frameIndex === shown) return;
+      shown = frameIndex;
+      const [phase] = Object.entries(timeline.milestones).findLast(([, start]) => start <= frameIndex);
+      status.textContent = labels[phase];
+      const elapsed = (frameIndex / timeline.fps).toFixed(2);
+      const duration = (Number(slider.max) / timeline.fps).toFixed(2);
+      clock.textContent = `${elapsed} / ${duration} s`;
+      slider.value = frameIndex;
+      if (movie.paused) playAll.textContent = frameIndex === Number(slider.max) ? "Replay all" : "Play all";
+      slider.setAttribute("aria-valuetext", `${elapsed} of ${duration} seconds, ${labels[phase]}`);
+      for (const marker of markers) {
+        marker.setAttribute("aria-pressed", String(frameIndex === timeline.milestones[marker.dataset.compareJump]));
+      }
+      for (const view of views) {
+        const sample = view.frames[frameIndex];
+        if (sample === view.shown) continue;
+        view.shown = sample;
+        view.pads.forEach((pad, side) => setSummaryPad(pad, sample, side));
       }
     }
+
+    function updateFromClock() {
+      if (timeline && !movie.seeking) show(Math.floor(movie.currentTime * timeline.fps + .0001));
+    }
+
+    function jump(index) {
+      movie.pause();
+      const position = index / timeline.fps;
+      if (Math.abs(movie.currentTime - position) < .001 && !movie.seeking) show(index);
+      else movie.currentTime = position;
+    }
+
+    function drawFrame(_, metadata) {
+      if (movie.paused || movie.ended) return;
+      if (videoFrameCallback) {
+        if (!movie.seeking) show(Math.round(metadata.mediaTime * timeline.fps));
+        callback = movie.requestVideoFrameCallback(drawFrame);
+      } else {
+        updateFromClock();
+        callback = requestAnimationFrame(drawFrame);
+      }
+    }
+
+    function enableControls() {
+      if (!timeline || movie.readyState < HTMLMediaElement.HAVE_METADATA) return;
+      playAll.disabled = slider.disabled = false;
+      for (const marker of markers) marker.disabled = false;
+    }
+
+    function showError() {
+      playAll.disabled = slider.disabled = true;
+      for (const marker of markers) marker.disabled = true;
+      status.textContent = "Synchronized replay unavailable. The key frames are below.";
+    }
+
+    Promise.all([
+      fetch("data/touch-synchronized.json").then(response => {
+        if (!response.ok) throw new Error("Timeline unavailable");
+        return response.json();
+      }),
+      ...groups.map(group => recording(group.dataset.liveTrial))
+    ]).then(([aligned, ...recordings]) => {
+      views = groups.map((group, index) => {
+        const data = recordings[index];
+        const samples = new Map(data.frames.map(frame => [frame.s, frame]));
+        const frames = aligned.times[group.dataset.liveTrial].map(second => samples.get(second));
+        if (frames.length !== aligned.milestones.End + 1 || frames.some(frame => !frame)) {
+          throw new Error("Timeline is missing a recorded frame");
+        }
+        return {frames, pads: sides.map((_, side) => makeSummaryPad(group, data.coords, side))};
+      });
+      timeline = aligned;
+      slider.max = timeline.milestones.End;
+      show(0);
+      enableControls();
+    }).catch(showError);
+
+    movie.addEventListener("loadedmetadata", enableControls);
+    movie.addEventListener("error", showError);
+    movie.addEventListener("seeked", updateFromClock);
+    movie.addEventListener("ended", () => {
+      updateFromClock();
+      playAll.textContent = "Replay all";
+    });
+    movie.addEventListener("play", () => {
+      video.pause();
+      playAll.textContent = "Pause all";
+      callback = videoFrameCallback ? movie.requestVideoFrameCallback(drawFrame) : requestAnimationFrame(drawFrame);
+    });
+    movie.addEventListener("pause", () => {
+      playAll.textContent = shown === Number(slider.max) ? "Replay all" : "Play all";
+      if (callback === undefined) return;
+      if (videoFrameCallback) movie.cancelVideoFrameCallback(callback);
+      else cancelAnimationFrame(callback);
+      callback = undefined;
+    });
+    video.addEventListener("play", () => movie.pause());
+    for (const marker of markers) marker.addEventListener("click", () => jump(timeline.milestones[marker.dataset.compareJump]));
+    slider.addEventListener("input", () => jump(Number(slider.value)));
+    playAll.addEventListener("click", () => {
+      if (!movie.paused) movie.pause();
+      else {
+        if (movie.ended || shown === Number(slider.max)) movie.currentTime = 0;
+        movie.play().catch(error => { if (error.name !== "AbortError") showError(); });
+      }
+    });
+    new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) movie.pause();
+    }).observe(document.querySelector(".comparison-live"));
   }
 
   async function selectCase(id) {
@@ -346,5 +487,6 @@
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) video.pause();
   }).observe(document.querySelector(".touch-layout"));
+  setupSynchronizedComparison();
   selectCase("offset");
 }

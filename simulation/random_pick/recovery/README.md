@@ -49,3 +49,9 @@ python simulation/random_pick/recovery/run.py --scene /path/to/scene.xml \
   --baseline /path/to/contact-history-comparison/results.json --contact-history \
   --clearance-recovery --out /path/to/clearance-comparison
 ```
+
+## RGB-D 정렬 관측과 원본 센서 저장
+
+`--vision-alignment`는 MuJoCo 작업대에 정면 RGB-D 관측과 양쪽 턱의 시각 표식을 추가한다. 표식은 접촉하지 않는 시각 요소다. 파지 직전 손목 깊이에서 주황색 물체 상단 윤곽을 구하고, 파지 시점에 정면 색과 깊이로 양쪽 표식의 위치를 복원한다. 같은 좌표계에서 턱 중심과 물체 윤곽의 상대 거리를 계산한다. 형상 중심과 표식 좌표에는 렌더한 RGB와 깊이 및 보정 행렬을 사용한다. 표식이 가려지면 정렬 수치를 제공하지 않는다. 두 모드 모두 동일한 정렬 영상과 수치를 받고, 해당 모드의 이전 입력도 유지한다. 복구 선택은 Astra가 수행한다.
+
+회차마다 `*-rgbd.npz`에 단계별 RGB, 손목·정면의 깊이(m), 손목 물체 마스크, 유효 범위와 카메라 보정값을 기록한다. `*-paxini.npz`는 40 ms 간격의 `forces_N[t, pad, 77, xyz]`, 위치, 좌·우 이름, 위상과 시간을 담는다. 물리 패드 샘플은 두 모드에서 기록해 비교할 수 있다. 촉각 제외 모드의 모델 입력에는 이 데이터가 포함되지 않는다. 기존 RGB-D 몽타주와 새 정렬 패널이 포함된 모델 입력을 각각 저장한다. 센서 파일 압축과 재생 파일 인코딩은 회차별 실제 경과 시간 측정이 끝난 뒤 실행한다.

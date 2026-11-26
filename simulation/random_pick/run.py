@@ -68,7 +68,7 @@ def cases(seed):
             for i, shape in enumerate(order, 1)]
 
 
-def build_scene(scene, shape):
+def build_scene(scene, shape, visual_fixture=None):
     kind, size = SHAPES[shape]
 
     def customize(xml):
@@ -89,13 +89,15 @@ def build_scene(scene, shape):
                           size=f"{sx} {sy} .003", rgba=".22 .62 .57 1",
                           contype="16", conaffinity="2")
         camera(world, "pick_live", (.47, -.49, .33), (.16, -.032, .075), 41)
+        if visual_fixture is not None:
+            visual_fixture(world)
 
     return load_model(scene, HERE / "empty.xml", customize)
 
 
 class PickBench(StackBench):
-    def __init__(self, scene, shape):
-        self.model = build_scene(scene, shape)
+    def __init__(self, scene, shape, *, visual_fixture=None):
+        self.model = build_scene(scene, shape, visual_fixture)
         self.data, self.fit = mj.MjData(self.model), mj.MjData(self.model)
         self.sites = [self.model.site(f"{side}_sensor_frame").id for side in ("left", "right")]
         self.skin_ids = {self.model.geom(f"{side}_skin").id: i for i, side in enumerate(("left", "right"))}

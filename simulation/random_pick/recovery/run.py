@@ -20,7 +20,8 @@ from run import (
     Case, EFFORT, MODEL, PickBench, SHAPES, infer,
     TRAY, rgbd, waypoint, write_json,
 )
-from sim import COMPRESSION_POSITIVE, CONTACT_NORMAL_N
+from sim import COMPRESSION_POSITIVE, CONTACT_NORMAL_N, POINTS
+from recovery import vision_alignment as visual
 
 ACTIONS = ("position_correction", "grip_reinforcement")
 MODES = ("with_tactile", "without_tactile")
@@ -128,6 +129,8 @@ def layouts(source):
 
 
 class RecoveryBench(PickBench):
+    archive_raw = False
+
     def reset_trial(self, case, friction):
         for side in ("left", "right"):
             pair = self.model.pair(f"{side}_tactile_pair").id
@@ -148,7 +151,7 @@ class RecoveryBench(PickBench):
                 "cop_world_x_offset_mm": round(float(basis[0, :2] @ cop), 3) if cop is not None else None,
                 "active_taxels": int((pad[:, 2] > .008).sum()),
             })
-        return {
+        sample = {
             "sim_s": round(float(self.data.time), 3), "phase": phase,
             "tcp_mm": self.describe(self.data.qpos[:5])["xyz_mm"],
             "jaw_gap_mm": round(float(82.4137 - 1000*self.data.qpos[5:7].sum()), 3),
@@ -156,6 +159,9 @@ class RecoveryBench(PickBench):
             "object_xyz_mm_eval": (self.data.xpos[self.object_id] * 1000).round(4).tolist(),
             "tray_contact_eval": self.on(self.tray_geom),
         }
+        if self.archive_raw:
+            sample["_taxels"] = raw.astype(np.float32)
+        return sample
 
 
 def setpoint(pose, height, pitch, gap, seconds):
@@ -195,11 +201,13 @@ def probe_waypoints(pose, gap):
     ]
 
 
-def probe(bench, pose, gap, capture):
+def probe(bench, pose, gap, capture, *, at_pinch=None):
     steps = probe_waypoints(pose, gap)
     for phase, point in zip(("approach", "descend", "close", "pinch"), steps[:4]):
         bench.run([point], phase)
     pinch = capture(("rgb_scene_left", "rgb_scene_right"))
+    if at_pinch is not None:
+        at_pinch()
     for phase, point in zip(("probe_lift", "probe_hold"), steps[4:]):
         bench.run([point], phase)
     hold = capture(("rgb_scene_left", "rgb_scene_right"))
@@ -249,11 +257,11 @@ def capture_rgb(bench, camera_names):
     return tuple(Image.fromarray(bench._render(name, (384, 216))) for name in camera_names)
 
 
-def get_vision(bench):
+def get_vision(bench, sensed=None):
     width, height = 384, 216
     names = ("rgb_scene_left", "rgb_scene_right", "wrist_rgb")
     frames = capture_rgb(bench, names)
-    observed, depth, valid, pixels, *_ = rgbd(bench)
+    _, depth, valid, pixels, *_ = rgbd(bench) if sensed is None else sensed
     fraction = np.clip((depth - .195) / .26, 0, 1)[..., None]
     color = (np.array([239, 194, 111]) * (1-fraction) + np.array([18, 66, 117]) * fraction).astype(np.uint8)
     color[~valid] = [15, 21, 31]
@@ -341,7 +349,7 @@ def summarize_results(records):
     return counts
 
 
-def run_trial(bench, case, condition, sign, mode, selected, friction, out, paired_inputs, stage, *, use_contact_history=False, clearance_recovery=False, prior=None):
+def run_trial(bench, case, condition, sign, mode, selected, friction, out, paired_inputs, stage, *, use_contact_history=False, clearance_recovery=False, vision_alignment=False, prior=None):
     start = time.monotonic()
     row = {"trial": case.trial, "shape": case.shape, "mode": mode,
            "fault_eval": {"condition": condition, "pad_friction": friction,
@@ -350,6 +358,8 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
     prefix = f"pair-{case.trial:02d}-{mode}"
     frames = []
     last_frame = 0.
+    aligned = None
+    archive = {}
 
     def capture(image, sample=None):
         nonlocal last_frame
@@ -371,29 +381,58 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
         nominal, first, gap = grasp_parameters(bench, selected, condition, sign, case.shape)
         row["fault_eval"]["first_target_offset_x_mm"] = round(first[0] - nominal[0], 3)
         row["nominal_gap_mm"] = gap
-        before = get_vision(bench)
+        sensed = rgbd(bench) if vision_alignment else None
+        before = get_vision(bench, sensed)
+
+        def read_alignment():
+            nonlocal aligned
+            aligned = visual.capture_alignment(bench)
         bench.frame_sink = capture
         capture(bench.frame())
         stage("probe")
-        pinch, hold = probe(bench, first, gap, lambda names: capture_rgb(bench, names))
+        pinch, hold = probe(bench, first, gap, lambda names: capture_rgb(bench, names),
+                            at_pinch=read_alignment if vision_alignment else None)
         row["probe_eval"] = evaluate_probe(bench, baseline)
         arm, tactile = summarize(bench.trace)
         image = out / f"{prefix}-observations.jpg"
         montage(image, before, pinch, hold)
+        base_digest = digest(image)
+        row["original_image"] = image.name
+        row["original_image_sha256"] = base_digest
+        alignment = None
+        if vision_alignment:
+            alignment, overlay = visual.measure_alignment(visual.wrist_footprint(sensed), aligned)
+            expanded = out / f"{prefix}-rgbd-alignment.jpg"
+            visual.visual_packet(image, expanded, aligned, overlay, alignment)
+            image = expanded
+            row["visual_alignment"] = alignment
+            archive = dict(zip(("pre_left_rgb", "pre_right_rgb", "pre_wrist_rgb", "pre_wrist_depth_preview",
+                                "pinch_left_rgb", "pinch_right_rgb", "hold_left_rgb", "hold_right_rgb"),
+                               map(np.asarray, (*before, *pinch, *hold))))
+            _, depth, valid, mask, k, transform = sensed
+            front_rgb, front_depth, front_k, front_world = aligned
+            archive.update(wrist_depth_m=depth, wrist_depth_valid=valid, wrist_target_mask=mask,
+                           wrist_K=k, wrist_world_from_optical=transform, pinch_front_rgb=front_rgb,
+                           pinch_front_depth_m=front_depth, pinch_front_K=front_k,
+                           pinch_front_world_from_optical=front_world)
         row["image"] = image.name
         visual_digest = digest(image)
-        reference = (visual_digest, arm, tactile, row["probe_eval"])
+        reference = (visual_digest, arm, tactile, row["probe_eval"], alignment)
         if case.trial in paired_inputs and paired_inputs[case.trial] != reference:
             raise ValueError("The shared pre-decision observations diverged across the two modalities")
         paired_inputs[case.trial] = reference
         row["input_replay_verified"] = True
         inputs = {"measured_arm": arm}
         if prior is not None:
-            expected = (prior["input_image_sha256"], prior["fault_eval"], prior["probe_eval"])
-            if (visual_digest, row["fault_eval"], row["probe_eval"]) != expected:
+            expected = (prior.get("original_image_sha256", prior["input_image_sha256"]),
+                        prior["fault_eval"], prior["probe_eval"])
+            if (base_digest, row["fault_eval"], row["probe_eval"]) != expected:
                 raise ValueError("Physical replay differs from the previous iteration")
             row["baseline_replay_verified"] = True
         task = TASK
+        if vision_alignment:
+            inputs["visual_alignment"] = alignment
+            task += "\n\n" + visual.GUIDANCE
         if mode == MODES[0]:
             inputs["paxini"] = tactile
             row["tactile"] = tactile
@@ -405,7 +444,7 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
         row["input_json"] = f"{prefix}-input.json"
         write_json(out / row["input_json"], inputs)
         stage("inference", image=image.name, wait_started_unix_s=time.time(),
-              tactile=tactile if mode == MODES[0] else None, contact_history=row.get("contact_history"))
+              tactile=tactile if mode == MODES[0] else None, contact_history=row.get("contact_history"), visual_alignment=alignment)
         receipt = infer(prompt, image, SCHEMA)
         row["inference_s"] = receipt["wall_s"]
         row["receipt"] = f"{prefix}-astra.json"
@@ -443,8 +482,18 @@ def run_trial(bench, case, condition, sign, mode, selected, friction, out, paire
 
     row["sim_s"] = round(float(bench.data.time), 3)
     row["trace"] = f"{prefix}-trace.json"
+    pad_arrays = [s.pop("_taxels") for s in bench.trace] if bench.archive_raw else []
     write_json(out / row["trace"], bench.trace)
     row["total_s"] = round(time.monotonic() - start, 3)
+    if archive:
+        row["rgbd_raw"] = f"{prefix}-rgbd.npz"
+        np.savez_compressed(out / row["rgbd_raw"], **archive)
+    if pad_arrays:
+        row["paxini_raw"] = f"{prefix}-paxini.npz"
+        np.savez_compressed(out / row["paxini_raw"], forces_N=np.stack(pad_arrays),
+                            sim_s=[s["sim_s"] for s in bench.trace],
+                            phase=[s["phase"] for s in bench.trace],
+                            pad_names=["left", "right"], taxel_xy_mm=[[p["x_mm"], p["y_mm"]] for p in POINTS])
     if frames:
         row["replay"] = f"{prefix}-motion.webp"
         frames[0].save(out / row["replay"], save_all=True, append_images=frames[1:],
@@ -480,6 +529,7 @@ def run_batch(args):
               "mujoco": mj.__version__, "normal_friction": NORMAL_FRICTION, "low_friction_by_shape": by_shape,
               "planned": 2 * len(design), "records": [], "batch_started_unix_s": time.time()}
     result["policy"] = "contact_history" if args.contact_history else "windowed_tactile"
+    result["visual_alignment"] = args.vision_alignment
     result["recovery_controller"] = "clearance_recovery" if args.clearance_recovery else "original"
     if args.clearance_recovery:
         result["empty_closure_tolerance_mm"] = EMPTY_CLOSURE_TOLERANCE_MM
@@ -505,7 +555,9 @@ def run_batch(args):
     try:
         for case, condition, sign, order, selected in design:
             if case.shape not in benches:
-                benches[case.shape] = RecoveryBench(args.scene, case.shape)
+                fixture = visual.add_alignment_view if args.vision_alignment else None
+                benches[case.shape] = RecoveryBench(args.scene, case.shape, visual_fixture=fixture)
+                benches[case.shape].archive_raw = args.vision_alignment
             bench = benches[case.shape]
             friction = NORMAL_FRICTION if condition == "off_center" else by_shape[case.shape]
             for mode in order:
@@ -519,7 +571,8 @@ def run_batch(args):
 
                 row = run_trial(bench, case, condition, sign, mode, selected, friction, args.out,
                                 paired_inputs, stage, use_contact_history=args.contact_history,
-                                clearance_recovery=args.clearance_recovery, prior=prior_runs.get((case.trial, mode)))
+                                clearance_recovery=args.clearance_recovery, vision_alignment=args.vision_alignment,
+                                prior=prior_runs.get((case.trial, mode)))
                 result["records"].append(row)
                 active = None
                 publish()
@@ -551,5 +604,6 @@ if __name__ == "__main__":
     parser.add_argument("--contact-history", action="store_true", help="Expose contact history to the tactile policy")
     parser.add_argument("--clearance-recovery", action="store_true",
                         help="Reopen before descending when the probe grip closes without a load")
+    parser.add_argument("--vision-alignment", action="store_true", help="Add optical jaw alignment and archive sensors")
     parser.add_argument("--baseline", type=Path, help="Verify against a prior paired comparison and display it")
     run_batch(parser.parse_args())

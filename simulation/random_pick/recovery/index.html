@@ -40,7 +40,7 @@ button{background:#24313d;border:1px solid var(--line);border-radius:6px;font:in
   </section>
   <div class="scene">
     <section class="card"><div class="head"><h2>MuJoCo 장면</h2><span class="muted" id="motionLabel">실시간</span></div><img class="motion" id="motion" alt="SO-ARM101의 시험 리프트와 복구 동작"><p class="evidence" id="evidence"></p><p class="diagnosis" id="diagnosis" hidden></p><details class="pads" id="padPanel" hidden><summary>모델에 제공된 PaXini 관측</summary><div id="padData" class="scroll"></div></details></section>
-    <section class="card"><div class="head"><h2>Astra 입력 영상</h2><span class="muted">접촉 전 · 파지 · 시험 리프트</span></div><div class="inputs"><img id="vision" alt="좌우 및 손목 카메라와 손목 깊이 영상"></div></section>
+    <section class="card"><div class="head"><h2>Astra 입력 영상</h2><span class="muted">접촉 전 · 파지 · 시험 리프트</span><button id="showAlignment" hidden type="button">정렬 영상 보기</button></div><div class="inputs" id="visionScroll"><img id="vision" alt="좌우 및 손목 카메라와 손목 깊이 영상"></div></section>
   </div>
   <section class="card"><div class="head"><h2>조건별 비교</h2><span class="muted">트레이 안착 · 회당 실제 시간 중앙값</span></div>
     <div class="scroll"><table><thead><tr><th>조건</th><th>촉각 제공</th><th>촉각 제외</th><th>제공만 성공</th><th>제외만 성공</th></tr></thead><tbody id="conditions"></tbody></table></div>
@@ -65,7 +65,8 @@ const sec=x=>x==null?"—":x.toFixed(2)+" s";
 const score=o=>o.trials?o.successes+" / "+o.trials:"—";
 const rate=o=>o.trials?(100*o.successes/o.trials).toFixed(1)+"%":"";
 const modes=["with_tactile","without_tactile"];
-let data, selected, rowsKey="", lastPoll=0;
+let data, rowsKey="", lastPoll=0;
+let selected=new URLSearchParams(location.search).get("case") || undefined;
 function image(id,src){
   const img=el(id);
   if(src&&img.getAttribute("src")!==src)img.setAttribute("src",src);
@@ -79,7 +80,9 @@ function tableRow(cells){
 function render(){
   const {active,records,summary,done,aborted,planned,previous}=data;
   const overall=summary.all;
-  if(data.recovery_controller==="clearance_recovery"){
+  if(data.visual_alignment){
+    el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · RGB-D 정렬";
+  }else if(data.recovery_controller==="clearance_recovery"){
     el("controllerBadge").textContent="GPT-6.2 Astra · xhigh · 그립 보강 개선";
   }
   el("baseline").hidden=!previous;
@@ -97,7 +100,9 @@ function render(){
   el("counter").textContent=records.length+" / "+planned+"회 · "+sec(done?data.batch_s:Date.now()/1000-data.batch_started_unix_s);
   const delta=overall.median_paired_wall_delta_s;
   const cross=previous?" · 이전 장면과 "+records.filter(r=>r.baseline_replay_verified).length+" / "+planned+"회 일치":"";
-  el("paired").textContent=overall.pairs_match+" / 12쌍 RGB-D·초기 관측 일치"+cross+
+  const retried=data.technical_attempts?.length;
+  const attempts=retried?" · 시스템 시간 초과 "+retried+"회 재실행":"";
+  el("paired").textContent=overall.pairs_match+" / 12쌍 RGB-D·초기 관측 일치"+cross+attempts+
     (delta==null?"":" · 짝별 총 시간 차이 중앙값 "+(delta>0?"+":"")+sec(delta)+" (제공−제외)");
   el("csv").hidden=el("json").hidden=!done;
   el("showLive").hidden=selected==null;
@@ -112,6 +117,7 @@ function render(){
     el("motionLabel").textContent="실시간";
   }
   image("vision",item?.image);
+  el("showAlignment").hidden=!item?.visual_alignment;
   el("evidence").textContent=item?.evidence?(actions[item.action]+" · "+item.evidence):(item?.error??(item?.action?actions[item.action]:phase));
   const history=item?.contact_history;
   const old=previous?.records.find(r=>r.trial===item?.trial&&r.mode===item?.mode);
@@ -121,8 +127,13 @@ function render(){
     (item.total_s==null?"":" · "+sec(old.total_s)+" → "+sec(item.total_s)) : "";
   const motion=item?.recovery_motion?.clear_before_descent
     ? "복구 동작 · 턱 열고 하강 → 재파지 → 8 mm 상승" : "";
-  el("diagnosis").hidden=!(label||prior||motion);
-  el("diagnosis").textContent=[motion,label,prior].filter(Boolean).join(" / ");
+  const align=item?.visual_alignment;
+  const geometric=align?.available
+    ? "RGB-D · 물체와 턱 중심 차이 "+Math.abs(align.along_finger_offset_mm).toFixed(2)+" mm · "+
+      (align.jaw_midpoint_outside_footprint_mm>0?"윤곽 밖 "+align.jaw_midpoint_outside_footprint_mm.toFixed(2)+" mm":"턱 중심이 윤곽 안")
+    : (align?"RGB-D · 턱 표식 가림":"");
+  el("diagnosis").hidden=!(label||prior||motion||geometric);
+  el("diagnosis").textContent=[geometric,motion,label,prior].filter(Boolean).join(" / ");
   const pads=item?.tactile??null;
   el("padPanel").hidden=!pads;
   if(pads)displayPads(pads);
@@ -183,12 +194,13 @@ function displayPads(pads){
   }
   el("padData").replaceChildren(table);
 }
+el("showAlignment").addEventListener("click",()=>{ el("visionScroll").scrollTop=el("visionScroll").scrollHeight; });
 el("showLive").addEventListener("click",()=>{selected=null;render()});
 async function poll(){
   try{const response=await fetch("live.json",{cache:"no-store"});
     if(response.ok){data=await response.json();lastPoll=Date.now();render()}
   }catch(error){el("phase").textContent="상태 다시 불러오는 중"}
-  if(!data?.done)setTimeout(poll,850);
+  if(!data?.done || data.records.some(r=>r.outcome==="inference_error"))setTimeout(poll,850);
 }
 poll();
 </script>

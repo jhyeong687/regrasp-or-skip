@@ -2,15 +2,15 @@
 
 {
   const cases = {
-    offset: {preview: 0, events: ["Jaws closed", "Start lift", "After lift"],
-      caption: "Only the left pad registered contact during closure."},
-    slip: {preview: 0, events: ["Jaws closed", "Start lift", "After slip"],
-      caption: "Both pads registered contact at closure. Their force dropped to zero after the part slipped."},
-    recovered: {preview: 2, events: ["Reclose", "Lift clear", "Stable hold"],
-      caption: "The jaws reopened before descending. After the regrasp, both pads stayed loaded through the lift."}
+    offset: "Only the left pad registered contact during closure.",
+    slip: "Both pads registered contact at closure. Their force dropped to zero after the part slipped.",
+    recovered: "Both pads remained loaded through the lift after the jaws closed again."
   };
   const video = document.querySelector("#touch-video");
   const play = document.querySelector("#touch-play");
+  const restart = document.querySelector("#touch-restart");
+  const caseSelect = document.querySelector("#touch-case");
+  const detailTitle = document.querySelector("#touch-detail-title");
   const seek = document.querySelector("#touch-seek");
   const phase = document.querySelector("#touch-phase");
   const time = document.querySelector("#touch-time");
@@ -18,7 +18,7 @@
   const lift = document.querySelector("#touch-lift");
   const gap = document.querySelector("#touch-gap");
   const download = document.querySelector("#touch-download");
-  const cards = [...document.querySelectorAll("[data-touch-case]")];
+  const comparisons = [...document.querySelectorAll("[data-comparison]")];
   const jumps = [...document.querySelectorAll(".touch-jumps button")];
   const observations = [...document.querySelectorAll("[data-feed]")];
   const padRow = document.querySelector("#touch-pads");
@@ -27,7 +27,7 @@
   const svgNamespace = "http://www.w3.org/2000/svg";
   const sides = ["Left pad", "Right pad"];
   const readings = new Map();
-  let selected;
+  let selectionVersion = 0;
   let activeRecording;
   let currentFrame;
   let padViews = [];
@@ -44,7 +44,7 @@
 
   function recording(id) {
     if (!readings.has(id)) {
-      readings.set(id, fetch(`data/touch-${id}.json?v=pad`).then(response => {
+      readings.set(id, fetch(`data/touch-${id}.json?v=compare`).then(response => {
         if (!response.ok) throw new Error("Recording unavailable");
         return response.json();
       }).catch(error => {
@@ -176,12 +176,14 @@
   function render(second, force = false) {
     if (!activeRecording) return;
     const frame = nearest(activeRecording.frames, second);
+    const max = Number(seek.max);
+    const elapsed = Math.max(0, Math.min(second - activeRecording.videoStart, max));
+    time.textContent = `${elapsed.toFixed(2)} / ${max.toFixed(2)} s`;
+    seek.value = elapsed.toFixed(2);
+    seek.setAttribute("aria-valuetext", `${elapsed.toFixed(2)} of ${max.toFixed(2)} seconds in this clip`);
     if (!force && frame === currentFrame) return;
     currentFrame = frame;
-    phase.textContent = frame.phase;
-    time.textContent = `${frame.s.toFixed(2)} s`;
-    seek.value = (frame.s - activeRecording.videoStart).toFixed(2);
-    seek.setAttribute("aria-valuetext", `${frame.s.toFixed(2)} seconds in simulation`);
+    phase.textContent = `${frame.phase} · Sim. ${frame.s.toFixed(2)} s`;
     lift.textContent = `${measure(frame.lift, 1)} mm`;
     gap.textContent = `${measure(frame.gap, 1)} mm`;
     padViews.forEach((pad, side) => {
@@ -189,7 +191,9 @@
       const displayed = frame[mapMode.value][side];
       pad.total.textContent = `${measure(Math.max(0, totals[side][2]))} N`;
       pad.axes.forEach((axis, index) => axis.textContent = measure(totals[side][index]));
-      pad.active.textContent = `${displayed.filter(entry => entry[3] >= .02).length} of 77 active`;
+      pad.active.textContent = displayed.some(entry => entry[3] > .004)
+        ? `${displayed.filter(entry => entry[3] >= .02).length} of 77 active`
+        : "No contact";
       paintMap(pad.map, displayed);
     });
     const event = activeRecording.jumps.findIndex(value => Math.abs(frame.s - value) < .02);
@@ -210,71 +214,86 @@
     render(bounded, true);
   }
 
-  function highlightCard(card, data) {
-    const id = card.dataset.touchCase;
-    const frame = nearest(data.frames, data.jumps[cases[id].preview]);
-    const mini = document.createElement("span");
-    mini.className = "case-forces";
-    const maps = document.createElement("span");
-    maps.className = "mini-maps";
-    for (const side of [0,1]) paintMap(makeMap(maps, data.coords, side, false), frame.estimate[side]);
-    const readout = document.createElement("small");
-    readout.textContent = `Fz · L ${measure(frame.totals[0][2])} / R ${measure(frame.totals[1][2])} N`;
-    mini.append(maps, readout);
-    card.append(mini);
+  function drawComparison(card, data) {
+    for (const stage of card.querySelectorAll("[data-compare-stage]")) {
+      const second = data.jumps[Number(stage.dataset.compareStage)];
+      const frame = nearest(data.frames, second);
+      const group = stage.querySelector(".comparison-pads");
+      for (const [side, name] of sides.entries()) {
+        const panel = document.createElement("figure");
+        const label = document.createElement("figcaption");
+        label.innerHTML = `<span>${name}</span><strong>${measure(frame.totals[side][2])} N</strong>`;
+        panel.append(label);
+        paintMap(makeMap(panel, data.coords, side, false), frame.estimate[side]);
+        group.append(panel);
+      }
+    }
   }
 
   async function selectCase(id) {
-    selected = id;
+    const version = ++selectionVersion;
     video.pause();
     pendingTime = undefined;
     activeRecording = undefined;
     currentFrame = undefined;
     focusedPoint = undefined;
     pointOutput.hidden = true;
-    play.disabled = seek.disabled = true;
-    for (const jump of jumps) jump.disabled = true;
+    play.disabled = restart.disabled = seek.disabled = true;
+    seek.value = 0;
+    time.textContent = "0.00 s";
+    for (const jump of jumps) {
+      jump.disabled = true;
+      jump.setAttribute("aria-pressed", "false");
+    }
     phase.textContent = "Loading recording";
-    caption.textContent = cases[id].caption;
-    for (const card of cards) card.setAttribute("aria-pressed", String(card.dataset.touchCase === id));
-
+    caption.textContent = cases[id];
+    caseSelect.value = id;
+    padRow.setAttribute("aria-busy", "true");
     try {
       const data = await recording(id);
-      if (selected !== id) return;
+      if (version !== selectionVersion) return;
       activeRecording = data;
       padRow.replaceChildren();
       padViews = sides.map((_, i) => makePad(i, data.coords));
+      padRow.removeAttribute("aria-busy");
       seek.max = (data.frames.at(-1).s - data.videoStart).toFixed(2);
-      for (const [i, jump] of jumps.entries()) {
-        jump.textContent = cases[id].events[i];
-        jump.disabled = false;
-      }
-      play.disabled = seek.disabled = false;
+      for (const jump of jumps) jump.disabled = false;
+      play.disabled = restart.disabled = seek.disabled = false;
       for (const link of observations) {
         const url = `media/observations/${id}-${link.dataset.feed}.png`;
         link.href = url;
         link.querySelector("img").src = url;
       }
-      download.href = `data/touch-${id}.json?v=pad`;
+      download.href = `data/touch-${id}.json?v=compare`;
       download.download = `touch-${id}.json`;
-      const url = `media/touch-${id}.mp4?v=hd`;
+      const url = `media/touch-${id}.mp4?v=compare`;
       if (video.getAttribute("src") !== url) {
-        video.poster = `media/touch-${id}.jpg?v=hd`;
+        video.poster = `media/touch-${id}.jpg?v=compare`;
         video.src = url;
+        video.load();
       }
-      jumpTo(data.jumps[cases[id].preview]);
+      jumpTo(data.videoStart);
     } catch {
-      if (selected === id) phase.textContent = "Recording unavailable. Select the trial to retry.";
+      if (version === selectionVersion) {
+        padRow.replaceChildren();
+        padRow.removeAttribute("aria-busy");
+        phase.textContent = "Recording unavailable. Select a trial to try again.";
+      }
     }
   }
 
-  for (const card of cards) {
-    const id = card.dataset.touchCase;
-    recording(id).then(data => highlightCard(card, data)).catch(() => {});
-    card.addEventListener("click", () => {
-      if (id !== selected || !activeRecording) selectCase(id);
+  for (const card of comparisons) {
+    const id = card.dataset.comparison;
+    recording(id).then(data => drawComparison(card, data)).catch(() => {
+      for (const panel of card.querySelectorAll(".comparison-pads")) panel.textContent = "Force recording unavailable.";
+    });
+    card.querySelector("[data-touch-case]").addEventListener("click", () => {
+      selectCase(id);
+      detailTitle.focus({preventScroll: true});
+      document.querySelector("#touch-detail").scrollIntoView({block: "start"});
     });
   }
+  caseSelect.addEventListener("change", () => selectCase(caseSelect.value));
   for (const [index, button] of jumps.entries()) {
     button.addEventListener("click", () => jumpTo(activeRecording.jumps[index]));
   }
@@ -282,13 +301,20 @@
     if (currentFrame) render(currentFrame.s, true);
   });
   seek.addEventListener("input", () => jumpTo(activeRecording.videoStart + Number(seek.value)));
+  restart.addEventListener("click", () => jumpTo(activeRecording.videoStart));
   play.addEventListener("click", () => {
     if (!video.paused) {
       video.pause();
       return;
     }
-    if (video.currentTime >= video.duration - .05) video.currentTime = 0;
-    video.play().catch(() => { phase.textContent = "Replay unavailable. Select the trial to retry."; });
+    if (video.ended) video.currentTime = 0;
+    const version = selectionVersion;
+    video.play().catch(error => {
+      if (error.name !== "AbortError" && version === selectionVersion) phase.textContent = "The recording could not be played.";
+    });
+  });
+  video.addEventListener("error", () => {
+    if (activeRecording) phase.textContent = "The recording could not be played.";
   });
   video.addEventListener("loadedmetadata", () => {
     if (pendingTime === undefined) return;
@@ -315,9 +341,10 @@
     }
   }
   video.addEventListener("seeked", updateFromVideo);
+  video.addEventListener("ended", updateFromVideo);
   if (!video.requestVideoFrameCallback) video.addEventListener("timeupdate", updateFromVideo);
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) video.pause();
-  }).observe(document.querySelector("#touch"));
+  }).observe(document.querySelector(".touch-layout"));
   selectCase("offset");
 }

@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#100e15">
   <meta name="description" content="Paired MuJoCo experiments on tactile grasp recovery with an SO-ARM101 and two PaXini pads.">
-  <meta property="og:title" content="Recovering a missed grasp · Regrasp or Skip?">
+  <meta property="og:title" content="Tactile Grasp Recovery · Regrasp or Skip?">
   <meta property="og:description" content="30 matched pairs across five levels of camera occlusion.">
   <meta property="og:image" content="https://jhyeong687.github.io/tactile-grasp-agent/briefing/media/start-here.jpg?rev=hd">
-  <title>Recovering a missed grasp · Regrasp or Skip?</title>
-  <link rel="stylesheet" href="brief.css?v=pad">
+  <title>Tactile Grasp Recovery · Regrasp or Skip?</title>
+  <link rel="stylesheet" href="brief.css?v=compare">
   <script src="brief.js?v=hd" defer></script>
-  <script src="touch.js?v=pad" defer></script>
+  <script src="touch.js?v=compare" defer></script>
 </head>
 <body>
 <a class="skip" href="#opening">Skip to content</a>
@@ -19,7 +19,7 @@
   <div class="mast-inner">
     <a class="brand" href="../">Regrasp or Skip?</a>
     <nav aria-label="Page sections">
-      <a href="#touch">Tactile replay</a><a href="#protocol">Method</a><a href="#graded">Results</a><a href="#library">Video archive</a>
+      <a href="#touch">Tactile comparison</a><a href="#protocol">Method</a><a href="#graded">Results</a><a href="#library">Video archive</a>
     </nav>
     <button class="button button-small" id="fullscreen" type="button" hidden>Full screen</button>
   </div>
@@ -30,11 +30,11 @@
 <section class="slide hero" id="opening" data-title="Overview">
   <div class="frame hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">SO-ARM101 R7 · Research in progress</p>
-      <h1>Recovering a<br><em>missed grasp.</em></h1>
+      <p class="project-path"><a href="../">Regrasp or Skip?</a><span aria-hidden="true">/</span><span>Experiment briefing</span></p>
+      <h1>Tactile grasp<br><em>recovery</em></h1>
       <p class="lead">A short lift can fail because the jaws missed the center or because the part slipped. We tested whether tactile feedback helps the robot decide how to regrasp when its cameras lose sight of the contact.</p>
       <div class="hero-actions">
-        <a class="button primary" href="#touch">Explore the tactile replay</a>
+        <a class="button primary" href="#touch">Compare the tactile maps</a>
         <a class="button" href="#graded">See the results</a>
       </div>
     </div>
@@ -50,39 +50,66 @@
   </div>
 </section>
 
-<section class="slide" id="touch" data-title="Tactile replay">
+<section class="slide" id="touch" data-title="Tactile comparison">
   <div class="frame">
     <p class="eyebrow">SO-ARM101 · Two 77-point PaXini pads</p>
-    <h2>Three grasps, three contact patterns</h2>
-    <p class="lede">Compare the pad maps below, then replay a case to see how contact changes through the lift.</p>
-    <div class="case-overview" aria-label="Select a recorded grasp">
-      <button type="button" data-touch-case="offset" aria-pressed="true">
-        <img src="media/touch-offset.jpg?v=hd" alt="" width="1280" height="720" loading="lazy">
-        <span><b>Off-center grasp</b><small>Trial 15 · One pad at closure</small></span>
-      </button>
-      <button type="button" data-touch-case="slip" aria-pressed="false">
-        <img src="media/touch-slip.jpg?v=hd" alt="" width="1280" height="720" loading="lazy">
-        <span><b>Low-friction slip</b><small>Trial 27 · Both pads lose contact</small></span>
-      </button>
-      <button type="button" data-touch-case="recovered" aria-pressed="false">
-        <img src="media/touch-recovered.jpg?v=hd" alt="" width="1280" height="720" loading="lazy">
-        <span><b>Successful regrasp</b><small>Trial 28 · Both pads hold the part</small></span>
-      </button>
+    <h2>Contact at closure and during lift</h2>
+    <p class="lede">Trials 15 and 27 show the test grasp. Trial 28 shows the successful retry. All maps share the same force scale.</p>
+    <div class="case-overview" id="touch-comparison" aria-label="Three cases compared at closure and during lift">
+      <article class="plate comparison-case" data-comparison="offset">
+        <header><h3>Off-center grasp</h3><p>Trial 15 · Test grasp</p></header>
+        <div class="comparison-stages">
+          <section data-compare-stage="0"><h4>Jaws closed</h4><p>One pad touches</p><div class="comparison-pads"></div></section>
+          <section data-compare-stage="1"><h4>During lift</h4><p>Contact lost</p><div class="comparison-pads"></div></section>
+        </div>
+        <button class="button" type="button" data-touch-case="offset">Replay Trial 15</button>
+      </article>
+      <article class="plate comparison-case" data-comparison="slip">
+        <header><h3>Low-friction slip</h3><p>Trial 27 · Test grasp</p></header>
+        <div class="comparison-stages">
+          <section data-compare-stage="0"><h4>Jaws closed</h4><p>Both pads in contact</p><div class="comparison-pads"></div></section>
+          <section data-compare-stage="1"><h4>During lift</h4><p>Both pads lose contact</p><div class="comparison-pads"></div></section>
+        </div>
+        <button class="button" type="button" data-touch-case="slip">Replay Trial 27</button>
+      </article>
+      <article class="plate comparison-case" data-comparison="recovered">
+        <header><h3>Successful regrasp</h3><p>Trial 28 · Retry</p></header>
+        <div class="comparison-stages">
+          <section data-compare-stage="0"><h4>Jaws closed</h4><p>Both pads engage</p><div class="comparison-pads"></div></section>
+          <section data-compare-stage="1"><h4>During lift</h4><p>Both pads stay loaded</p><div class="comparison-pads"></div></section>
+        </div>
+        <button class="button" type="button" data-touch-case="recovered">Replay Trial 28</button>
+      </article>
+    </div>
+    <p class="comparison-legend"><span>Colored dots show compression.</span><span>Cyan arrows show surface force.</span><span>Gray dots indicate no mapped contact.</span></p>
+    <div class="replay-intro" id="touch-detail">
+      <h3 id="touch-detail-title" tabindex="-1">Synchronized replay</h3>
+      <label>Case
+        <select id="touch-case" aria-label="Replay case">
+          <option value="offset">15 · Off-center grasp</option>
+          <option value="slip">27 · Low-friction slip</option>
+          <option value="recovered">28 · Successful regrasp</option>
+        </select>
+      </label>
     </div>
     <div class="replay-toolbar" aria-label="Replay controls">
       <button class="button primary" id="touch-play" type="button" disabled>Play</button>
+      <button class="button" id="touch-restart" type="button" disabled>Restart</button>
       <div class="touch-jumps" aria-label="Jump to an event">
         <button type="button" disabled>Jaws closed</button>
-        <button type="button" disabled>Start lift</button>
+        <button type="button" disabled>During lift</button>
         <button type="button" disabled>After lift</button>
       </div>
-      <label class="seek-control"><span class="visually-hidden">Simulation timeline</span><input id="touch-seek" type="range" disabled min="0" max="4" step=".04" value="0"></label>
-      <output id="touch-time">0.24 s</output>
+      <div class="clip-clock">
+        <label for="touch-seek">Clip time</label>
+        <input id="touch-seek" type="range" disabled min="0" max="4" step=".08" value="0">
+        <output id="touch-time" for="touch-seek">0.00 s</output>
+      </div>
     </div>
     <div class="touch-layout">
       <figure class="plate replay-scene">
         <div class="replay-head"><h3>Robot view</h3><span id="touch-phase">Loading recording</span></div>
-        <video id="touch-video" src="media/touch-offset.mp4?v=hd" poster="media/touch-offset.jpg?v=hd" muted playsinline loop preload="metadata" aria-label="Full-arm replay synchronized with both tactile pads"></video>
+        <video id="touch-video" width="1280" height="720" src="media/touch-offset.mp4?v=compare" poster="media/touch-offset.jpg?v=compare" muted playsinline preload="auto" aria-label="Full-arm replay synchronized with both tactile pads"></video>
         <div class="scene-metrics">
           <div><output id="touch-lift">—</output><span>Object rise</span></div>
           <div><output id="touch-gap">—</output><span>Jaw gap</span></div>
@@ -96,7 +123,7 @@
               <option value="estimate">Contact estimate</option>
               <option value="active">Contact points</option>
             </select>
-            <a id="touch-download" class="button button-small" href="data/touch-offset.json?v=pad" download="touch-offset.json">Sensor JSON</a>
+            <a id="touch-download" class="button button-small" href="data/touch-offset.json?v=compare" download="touch-offset.json">Sensor JSON</a>
           </div></div>
         <div class="touch-pads" id="touch-pads"></div>
         <p class="touch-legend"><span class="normal">● Compression <var>Fz</var></span><span class="shear">↗ Surface force <var>Fx</var> / <var>Fy</var></span><span>⊕ Center of pressure</span></p>
@@ -112,7 +139,7 @@
         <a class="plate camera-feed" data-feed="pre_wrist_depth_preview" href="media/observations/offset-pre_wrist_depth_preview.png"><img alt="Wrist depth preview before the probe" width="384" height="216" loading="lazy"><span>Wrist depth <small>Before grasp</small></span></a>
       </div>
     </section>
-    <noscript><p><a href="media/touch-offset.mp4?v=hd">Download the Trial 15 replay</a></p></noscript>
+    <noscript><p><a href="media/touch-offset.mp4?v=compare">Download the Trial 15 replay</a></p></noscript>
   </div>
 </section>
 
@@ -131,11 +158,11 @@
     <div class="cause-grid" id="problem">
       <article class="plate cause">
         <div class="cause-copy"><h3>Position correction</h3><p>Recenter the jaws when the probe misses or makes contact on one side.</p></div>
-        <video src="media/missed-edge.mp4?v=hd" poster="media/missed-edge.jpg?v=hd" muted playsinline loop controls preload="none" aria-label="The jaws brush one side of the workpiece during an off-center probe"></video>
+        <video width="1280" height="720" src="media/missed-edge.mp4?v=hd" poster="media/missed-edge.jpg?v=hd" muted playsinline loop controls preload="metadata" aria-label="The jaws brush one side of the workpiece during an off-center probe"></video>
       </article>
       <article class="plate cause">
         <div class="cause-copy"><h3>Grip reinforcement</h3><p>Close the jaws further at the same location when the part slips during the lift.</p></div>
-        <video src="media/slip-proof.mp4?v=hd" poster="media/slip-proof.jpg?v=hd" muted playsinline loop controls preload="none" aria-label="The low-friction workpiece slips during the short lift"></video>
+        <video width="1280" height="720" src="media/slip-proof.mp4?v=hd" poster="media/slip-proof.jpg?v=hd" muted playsinline loop controls preload="metadata" aria-label="The low-friction workpiece slips during the short lift"></video>
       </article>
     </div>
   </div>

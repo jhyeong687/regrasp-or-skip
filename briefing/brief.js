@@ -1,7 +1,7 @@
 "use strict";
 
 const slides = [...document.querySelectorAll(".slide")];
-const videos = [...document.querySelectorAll("video")];
+const videos = [...document.querySelectorAll("video:not(#touch-video)")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const prevButton = document.querySelector("#previous");
 const nextButton = document.querySelector("#next");
@@ -22,7 +22,7 @@ function visibleVideo(video) {
 function updatePlayback() {
   for (const video of videos) {
     const visible = visibleVideo(video);
-    if (visible && !reducedMotion.matches && !autoVisible.get(video) && !video.dataset.inspecting) {
+    if (visible && !reducedMotion.matches && !autoVisible.get(video)) {
       video.muted = true;
       video.play().catch(() => {});
     }
@@ -89,23 +89,23 @@ if (document.fullscreenEnabled && document.documentElement.requestFullscreen) {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await document.documentElement.requestFullscreen();
     } catch (error) {
-      fullscreen.title = "이 브라우저에서 전체 화면을 열 수 없습니다.";
+      fullscreen.title = "Full screen is unavailable in this browser.";
     }
   });
   document.addEventListener("fullscreenchange", () => {
-    fullscreen.textContent = document.fullscreenElement ? "전체 화면 닫기" : "전체 화면";
+    fullscreen.textContent = document.fullscreenElement ? "Exit full screen" : "Full screen";
     queueUpdate();
   });
 }
 
 const stages = {
-  clear: "추가 가림 없음", marker_occlusion: "정면 턱 표식 가림", one_side: "한쪽 RGB",
-  slit: "좁은 틈", full_occlusion: "양쪽 측면 RGB 가림"
+  clear: "Clear", marker_occlusion: "Front blocked", one_side: "One side",
+  slit: "Narrow slit", full_occlusion: "All probe views blocked"
 };
 const shapes = {
-  beveled_block: "모서리 절삭 블록", rounded_rectangle: "둥근 직사각기둥", tapered_block: "테이퍼 블록"
+  beveled_block: "Beveled block", rounded_rectangle: "Rounded rectangular prism", tapered_block: "Tapered block"
 };
-const actions = {position_correction: "위치 보정", grip_reinforcement: "그립 보강"};
+const actions = {position_correction: "Position correction", grip_reinforcement: "Grip reinforcement"};
 const media = document.querySelector("#library-video");
 const caption = document.querySelector("#clip-detail");
 const download = document.querySelector("#clip-download");
@@ -117,25 +117,26 @@ let allClips = [];
 let selectedTrial = 15;
 
 function resultText(row) {
-  if (row.tactile_success && row.control_success) return "둘 다 안착";
-  if (row.tactile_success) return "촉각 제공만 안착";
-  if (row.control_success) return "촉각 제외만 안착";
-  return "양쪽 모두 실패";
+  if (row.tactile_success && row.control_success) return "Both placed";
+  if (row.tactile_success) return "Placed with PaXini only";
+  if (row.control_success) return "Placed without PaXini only";
+  return "Neither placed";
 }
 
 function selectClip(row, userAction = false) {
   selectedTrial = row.trial;
   const id = String(row.trial).padStart(2, "0");
-  const label = `${id}번 · ${stages[row.condition]}`;
-  const context = `${shapes[row.shape]} · ${row.fault === "off_center" ? "편심" : "저마찰"} · ${resultText(row)}`;
+  const label = `Trial ${id} · ${stages[row.condition]}`;
+  const context = `${shapes[row.shape]} · ${row.fault === "off_center" ? "Off-center" : "Low friction"} · ${resultText(row)}`;
   caption.querySelector("strong").textContent = label;
   caption.querySelector("span").textContent = `${context} · ${actions[row.tactile_action]} / ${actions[row.control_action]}`;
-  if (media.getAttribute("src") !== row.file) {
-    media.removeAttribute("poster");
-    media.src = row.file;
+  const src = row.file + "?v=hd";
+  if (media.getAttribute("src") !== src) {
+    media.poster = row.file.replace(/\.mp4$/, ".jpg?v=hd");
+    media.src = src;
     autoVisible.delete(media);
   }
-  download.href = row.file;
+  download.href = src;
   for (const child of clipList.querySelectorAll("button")) {
     child.setAttribute("aria-pressed", String(Number(child.dataset.trial) === selectedTrial));
   }
@@ -151,7 +152,7 @@ function updateLibrary() {
       (outcomeFilter.value === "both" && row.tactile_success && row.control_success);
     return stageMatches && winnerMatches;
   });
-  clipCount.textContent = result.length ? `${result.length}쌍` : "이 조건의 영상이 없습니다.";
+  clipCount.textContent = result.length ? `${result.length} pairs` : "No pairs match these filters.";
   const selected = result.find(row => row.trial === selectedTrial) || result[0];
   clipList.replaceChildren(...result.map(row => {
     const item = document.createElement("button");
@@ -160,7 +161,7 @@ function updateLibrary() {
     const label = document.createElement("span");
     label.textContent = `${String(row.trial).padStart(2, "0")} · ${shapes[row.shape]} · ${stages[row.condition]}`;
     const detail = document.createElement("small");
-    detail.textContent = `${resultText(row)} · ${row.tactile_wall_s.toFixed(2)}초 / ${row.control_wall_s.toFixed(2)}초`;
+    detail.textContent = `${resultText(row)} · ${row.tactile_wall_s.toFixed(2)} s / ${row.control_wall_s.toFixed(2)} s`;
     item.append(label, detail);
     item.addEventListener("click", () => selectClip(row, true));
     return item;
@@ -176,6 +177,6 @@ fetch("data/clips.json")
     return response.json();
   })
   .then(rows => { allClips = rows; updateLibrary(); })
-  .catch(() => { clipCount.textContent = "영상 목록을 불러오지 못했습니다. 전체 목록 CSV에서 파일을 확인할 수 있습니다."; });
+  .catch(() => { clipCount.textContent = "The video index is unavailable. The trial CSV lists the video paths."; });
 
 queueUpdate();

@@ -2,6 +2,8 @@
 
 **A PaXini-equipped SO-ARM101 testbed for studying when a robot should lift, regrasp, or skip after contact**
 
+**[11.26 팀 실험 브리핑](https://jhyeong687.github.io/tactile-grasp-agent/briefing/)** · 편심·저마찰부터 가림 강도별 30쌍 비교까지 · 자동 재생 영상과 결과 CSV
+
 [![Synchronized MuJoCo dashboard replay with a fixed full-arm view, PaXini force maps, and four camera feeds](media/mujoco-dashboard-timeline.webp)](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4)
 
 [Watch the full-arm replay](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-dashboard-synchronized-replay.mp4) · **[Download the reproduction kit](https://github.com/jhyeong687/tactile-grasp-agent/releases/download/v0.2.2/so101-tactile-recovery-kit.zip)** · [Pipeline and roadmap](#recovery-pipeline-and-roadmap) · [한국어 연구 기록](docs/research-notes.ko.md)

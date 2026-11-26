@@ -258,6 +258,8 @@
     let views;
     let shown = -1;
     let callback;
+    let inView = false;
+    let allowAutoplay = true;
     const videoFrameCallback = typeof movie.requestVideoFrameCallback === "function";
 
     function show(index) {
@@ -289,6 +291,7 @@
     }
 
     function jump(index) {
+      allowAutoplay = false;
       movie.pause();
       const position = index / timeline.fps;
       if (Math.abs(movie.currentTime - position) < .001 && !movie.seeking) show(index);
@@ -316,11 +319,26 @@
       movie.loop = repeat.checked;
     }
 
+    function startPlayback(automatic = false) {
+      if (movie.ended || shown === Number(slider.max)) movie.currentTime = 0;
+      movie.play().catch(error => {
+        if (error.name === "AbortError" || (automatic && error.name === "NotAllowedError")) return;
+        showError();
+      });
+    }
+
+    function autoplayWhenVisible() {
+      if (inView && allowAutoplay && !reducedMotion.matches && !playAll.disabled && movie.paused) {
+        startPlayback(true);
+      }
+    }
+
     function enableControls() {
       if (!timeline || movie.readyState < HTMLMediaElement.HAVE_METADATA) return;
       applySpeed();
       applyRepeat();
       for (const control of controls) control.disabled = false;
+      autoplayWhenVisible();
     }
 
     function showError() {
@@ -354,6 +372,7 @@
     movie.addEventListener("error", showError);
     movie.addEventListener("seeked", updateFromClock);
     movie.addEventListener("ended", () => {
+      allowAutoplay = false;
       updateFromClock();
       playAll.textContent = "Replay all";
     });
@@ -369,21 +388,29 @@
       else cancelAnimationFrame(callback);
       callback = undefined;
     });
-    video.addEventListener("play", () => movie.pause());
+    video.addEventListener("play", () => {
+      allowAutoplay = false;
+      movie.pause();
+    });
     for (const marker of markers) marker.addEventListener("click", () => jump(timeline.milestones[marker.dataset.compareJump]));
     slider.addEventListener("input", () => jump(Number(slider.value)));
     speed.addEventListener("change", applySpeed);
     repeat.addEventListener("change", applyRepeat);
     playAll.addEventListener("click", () => {
-      if (!movie.paused) movie.pause();
-      else {
-        if (movie.ended || shown === Number(slider.max)) movie.currentTime = 0;
-        movie.play().catch(error => { if (error.name !== "AbortError") showError(); });
-      }
+      allowAutoplay = movie.paused;
+      if (allowAutoplay) startPlayback();
+      else movie.pause();
     });
+    reducedMotion.addEventListener("change", () => {
+      if (reducedMotion.matches) movie.pause();
+      else autoplayWhenVisible();
+    });
+    const visibleFraction = .62;
     new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) movie.pause();
-    }).observe(document.querySelector(".comparison-live"));
+      inView = entry.intersectionRatio >= visibleFraction;
+      if (inView) autoplayWhenVisible();
+      else movie.pause();
+    }, {threshold: visibleFraction}).observe(movie);
   }
 
   async function selectCase(id) {

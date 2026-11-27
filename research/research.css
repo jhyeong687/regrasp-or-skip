@@ -15,8 +15,8 @@ body { margin: 0; background: var(--paper); color: var(--ink); }
 a { color: var(--accent); text-underline-offset: .22em; }
 a:hover { color: #e0ccff; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-.skip { position: fixed; top: .8rem; left: .8rem; z-index: 2; padding: .6rem 1rem; background: var(--paper); transform: translateY(-200%); }
-.skip:focus { transform: none; }
+.skip { position: fixed; top: .8rem; left: .8rem; z-index: 2; padding: .6rem 1rem; background: var(--paper); clip-path: inset(50%); }
+.skip:focus { clip-path: none; }
 img, video { display: block; width: 100%; height: auto; }
 figure, dl, dd, p { margin: 0; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
@@ -64,7 +64,11 @@ figcaption { color: var(--muted); font-size: .9rem; }
 .pair, .papers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .video-panel, .paper-panel, .table-panel, .detail, .evaluation-note { border: 1px solid var(--line); border-radius: .66rem; background: var(--panel); overflow: hidden; }
 .video-panel video { aspect-ratio: 16 / 9; background: #14121a; }
+.timed-replay video { aspect-ratio: 32 / 9; }
 .video-panel figcaption strong { display: block; color: var(--ink); font-size: 1rem; }
+.follow-up-subsection { margin-top: 1.6rem; }
+.follow-up-subsection h3 { margin-bottom: .45rem; }
+#follow-up .pair img { aspect-ratio: 4 / 3; }
 .table-panel { overflow-x: auto; margin-block: 1.55rem; }
 table { border-collapse: collapse; width: 100%; min-width: 33rem; font-variant-numeric: tabular-nums; }
 caption { padding: .7rem .85rem; text-align: left; color: var(--muted); }
@@ -86,6 +90,7 @@ tbody th { font-weight: 560; }
 .evaluation-note { margin-top: 1rem; padding: 1rem; }
 .evaluation-note p, .paper-panel p:not(.kicker) { color: var(--muted); margin-top: .45rem; }
 .paper-panel { padding: 1.1rem; display: flex; flex-direction: column; align-items: start; }
+.revised-paper { grid-column: 1 / -1; border-color: #694f83; }
 .paper-panel h3 { margin-top: .45rem; }
 .paper-panel .actions { margin-top: auto; padding-top: 1rem; }
 .downloads { list-style: none; padding: 0; margin: 1.35rem 0 0; }
@@ -108,5 +113,7 @@ tbody th { font-weight: 560; }
   .split-stat p { font-size: .9rem; }
   .chart img { padding: .25rem; }
   th, td { padding: .55rem .65rem; }
+  .follow-up-table table { min-width: 0; }
+  .follow-up-table th, .follow-up-table td { padding-inline: .4rem; font-size: .84rem; }
   .footer p { width: 100%; }
 }

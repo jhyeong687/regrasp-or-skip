@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#100e15">
-  <meta name="description" content="Matched SO-ARM101 regrasp experiments in MuJoCo with PaXini tactile feedback, research manuscripts, and reproducible data.">
+  <meta name="description" content="Matched SO-ARM101 regrasp experiments in MuJoCo. The revised study compares camera timing and tactile feedback across 288 additional conditions.">
   <meta property="og:title" content="When Should a Gripper Recenter or Tighten?">
-  <meta property="og:description" content="Tactile grasp recovery on the SO-ARM101. Matched simulations, video replays, and manuscripts.">
+  <meta property="og:description" content="Tactile grasp recovery on the SO-ARM101. Revised paper, synchronized replays, and data from 288 additional simulation conditions.">
   <meta property="og:image" content="https://jhyeong687.github.io/tactile-grasp-agent/research/media/workspace.png">
   <title>Regrasp Study · Regrasp or Skip?</title>
-  <link rel="stylesheet" href="research.css">
+  <link rel="stylesheet" href="research.css?v=2">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -18,7 +18,7 @@
       <a href="../" class="brand">Regrasp or Skip?</a>
       <nav aria-label="Site navigation">
         <a href="../briefing/">Experiment briefing</a>
-        <a href="#results">Results</a>
+        <a href="#follow-up">Follow-up results</a>
         <a href="#papers">Papers &amp; data</a>
       </nav>
     </div>
@@ -32,7 +32,8 @@
         <p class="intro">When a grasp slips, the SO-ARM101 can reposition its jaws, close them further, or do both. We replay those choices from the same MuJoCo state to see which ones put the part in the tray.</p>
         <p class="byline">Lee Jin Hyeong <span aria-hidden="true">·</span> November 2026</p>
         <div class="actions">
-          <a class="button primary" href="papers/regrasp-study-en.pdf">Read the paper</a>
+          <a class="button primary" href="papers/regrasp-study-revised-en.pdf">Read the revised paper</a>
+          <a class="text-link" href="papers/regrasp-study-en.pdf">Original paper</a>
         </div>
       </div>
       <figure class="hero-image">
@@ -40,10 +41,79 @@
         <figcaption>Simulated SO-ARM101 workstation with two PaXini-layout pads and a tray for scoring placement.</figcaption>
       </figure>
       <dl class="study-counts">
-        <div><dt>Controlled target errors</dt><dd>144 <span>conditions</span></dd></div>
-        <div><dt>New object shapes</dt><dd>81 <span>conditions</span></dd></div>
-        <div><dt>Objects moved after imaging</dt><dd>72 <span>conditions</span></dd></div>
+        <div><dt>Original experiments</dt><dd>297 <span>conditions</span></dd></div>
+        <div><dt>Follow-up experiments</dt><dd>288 <span>conditions</span></dd></div>
+        <div><dt>Follow-up object poses</dt><dd>36 <span>layouts</span></dd></div>
       </dl>
+    </section>
+
+    <section class="wrap chapter" id="follow-up" aria-labelledby="follow-up-title">
+      <div class="section-head">
+        <p class="kicker">Follow-up experiments</p>
+        <h2 id="follow-up-title">Look again after the jaws retract</h2>
+        <p>After the first wrist image, the part can move and rotate. In 216 matched MuJoCo conditions, we kept the recovery motion and closing command fixed and changed when the same RGB-D camera supplied the target. A further 72 conditions tested different ways to update the grasp angle.</p>
+      </div>
+      <div class="split-stat">
+        <div><span>Final placements with the same combined repair</span><strong>184/216 <em>→</em> 207/216</strong><p>26 placements recovered and three lost. Each branch used 12.58 s of simulated recovery motion.</p></div>
+        <div><span>Median position error at retraction</span><strong>10.73 <em>→</em> 0.99 mm</strong><p>Both coordinates were scored against the object center at the same point in the retry.</p></div>
+      </div>
+      <figure class="video-panel timed-replay">
+        <video src="media/reacquisition-comparison.mp4" poster="media/reacquisition-comparison.jpg" controls playsinline muted preload="none" width="1920" height="540" aria-label="Synchronized trial 42. The test-lift camera target fails on the left and the post-retraction target succeeds on the right."></video>
+        <figcaption><strong>Same trial, same motion, different camera timing</strong><span>Trial 42. Left uses the estimate from the test-lift hold. Right updates the target once the jaws have retracted. Both replays use the same simulation clock.</span></figcaption>
+      </figure>
+      <div class="pair">
+        <figure class="chart">
+          <a href="figures/image_timing.svg" aria-label="Open full-size RGB-D observations">
+            <img src="figures/image_timing.svg" loading="lazy" alt="Trial 42 from the same RGB-D camera before and after retraction, with point clouds and the estimated and actual centers.">
+          </a>
+          <figcaption>Retracting exposes more of the part. The lower panels show which surface points contribute to each estimate.</figcaption>
+        </figure>
+        <figure class="chart">
+          <a href="figures/timing_by_shift.svg" aria-label="Open full-size results by shift magnitude">
+            <img src="figures/timing_by_shift.svg" loading="lazy" alt="At 0, 12 and 24 mm of physical shift, later capture lowers median localization error and increases successful placements.">
+          </a>
+          <figcaption>Each shift magnitude includes 72 conditions, crossed with friction and rotation.</figcaption>
+        </figure>
+      </div>
+
+      <div class="section-head follow-up-subsection">
+        <h3>What touch adds to action selection</h3>
+        <p>Adding tactile features to the same learned decision rule gained nine placements and lost one. When the two policies were assigned the same number of each action across the test batch, touch still gained 10 net placements. The batch comparison uses all observations together.</p>
+      </div>
+      <div class="table-panel follow-up-table">
+        <table>
+          <caption>Recovery results with post-retraction coordinates</caption>
+          <thead><tr><th scope="col">Selector</th><th scope="col">Placed</th><th scope="col">Mean motion</th><th scope="col">Mean peak load</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Learned vision and encoders</th><td>196 / 216</td><td>11.63 s</td><td>6.59 N</td></tr>
+            <tr class="focus-row"><th scope="row">Learned vision, encoders and touch</th><td>204 / 216</td><td>12.36 s</td><td>7.01 N</td></tr>
+            <tr><th scope="row">Always recenter and reinforce</th><td>207 / 216</td><td>12.58 s</td><td>7.70 N</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="detail">
+        <summary>Inspect what still failed and what recovered</summary>
+        <figure class="chart">
+          <a href="figures/failure_tactile.svg" aria-label="Open full-size tactile maps and force traces for two failures">
+            <img src="figures/failure_tactile.svg" loading="lazy" alt="Two beveled-block trials. Trial 34 holds the object at around 8 newtons per pad but loses it in transfer. Trial 36 has no pad load after the retry lift.">
+          </a>
+          <figcaption>Trials 34 and 36 share a 24 mm shift and low friction. At the end of the retry lift, trial 34 still holds the part and trial 36 has already lost contact. The 77-point maps and force traces show the difference. A bounded second retry recovered two placements (207 → 209). Tactile and jaw-gap checks triggered it on the same eight trials.</figcaption>
+        </figure>
+        <figure class="chart">
+          <a href="figures/orientation.svg" aria-label="Open full-size grasp-angle results">
+            <img src="figures/orientation.svg" loading="lazy" alt="Across 72 new placements, matching depth-observed widths reduces median grasp-angle error from 16.0 to 4.2 degrees and raises placement from 64 to 66.">
+          </a>
+          <figcaption>On 72 further 24 mm shifts, comparing object widths in two depth views reduced median angular error from 16.0° to 4.2°. Placements rose from 64 to 66. The true angle is a simulator-only reference.</figcaption>
+        </figure>
+      </details>
+      <aside class="evaluation-note">
+        <h3>GPT-6.2 Astra xhigh · 18 matched pairs</h3>
+        <p>Both input modes placed 16/18. Adding touch changed one failure to a success and one success to a failure. The median of model-call time plus simulated probe and recovery was 40.48 s with vision and encoders and 29.19 s when touch was included. These are exploratory calls and simulated motion times.</p>
+      </aside>
+      <div class="actions">
+        <a class="text-link" href="#papers">Open papers and follow-up data</a>
+        <a class="text-link" href="#results">View the original experiment results</a>
+      </div>
     </section>
 
     <section class="wrap chapter" aria-labelledby="replay-title">
@@ -179,13 +249,22 @@
         <h2 id="papers-title">Papers and experimental data</h2>
       </div>
       <div class="papers">
+        <article class="paper-panel revised-paper">
+          <p class="kicker">Revised manuscript · 14 pages</p>
+          <h3>When Should a Gripper Recenter or Tighten?</h3>
+          <p>Includes 288 new simulation conditions covering when to reacquire position, what tactile signals add at a matched action budget, and how to recover after a missed retry.</p>
+          <div class="actions">
+            <a class="button primary" href="papers/regrasp-study-revised-en.pdf">Revised English PDF</a>
+            <a class="text-link" href="papers/regrasp-revised-latex.zip">Revised LaTeX source</a>
+          </div>
+        </article>
         <article class="paper-panel">
-          <p class="kicker">Extended manuscript · 10 pages</p>
+          <p class="kicker">Original extended manuscript · 10 pages</p>
           <h3>When Should a Gripper Recenter or Tighten?</h3>
           <p>The full experimental design, results after object movement, and preparation and retention comparisons.</p>
           <div class="actions">
-            <a class="button primary" href="papers/regrasp-study-en.pdf">English PDF</a>
-            <a class="text-link" href="papers/regrasp-latex.zip">English LaTeX source</a>
+            <a class="button" href="papers/regrasp-study-en.pdf">Original English PDF</a>
+            <a class="text-link" href="papers/regrasp-latex.zip">Original LaTeX source</a>
           </div>
         </article>
         <article class="paper-panel">
@@ -198,10 +277,15 @@
         </article>
       </div>
       <ul class="downloads" aria-label="Data downloads">
+        <li><a href="data/follow-up/conditions.csv" download>Follow-up policy outcomes (CSV)</a><span>Action, placement, time and peak load in the 216-condition comparison.</span></li>
+        <li><a href="data/follow-up/localization.csv" download>Follow-up localization errors (CSV)</a><span>Position errors at the test lift and after retraction.</span></li>
+        <li><a href="data/follow-up/confirmation.csv" download>Grasp-angle comparison (CSV)</a><span>Angular errors and placements on 72 additional conditions.</span></li>
+        <li><a href="data/follow-up/agent_audit.csv" download>Astra decision results (CSV)</a><span>36 decisions with the selected action, placement and measured inference time.</span></li>
+        <li><a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/regrasp-study-2026-11/regrasp-follow-up-data.zip">Follow-up experimental archive (ZIP)</a><span>Raw RGB-D and tactile signals, simulation code, scenes, protocols and video.</span></li>
         <li><a href="data/conditions.csv" download>Experiment conditions (CSV)</a><span>One row per condition across the three main evaluations.</span></li>
         <li><a href="data/policy_scores.csv" download>Policy outcomes (CSV)</a><span>Placement, simulated motion time and maximum pad load.</span></li>
         <li><a href="data/paired_summary.json" download>Paired summary (JSON)</a><span>Counts, sensitivity analysis and descriptive layout intervals.</span></li>
-        <li><a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/tag/regrasp-study-2026-11">Experimental archive</a><span>Camera and tactile observations, trial records and simulator assets.</span></li>
+        <li><a href="https://github.com/jhyeong687/tactile-grasp-agent/releases/download/regrasp-study-2026-11/regrasp-study-data.zip">Original experimental archive (ZIP)</a><span>Camera and tactile observations, trial records and simulator assets.</span></li>
       </ul>
     </section>
   </main>
